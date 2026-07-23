@@ -1,0 +1,32 @@
+<?php
+include_once 'Sessao.php';
+require_once __DIR__ .  '/../app/Model/Usuario.php'; 
+require_once __DIR__ .  '/../app/Dao/UsuarioDao.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $nome   = $_POST['nome'];
+    $idade  = $_POST['idade'];
+    $email  = $_POST['email'];
+    $senha  = $_POST['senha'];
+    
+
+    $novoUsuario = new Usuario($nome, $idade, $email, $senha);
+
+    $dao = new UsuarioDAO();
+    
+    if ($dao->Cadastrar($novoUsuario)) {
+
+        echo "<script>
+                alert('Cadastro realizado com sucesso!');
+                window.location.href = 'home.php'; 
+              </script>";
+    } else {
+
+        echo "Erro ao salvar no banco de dados.";
+    }
+} else {
+    
+    header("Location: CadastroUsuario.php");
+}
+?>

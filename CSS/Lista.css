@@ -1,0 +1,62 @@
+
+.container-listagem {
+    width: 95%;
+    max-width: 1300px; 
+    margin: 40px auto;
+}
+
+.card-listagem {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: none;
+    overflow: hidden; 
+}
+
+.listagem-header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-pecuaria {
+    margin-bottom: 0;
+}
+
+.table-pecuaria thead {
+    background-color: #f8fdf9;
+}
+
+.table-pecuaria th {
+    color: #1b5e20;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    border-bottom: 2px solid #e8f5e9;
+}
+
+.table-pecuaria td {
+    padding: 15px;
+    vertical-align: middle;
+    color: #444;
+}
+
+.table-pecuaria tbody tr:hover {
+    background-color: #f1f8f1;
+    transition: 0.2s;
+}
+
+.id-referencia {
+    font-family: monospace;
+    color: #666;
+    font-weight: bold;
+}
+
+.tabela-responsiva-custom {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
