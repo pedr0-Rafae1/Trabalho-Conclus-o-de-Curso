@@ -8,7 +8,7 @@ $registropesoDao = new RegistroPesoDao();
 
 if (isset($_GET['excluir'])) {
     $idParaRemover = $_GET['excluir'];
-    if ($registropesoDao->Remover($idParaRemover)) {
+    if ($registropesoDao->Remover($idParaRemover, $_SESSION['id_usuario'])) {
         header("Location: ListaRegistroPeso.php?msg=excluido");
         exit();
     }

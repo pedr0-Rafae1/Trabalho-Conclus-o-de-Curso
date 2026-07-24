@@ -8,12 +8,12 @@ $animalDao = new AnimalDAO();
 
 if (isset($_GET['excluir'])) {
     $idParaRemover = $_GET['excluir'];
-    if ($animalDao->Remover($idParaRemover)) {
+    if ($animalDao->Remover($idParaRemover, $_SESSION['id_usuario'])) {
         header("Location: ListaAnimal.php?msg=excluido");
         exit();
     }
 }
-
+ 
 include 'Cabecalho.php'; 
 
 $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);

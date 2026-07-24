@@ -11,6 +11,9 @@ $registrovacinacao = $dao->BuscarPorId($id_vacinacao);
 $hoje = date('Y-m-d');
 include 'Cabecalho.php';
 
+if (!$registrovacinacao) {
+    die("Seu registro da vacinação não foi encontrado ou não pertence à sua conta.");
+}
 ?>
 
 <!DOCTYPE html>

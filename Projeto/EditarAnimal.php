@@ -9,6 +9,10 @@ $id_animal = $_GET['id'];
 $dao = new AnimalDAO();
 $animal = $dao->BuscarPorId($id_animal);
 
+if (!$animal) {
+    die("O cadastro do seu animal não foi encontrado ou não pertence à sua conta.");
+}
+
 include 'Cabecalho.php';
 $hoje = date('Y-m-d');
 

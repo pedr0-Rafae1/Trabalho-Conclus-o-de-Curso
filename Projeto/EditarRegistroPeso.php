@@ -11,6 +11,9 @@ $dao = new RegistroPesoDao();
 $registropeso = $dao->BuscarPorId($id_peso);
 $hoje = date('Y-m-d');
 
+if (!$registropeso) {
+    die("Seu Registro da pesagem não foi encontrado ou não pertence à sua conta.");
+}
 ?>
 
 <!DOCTYPE html>

@@ -15,7 +15,7 @@ $registropeso->id_peso = $id;
 
 $dao = new RegistroPesoDAO();
 
-if ($dao->Atualizar($registropeso)) {
+if ($dao->Atualizar($registropeso, $_SESSION['id_usuario'])) {
     
     header("Location: ListaRegistroPeso.php?sucesso=1");
     exit();

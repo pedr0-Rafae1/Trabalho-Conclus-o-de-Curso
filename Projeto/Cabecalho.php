@@ -162,6 +162,7 @@
                 <ul class="submenu-branco">
                     <li><a href="ListaAnimal.php"><i class="fas fa-list me-2"></i> Lista de Animais</a></li>
                     <li><a href="ListaRegistroPeso.php"><i class="fas fa-chart-line me-2"></i> Histórico de Pesos</a></li>
+                    <li><a href="EvolucaoPeso.php"><i class="fas fa-chart-line me-2"></i>Evolução do Peso</a></li>
                     <li><a href="ListaRegistroVacinacao.php"><i class="fas fa-notes-medical me-2"></i> Histórico de Vacinas</a></li>
                 </ul>
             </li>

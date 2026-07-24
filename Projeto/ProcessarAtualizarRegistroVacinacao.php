@@ -17,7 +17,7 @@ $registrovacinacao->id_vacinacao = $id;
 
 $dao = new RegistroVacinacaoDAO();
 
-if ($dao->Atualizar($registrovacinacao)) {
+if ($dao->Atualizar($registrovacinacao, $_SESSION['id_usuario'])) {
     
     header("Location: ListaRegistroVacinacao.php?sucesso=1");
     exit();

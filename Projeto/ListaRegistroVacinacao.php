@@ -8,7 +8,7 @@ $registrovacinacaoDao = new RegistroVacinacaoDao();
 
 if (isset($_GET['excluir'])) {
     $idParaRemover = $_GET['excluir'];
-    if ($registrovacinacaoDao->Remover($idParaRemover)) {
+    if ($registrovacinacaoDao->Remover($idParaRemover, $_SESSION['id_usuario'])) {
         header("Location: ListaRegistroVacinacao.php?msg=excluido");
         exit();
     }

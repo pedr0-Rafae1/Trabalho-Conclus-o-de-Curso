@@ -18,7 +18,7 @@ $animal->id_animal = $id;
 
 $dao = new AnimalDAO();
 
-if ($dao->Atualizar($animal)) {
+if ($dao->Atualizar($animal, $_SESSION['id_usuario'])) {
     
     header("Location: ListaAnimal.php?sucesso=1");
     exit();

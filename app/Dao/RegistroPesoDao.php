@@ -43,6 +43,30 @@ class RegistroPesoDao {
         return $lista;
     }
 
+    public function ListarPorAnimal($id_animal, $id_usuario){
+ 
+        $lista = [];
+        $sql = "SELECT p.* FROM registropeso p INNER JOIN animal a ON p.id_animal = a.id_animal WHERE p.id_animal = ? AND a.id_usuario = ? ORDER BY p.data_pessagem ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $id_animal, $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+ 
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $registropeso = new RegistroPeso(
+                    $row['id_animal'],
+                    $row['peso_anterior'],
+                    $row['peso_atual'],
+                    $row['data_pessagem']
+                );
+                $registropeso->id_peso = $row['id_peso'];
+                $lista[] = $registropeso;
+            }
+        }
+        return $lista;
+    }
+
     public function Remover($id_peso){
 
         $sql = "DELETE FROM registropeso WHERE id_peso = ?";
