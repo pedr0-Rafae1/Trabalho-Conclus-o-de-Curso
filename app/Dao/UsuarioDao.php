@@ -9,9 +9,9 @@ class UsuarioDao {
     }
 
     public function Cadastrar(Usuario $usuario) {
-        $sql = "INSERT INTO usuario (nome, idade, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario (nome, idade, email, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("siss", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->tipo_usuario);
+        $stmt->bind_param("sisss", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->tipo_usuario);
         return $stmt->execute();
     }
 
@@ -29,9 +29,9 @@ class UsuarioDao {
     }
 
     public function Atualizar(Usuario $usuario) {
-        $sql = "UPDATE usuario SET nome=?, idade=?, email=?, senha=? WHERE id_usuario=?";
+        $sql = "UPDATE usuario SET nome=?, idade=?, email=?, senha=? , tipo_usuario = ? WHERE id_usuario=?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("sissi", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->id_usuario);
+        $stmt->bind_param("sisssi", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->tipo_usuario, $usuario->id_usuario);
         return $stmt->execute();
     }
 
@@ -53,7 +53,7 @@ class UsuarioDao {
     }
 
     public function BuscarPorId($id) {
-        $sql = "SELECT nome, idade, email FROM usuario WHERE id_usuario = ?";
+        $sql = "SELECT nome, idade, email, tipo_usuario FROM usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();

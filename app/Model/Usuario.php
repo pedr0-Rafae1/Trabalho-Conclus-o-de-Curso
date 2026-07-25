@@ -8,7 +8,7 @@ class Usuario{
     public $senha;
     public $tipo_usuario;
 
-    public function __construct($nome, $idade, $email, $senha = null, $tipo_usuario = 'Pecuarista',) {
+    public function __construct($nome, $idade, $email, $senha = null, $tipo_usuario = 'Pecuarista') {
         $this->nome = $nome;
         $this->idade = $idade;
         $this->email = $email;
