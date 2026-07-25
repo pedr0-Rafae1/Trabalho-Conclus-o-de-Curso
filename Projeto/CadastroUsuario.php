@@ -31,6 +31,13 @@ $hoje = date('Y-m-d');
       <label for="Senha">Senha:</label>
       <input type="password" id="Senha" name="senha" class="form-control" placeholder="Ex: asbft7890" required>
 
+      <label for="tipo_usuario">Você é:</label>
+      <select id="tipo_usuario" name="tipo_usuario" class="form-control" required>
+        <option value="Pecuarista">Pecuarista / Produtor</option>
+        <option value="Veterinario">Veterinário</option>
+      </select>
+      <small>Cadastros de Veterinário passam por homologação antes de poder responder dúvidas.</small>
+
       <button type="submit">Cadastrar</button>
     </form>
 

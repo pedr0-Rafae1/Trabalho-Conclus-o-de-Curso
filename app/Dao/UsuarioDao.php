@@ -9,9 +9,9 @@ class UsuarioDao {
     }
 
     public function Cadastrar(Usuario $usuario) {
-        $sql = "INSERT INTO usuario (nome, idade, email, senha) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario (nome, idade, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("siss", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha);
+        $stmt->bind_param("siss", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->tipo_usuario);
         return $stmt->execute();
     }
 

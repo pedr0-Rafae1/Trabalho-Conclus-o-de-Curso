@@ -147,6 +147,7 @@
         <ul class="nav-links">
             <li><a href="home.php">Início</a></li>
             <li><a href="SobreNos.php">Sobre nós</a></li>
+            <li><a href="CanalDuvidas.php"><i class="fas fa-comment-medical me-1"></i> Canal de Dúvidas</a></li>
             
             <li class="dropdown-servicos">
                 <a href="#">Serviços <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i></a>
