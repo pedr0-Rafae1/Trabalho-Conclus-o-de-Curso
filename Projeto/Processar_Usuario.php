@@ -1,5 +1,5 @@
 <?php
-include_once 'Sessao.php';
+
 require_once __DIR__ .  '/../app/Model/Usuario.php'; 
 require_once __DIR__ .  '/../app/Dao/UsuarioDao.php';
 

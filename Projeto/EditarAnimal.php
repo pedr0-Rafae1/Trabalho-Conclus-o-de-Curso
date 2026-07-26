@@ -14,6 +14,7 @@ if (!$animal) {
 }
 
 include 'Cabecalho.php';
+
 $hoje = date('Y-m-d');
 
 ?>

@@ -5,6 +5,13 @@ require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 
 $id_dono = $_SESSION['usuario_id']; 
 
+$hoje = date('Y-m-d');
+
+if ($data > $hoje) {
+    echo "Não pode cadastrar uma data futura";
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $id_animal  = $_POST['id_animal'];

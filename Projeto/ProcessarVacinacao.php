@@ -5,6 +5,13 @@ require_once __DIR__ .  '/../app/Dao/RegistroVacinacaoDao.php';
 
 $id_dono = $_SESSION['id_usuario'];
 
+$hoje = date('Y-m-d');
+
+if ($data > $hoje) {
+    echo "Não pode cadastrar uma data futura";
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $id_animal = $_POST['id_animal'];
