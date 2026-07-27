@@ -165,6 +165,8 @@
                     <li><a href="ListaRegistroPeso.php"><i class="fas fa-chart-line me-2"></i> Histórico de Pesos</a></li>
                     <li><a href="EvolucaoPeso.php"><i class="fas fa-chart-line me-2"></i>Evolução do Peso</a></li>
                     <li><a href="ListaRegistroVacinacao.php"><i class="fas fa-notes-medical me-2"></i> Histórico de Vacinas</a></li>
+                    <li><a href="HistoricoVenda.php"><i class="fas fa-hand-holding-usd me-2"></i> Histórico de Vendas</a></li>
+                    <li><a href="HistoricoAtendimento.php"><i class="fas fa-stethoscope me-2"></i> Atendimentos</a></li>
                 </ul>
             </li>
         </ul>

@@ -81,6 +81,7 @@ document.getElementById('id_animal').addEventListener('change', function() {
 });
 </script>
 
+<script src="../Javascript/offline-sync.js"></script>
 
 </body>
 </html>

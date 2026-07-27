@@ -55,5 +55,7 @@ include 'Cabecalho.php';
     </div>
 </main>
 
+<script src="../Javascript/offline-sync.js"></script>
+
 </body>
 </html>
