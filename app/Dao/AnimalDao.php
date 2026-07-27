@@ -62,6 +62,19 @@ class AnimalDAO {
         return null;
     }
 
+    public function ListarTodosComDono() {
+        $lista = [];
+        $sql = "SELECT a.*, u.nome AS dono_nome
+                FROM animal a
+                INNER JOIN usuario u ON u.id_usuario = a.id_usuario
+                ORDER BY u.nome, a.brinco";
+        $result = $this->db->query($sql);
+        while ($row = $result->fetch_assoc()) {
+            $lista[] = (object) $row;
+        }
+        return $lista;
+    }
+
     public function contarAnimaisPorUsuario($id_usuario) {
         $sql = "SELECT COUNT(*) as total FROM animal WHERE id_usuario = ?";
         $stmt = $this->db->prepare($sql);
@@ -72,10 +85,9 @@ class AnimalDAO {
     }
 
     public function ObterPesoAnterior($id_animal) {
-    // 1. Abre a conexão usando o método correto do seu arquivo: ConexaoBD::getConnection()
+
     $conn = ConexaoBD::getConnection();
     
-    // 2. 1ª Tentativa: Busca o último peso registrado na tabela 'registropeso'
     $sql = "SELECT peso_atual FROM registropeso WHERE id_animal = ? ORDER BY data_pessagem DESC, id_peso DESC LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id_animal);
@@ -90,7 +102,6 @@ class AnimalDAO {
     }
     $stmt->close();
     
-    // 3. 2ª Tentativa: Se nunca foi pesado antes, pega o peso inicial do cadastro na tabela 'animal'
     $sqlAnimal = "SELECT peso FROM animal WHERE id_animal = ?";
     $stmtAnimal = $conn->prepare($sqlAnimal);
     $stmtAnimal->bind_param("i", $id_animal);
