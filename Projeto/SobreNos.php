@@ -9,7 +9,7 @@ include_once 'Cabecalho.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre Nós - Pecuária em Rede</title>
-  <link rel="stylesheet" href="../CSS/SobreNos.css?v = 1.1">
+  <link rel="stylesheet" href="../CSS/SobreNos.css?v = 1.2">
 </head>
 <body>
   <main>
@@ -31,7 +31,8 @@ include_once 'Cabecalho.php';
       <div class="container">
         <nav>
           <a href="home.php">Início</a> |
-          <a href="SobreNos.php">Sobre nós</a>
+          <a href="SobreNos.php">Sobre nós</a> |
+          <a href="CanalDuvidas.php"> Canal de Duvidas</a>
         </nav>
         <p>&copy; 2026 Pecuária em Rede. Todos os direitos reservados.</p>
       </div>

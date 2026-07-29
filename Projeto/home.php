@@ -158,7 +158,8 @@ $pesoDao = new RegistroPesoDao();
     <div class="container text-center">
         <nav class="mb-3">
             <a href="home.php" class="text-white text-decoration-none mx-2">Início</a> |
-            <a href="SobreNos.php" class="text-white text-decoration-none mx-2">Sobre nós</a>
+            <a href="SobreNos.php" class="text-white text-decoration-none mx-2">Sobre nós</a> |
+            <a href="CanalDuvidas.php" class = "text-white text-decoration-none mx-2"> Canal de Duvidas</a>
         </nav>
         <p class="mb-0">&copy; 2026 Pecuária em Rede. Todos os direitos reservados.</p>
     </div>

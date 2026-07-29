@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Variaveis.css?v = 1.2">
     <style>
         
         header {
@@ -113,6 +117,52 @@
             left: auto !important;
             margin-top: 5px;
         }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+
+        /* ===== Versão mobile do menu (RNF04) ===== */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-links.mostrar {
+                display: flex;
+            }
+
+            .nav-links > li {
+                width: 100%;
+                text-align: left;
+            }
+
+            .dropdown-servicos:hover .submenu-branco {
+                display: none;
+            }
+
+            .dropdown-servicos.aberto .submenu-branco {
+                display: block;
+            }
+
+            .submenu-branco {
+                position: static;
+                box-shadow: none;
+                border-radius: 0;
+                background-color: #eafbea;
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,6 +174,10 @@
                 <i class="fas fa-leaf me-2"></i> <h1>Pecuária em Rede</h1>
             </a>
         </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
         
         <div class="direita">
             <?php if(isset($_SESSION['usuario_nome'])): ?>
@@ -144,13 +198,13 @@
     </div>
 
     <nav class="menu-principal">
-        <ul class="nav-links">
+        <ul class="nav-links" id="navLinks">
             <li><a href="home.php">Início</a></li>
             <li><a href="SobreNos.php">Sobre nós</a></li>
             <li><a href="CanalDuvidas.php"><i class="fas fa-comment-medical me-1"></i> Canal de Dúvidas</a></li>
             
             <li class="dropdown-servicos">
-                <a href="#">Serviços <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i></a>
+                <a href="#" class="toggle-submenu">Serviços <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i></a>
                 <ul class="submenu-branco">
                     <li><a href="CadastroAnimal.php"><i class="fas fa-plus me-2"></i> Cadastrar Animal</a></li>
                     <li><a href="RegistrarVacinacao.php"><i class="fas fa-syringe me-2"></i> Registrar Vacina</a></li>
@@ -159,7 +213,7 @@
             </li>
 
             <li class="dropdown-servicos">
-                <a href="#">Listas <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i></a>
+                <a href="#" class="toggle-submenu">Listas <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i></a>
                 <ul class="submenu-branco">
                     <li><a href="ListaAnimal.php"><i class="fas fa-list me-2"></i> Lista de Animais</a></li>
                     <li><a href="ListaRegistroPeso.php"><i class="fas fa-chart-line me-2"></i> Histórico de Pesos</a></li>
@@ -172,3 +226,26 @@
         </ul>
     </nav>
 </header>
+
+<script>
+    (function () {
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        // Botão hambúrguer: abre/fecha o menu inteiro no celular
+        menuToggle.addEventListener('click', function () {
+            const aberto = navLinks.classList.toggle('mostrar');
+            menuToggle.setAttribute('aria-expanded', aberto);
+        });
+
+        // Em telas pequenas, "Serviços"/"Listas" abrem com clique (não tem hover no toque)
+        document.querySelectorAll('.toggle-submenu').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                if (window.innerWidth <= 768) {
+                    event.preventDefault();
+                    this.parentElement.classList.toggle('aberto');
+                }
+            });
+        });
+    })();
+</script>

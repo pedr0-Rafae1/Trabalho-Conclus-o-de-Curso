@@ -5,13 +5,25 @@
     box-sizing: border-box;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100%;
-    background-color: #f0fdf4; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    overflow-x: hidden;
+:root {
+  
+  --verde-primario: #2e7d32;
+  --verde-escuro: #1b5e20;
+
+  --bg-pagina: #f0fdf4;
+  --bg-card: #ffffff;
+  --verde-suave: #e8f5e9;
+  --verde-borda: #c8e6c9;
+
+  --fonte-principal: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --radius-card: 15px;
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+   font-family: var(--fonte-principal);
+   background-color: var(--bg-pagina);
 }
 
 header {
