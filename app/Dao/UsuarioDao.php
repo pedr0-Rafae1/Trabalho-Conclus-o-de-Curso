@@ -28,10 +28,10 @@ class UsuarioDao {
         return $stmt->execute();
     }
 
-    public function Atualizar(Usuario $usuario) {
-        $sql = "UPDATE usuario SET nome=?, idade=?, email=?, senha=? , tipo_usuario = ? WHERE id_usuario=?";
+     public function Atualizar(Usuario $usuario) {
+        $sql = "UPDATE usuario SET nome = ?, idade = ?, senha = ? WHERE id_usuario = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("sisssi", $usuario->nome, $usuario->idade, $usuario->email, $usuario->senha, $usuario->tipo_usuario, $usuario->id_usuario);
+        $stmt->bind_param("sisi", $usuario->nome, $usuario->idade, $usuario->senha, $usuario->id_usuario);
         return $stmt->execute();
     }
 
@@ -53,7 +53,7 @@ class UsuarioDao {
     }
 
     public function BuscarPorId($id) {
-        $sql = "SELECT nome, idade, email, tipo_usuario FROM usuario WHERE id_usuario = ?";
+        $sql = "SELECT nome, idade, email, senha, tipo_usuario, homologado FROM usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();

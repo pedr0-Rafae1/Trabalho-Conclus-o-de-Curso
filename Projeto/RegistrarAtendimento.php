@@ -1,5 +1,10 @@
 <?php
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_veterinario");
+    exit();
+}
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario';

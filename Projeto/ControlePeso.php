@@ -1,5 +1,11 @@
 <?php 
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 $id_logado = $_SESSION['id_usuario'];
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 

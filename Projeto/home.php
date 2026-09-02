@@ -32,6 +32,13 @@ $pesoDao = new RegistroPesoDao();
 <body>
 
 <main class="container my-5">
+
+    <?php if (($_GET['erro'] ?? '') === 'area_pecuarista'): ?>
+        <div class="alert alert-warning">
+            <i class="fas fa-user-shield me-2"></i>
+            Essa área é exclusiva para pecuaristas. Contas de veterinário podem usar o Canal de Dúvidas e Registrar Atendimento.
+        </div>
+    <?php endif; ?>
     <section class="boas-vindas text-center mb-5 p-4 bg-white rounded shadow-sm">
         <h2 class="text-success">Bem-vindo à Pecuária em Rede</h2>
         <p class="lead text-muted">Aqui você gerencia seu rebanho com facilidade: controle de peso, vacinação e muito mais.</p>
@@ -158,8 +165,7 @@ $pesoDao = new RegistroPesoDao();
     <div class="container text-center">
         <nav class="mb-3">
             <a href="home.php" class="text-white text-decoration-none mx-2">Início</a> |
-            <a href="SobreNos.php" class="text-white text-decoration-none mx-2">Sobre nós</a> |
-            <a href="CanalDuvidas.php" class = "text-white text-decoration-none mx-2"> Canal de Duvidas</a>
+            <a href="SobreNos.php" class="text-white text-decoration-none mx-2">Sobre nós</a>
         </nav>
         <p class="mb-0">&copy; 2026 Pecuária em Rede. Todos os direitos reservados.</p>
     </div>

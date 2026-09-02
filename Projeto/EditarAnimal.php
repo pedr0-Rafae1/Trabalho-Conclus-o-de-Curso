@@ -1,6 +1,12 @@
 <?php
 
 include  'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 require_once __DIR__ . '/../app/Model/Animal.php';
 require_once __DIR__ . '/../app/Conexao/ConexaoBD.php';

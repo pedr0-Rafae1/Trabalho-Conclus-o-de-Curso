@@ -2,6 +2,11 @@
 include_once 'Sessao.php';
 require_once __DIR__ . '/../app/Dao/VendaDao.php';
 
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 $vendaDao = new VendaDao();
 $animaisDisponiveis = $vendaDao->ListarAnimaisDisponiveis($_SESSION['id_usuario']);
 $hoje = date('Y-m-d');
