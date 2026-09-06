@@ -8,43 +8,85 @@ $hoje = date('Y-m-d');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro</title>
+  <title>Cadastro - Pecuária em Rede</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../CSS/Cadastro.css?v = 1.2">
-  <link rel="stylesheet" href="../CSS/Variaveis.css">
+  <link rel="stylesheet" href="../CSS/Cadastro.css?v=2.3">
 </head>
 <body>
 
- 
-  <main class="card">
-    <h2>Cadastro de Usuário</h2>
-    <p>Faça o cadastro para pode acessa a plataforma</p>
-    <form action="Processar_Usuario.php" method="POST">
+  <main class="auth-wrapper">
+    <div class="auth-card">
 
-      <label for="nome">Nome Completo:</label>
-      <input type="text" id="nome" name="nome" class="form-control" placeholder="Ex: pedro" required>
+      <div class="auth-branding">
+        <i class="fas fa-user-plus branding-icon"></i>
+        <h1>Pecuária em Rede</h1>
+        <p>Crie sua conta e comece a organizar o manejo do seu rebanho hoje mesmo.</p>
+      </div>
 
-      <label for="idade">Idade:</label>
-      <input type="number" id="idade" name="idade" class="form-control" placeholder="Ex: 18" required>
+      <div class="auth-form">
+        <h2>Criar Conta</h2>
+        <p class="subtitulo">Leva menos de um minuto</p>
 
-      <label for="email">E-mail:</label>
-      <input type="email" id="email" name="email" class="form-control" placeholder="Ex: xxxx@xxxx" required>
+        <form action="Processar_Usuario.php" method="POST">
 
-      <label for="Senha">Senha:</label>
-      <input type="password" id="Senha" name="senha" class="form-control" placeholder="Ex: asbft7890" required>
+          <div class="input-icone">
+            <i class="fas fa-user"></i>
+            <input type="text" id="nome" name="nome" placeholder="Nome completo" required>
+          </div>
 
-      <label for="tipo_usuario">Você é:</label>
-      <select id="tipo_usuario" name="tipo_usuario" class="form-control" required>
-        <option value="Pecuarista">Pecuarista / Produtor</option>
-        <option value="Veterinario">Veterinário</option>
-      </select>
-      <small>Cadastros de Veterinário passam por homologação antes de poder responder dúvidas.</small>
+          <div class="input-icone">
+            <i class="fas fa-birthday-cake"></i>
+            <input type="number" id="idade" name="idade" placeholder="Idade" required>
+          </div>
 
-      <button type="submit">Cadastrar</button>
-    </form>
+          <div class="input-icone">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+          </div>
+
+          <div class="input-icone">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="Senha" name="senha" placeholder="Crie uma senha" required>
+            <i class="fas fa-eye toggle-senha" id="toggleSenha"></i>
+          </div>
+
+          <label class="rotulo-tipo">Você é:</label>
+          <div class="opcoes-tipo">
+            <label class="opcao-tipo">
+              <input type="radio" name="tipo_usuario" value="Pecuarista" checked>
+              <span><i class="fas fa-tractor"></i> Pecuarista / Produtor</span>
+            </label>
+            <label class="opcao-tipo">
+              <input type="radio" name="tipo_usuario" value="Veterinario">
+              <span><i class="fas fa-stethoscope"></i> Veterinário</span>
+            </label>
+          </div>
+          <small class="aviso-homologacao">Cadastros de Veterinário passam por homologação antes de poder responder dúvidas.</small>
+
+          <button type="submit">Cadastrar</button>
+
+          <p class="footer-link">
+            Já tem uma conta? <a href="login.php">Entrar</a>
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const toggleSenha = document.getElementById('toggleSenha');
+    const campoSenha = document.getElementById('Senha');
+    toggleSenha.addEventListener('click', () => {
+      const tipo = campoSenha.getAttribute('type') === 'password' ? 'text' : 'password';
+      campoSenha.setAttribute('type', tipo);
+      toggleSenha.classList.toggle('fa-eye');
+      toggleSenha.classList.toggle('fa-eye-slash');
+    });
+  </script>
 
 </body>
 </html>
