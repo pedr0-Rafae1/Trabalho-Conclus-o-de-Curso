@@ -67,50 +67,47 @@ class RegistroPesoDao {
         return $lista;
     }
 
-    public function Remover($id_peso){
-
-        $sql = "DELETE FROM registropeso WHERE id_peso = ?";
+    public function Remover($id_peso, $id_usuario){
+        
+        $sql = "DELETE p FROM registropeso p 
+                INNER JOIN animal a ON p.id_animal = a.id_animal 
+                WHERE p.id_peso = ? AND a.id_usuario = ?";
+        
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $id_peso); 
+        $stmt->bind_param("ii", $id_peso, $id_usuario); 
         return $stmt->execute();
     }
 
-    public function Atualizar(RegistroPeso $registropeso){
-
-        $sql = "UPDATE registropeso SET id_animal=?, peso_anterior=?, peso_atual=?, data_pessagem=? WHERE id_peso=?";
+    public function Atualizar(RegistroPeso $registropeso, $id_usuario){
+       
+        $sql = "UPDATE registropeso p 
+                INNER JOIN animal a ON p.id_animal = a.id_animal 
+                SET p.id_animal=?, p.peso_anterior=?, p.peso_atual=?, p.data_pessagem=? 
+                WHERE p.id_peso=? AND a.id_usuario=?";
+        
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("iddsi", $registropeso->id_animal, $registropeso->peso_anterior, $registropeso->peso_atual, $registropeso->data_pessagem, $registropeso->id_peso);
+        $stmt->bind_param("iddsii", $registropeso->id_animal, $registropeso->peso_anterior, $registropeso->peso_atual, $registropeso->data_pessagem, $registropeso->id_peso, $id_usuario);
         return $stmt->execute();
     }
 
-    public function BuscarPorId($id_peso){
-
-        $sql = "SELECT * FROM registropeso WHERE id_peso = ?"; 
+    public function BuscarPorId($id_peso, $id_usuario){
+       
+        $sql = "SELECT p.* FROM registropeso p 
+                INNER JOIN animal a ON p.id_animal = a.id_animal 
+                WHERE p.id_peso = ? AND a.id_usuario = ?"; 
+                
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $id_peso);
+        $stmt->bind_param("ii", $id_peso, $id_usuario);
         $stmt->execute();
+        
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
-    if ($row) {
-        $registropeso = new RegistroPeso ($row['id_animal'], $row['peso_anterior'], $row['peso_atual'], $row['data_pessagem']);
-        $registropeso->id_peso = $row['id_peso']; 
-        return $registropeso;
-    }
+        if ($row) {
+            $registropeso = new RegistroPeso ($row['id_animal'], $row['peso_anterior'], $row['peso_atual'], $row['data_pessagem']);
+            $registropeso->id_peso = $row['id_peso']; 
+            return $registropeso;
+        }
         return null;
     }
-
-    public function contarPesagensPorUsuario($id_logado) {
-    
-        $sql = "SELECT COUNT(p.id_peso) as total FROM registropeso p INNER JOIN animal a ON p.id_animal = a.id_animal WHERE a.id_usuario = ?";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $id_logado);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        
-        return $row['total'] ?? 0;
-    }
-
 }

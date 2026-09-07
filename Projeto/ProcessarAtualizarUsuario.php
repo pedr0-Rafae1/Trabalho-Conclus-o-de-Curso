@@ -1,26 +1,25 @@
 <?php
 include_once 'Sessao.php';
-require_once __DIR__ . '/../app/Dao/UsuarioDao.php';
 require_once __DIR__ . '/../app/Model/Usuario.php';
+require_once __DIR__ . '/../app/Dao/UsuarioDao.php';
 
-$id = $_POST['id_usuario'];
-$nome = $_POST['nome'];
-$idade = $_POST['idade'];
-$email = $_POST['email'];
-$senha = $_POST['senha'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id_usuario = $_SESSION['id_usuario'];
+    $nome = $_POST['nome'] ?? '';
+    $idade = $_POST['idade'] ?? 0;
+    $novaSenha = $_POST['senha'] ?? null;
 
-$usuario = new Usuario($nome, $idade, $email, $senha);
-$usuario->id_usuario = $id; 
+    $usuarioDao = new UsuarioDao();
+    $dadosAtuais = $usuarioDao->BuscarPorId($id_usuario);
 
+    $usuario = new Usuario($nome, $idade, $dadosAtuais['email'], $novaSenha, $dadosAtuais['tipo_usuario']);
+    $usuario->id_usuario = $id_usuario;
 
-$dao = new UsuarioDao();
-
-if ($dao->Atualizar($usuario, $_SESSION['id_usuario'])) {
-    
-    header("Location: MeuPerfil.php?sucesso=1");
+    if ($usuarioDao->Atualizar($usuario)) {
+        $_SESSION['usuario_nome'] = $nome;
+        header("Location: MeuPerfil.php?sucesso=1");
+    } else {
+        header("Location: MeuPerfil.php?erro=1");
+    }
     exit();
-} else {
-    echo "Erro ao tentar atualizar os dados no banco.";
 }
-
-?>

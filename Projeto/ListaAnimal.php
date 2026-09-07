@@ -75,17 +75,22 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
                                     <td><?= $a->peso ?></td>
                                     <td><?= $a->altura ?></td>
                                     <td class="text-center pe-4">
+                                        <td class="text-center pe-4">
                                         <div class="btn-group shadow-sm">
+                                            <a href="FichaAnimal.php?id=<?= $a->id_animal ?>" class="btn btn-outline-info btn-sm" title="Ver Ficha">
+                                                <i class="fas fa-file-alt"></i>
+                                            </a>
                                             <a href="EditarAnimal.php?id=<?= $a->id_animal ?>" class="btn btn-outline-warning btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="ListaAnimal.php?excluir=<?= $a->id_animal?>" 
-                                               class="btn btn-outline-danger btn-sm" 
-                                               onclick="return confirm('Deseja realmente remover este animal?')"
-                                               title="Excluir">
+                                            class="btn btn-outline-danger btn-sm" 
+                                            onclick="return confirm('Deseja realmente remover este animal?')"
+                                            title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </div>
+                                    </td>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -62,6 +62,15 @@ class AnimalDAO {
         return null;
     }
 
+    public function buscarPorIdEUsuario($id_animal, $id_usuario) {
+    $sql = "SELECT * FROM animal WHERE id_animal = ? AND id_usuario = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ii", $id_animal, $id_usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_assoc(); 
+}
+
     public function ListarTodosComDono() {
         $lista = [];
         $sql = "SELECT a.*, u.nome AS dono_nome

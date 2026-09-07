@@ -11,7 +11,7 @@ $senha = $_POST['senha'] ?? '';
 $usuario = $usuarioDao->buscarPorEmail($email);
 
 if ($usuario) {
-    if ($senha == $usuario['senha']) {
+    if (password_verify($senha, $usuario['senha'])) {
         
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['usuario_nome'] = $usuario['nome'];
