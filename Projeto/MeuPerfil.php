@@ -9,7 +9,7 @@ include 'Cabecalho.php';
 ?>
 
 <head>
-    <title>Meu Perfil - Pecuária em Rede</title>
+    <title>Meu Perfil</title>
     <link rel="stylesheet" href="../CSS/Formularios.css?v=1.4">
     <style>
         .perfil-avatar {

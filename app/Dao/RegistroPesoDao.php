@@ -110,4 +110,15 @@ class RegistroPesoDao {
         }
         return null;
     }
+
+    public function contarPesagensPorUsuario($id_logado) {
+        $sql = "SELECT COUNT(p.id_peso) as total FROM registropeso p INNER JOIN animal a ON p.id_animal = a.id_animal WHERE a.id_usuario = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_logado);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        
+        return $row['total'] ?? 0;
+    }
 }

@@ -105,6 +105,7 @@
             padding: 5px 15px;
             border-radius: 5px;
             transition: 0.3s;
+            font-weight: 600; 
         }
 
         .btn-usuario:hover {
@@ -118,6 +119,19 @@
             margin-top: 5px;
         }
 
+        .dropdown-item {
+            color: #333 !important;
+            font-weight: 500 !important;
+            text-decoration: none;
+            padding: 8px 20px;
+            display: block;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f8f1;
+            color: #2e7d32 !important;
+        }
+
         .menu-toggle {
             display: none;
             background: none;
@@ -127,7 +141,6 @@
             cursor: pointer;
         }
 
-        /* ===== Versão mobile do menu (RNF04) ===== */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -181,14 +194,14 @@
         
         <div class="direita">
             <?php if(isset($_SESSION['usuario_nome'])): ?>
-                <div class="dropdown">
-                    <button class="btn-usuario dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-1"></i> <?= $_SESSION['usuario_nome'] ?>
+                <div class="dropdown" style="position: relative;">
+                    <button class="btn-usuario" type="button" id="userMenuBtn" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-user-circle me-1"></i> <?= $_SESSION['usuario_nome'] ?> <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
-                        <li><a class="dropdown-item" href="MeuPerfil.php"><i class="fas fa-id-card me-2 text-success"></i> Meu Perfil</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="Sair.php"><i class="fas fa-sign-out-alt me-2"></i> Sair</a></li>
+                    <ul id="userDropdownMenu" style="display: none; position: absolute; right: 0; top: 100%; background: white; list-style: none; padding: 10px 0; margin-top: 5px; min-width: 160px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); border-radius: 8px; z-index: 1050;">
+                        <li><a href="MeuPerfil.php" style="color: #333; font-weight: bold; padding: 8px 20px; display: block; text-decoration: none;">Meu Perfil</a></li>
+                        <li><hr style="margin: 5px 0; border-top: 1px solid #ddd;"></li>
+                        <li><a href="Sair.php" style="color: #dc3545; font-weight: 500; padding: 8px 20px; display: block; text-decoration: none;"><i class="fas fa-sign-out-alt me-2"></i> Sair</a></li>
                     </ul>
                 </div>
             <?php else: ?>
@@ -232,13 +245,12 @@
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
 
-        // Botão hambúrguer: abre/fecha o menu inteiro no celular
+        
         menuToggle.addEventListener('click', function () {
             const aberto = navLinks.classList.toggle('mostrar');
             menuToggle.setAttribute('aria-expanded', aberto);
         });
 
-        // Em telas pequenas, "Serviços"/"Listas" abrem com clique (não tem hover no toque)
         document.querySelectorAll('.toggle-submenu').forEach(function (link) {
             link.addEventListener('click', function (event) {
                 if (window.innerWidth <= 768) {
@@ -248,4 +260,21 @@
             });
         });
     })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const userBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userDropdownMenu');
+
+            if (userBtn && userMenu) {
+                userBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', function() {
+                    userMenu.style.display = 'none';
+                });
+        }
+    });
+</script>
 </script>

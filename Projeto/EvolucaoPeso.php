@@ -28,7 +28,7 @@ if ($id_animal_selecionado) {
 
 $temDadosSuficientes = count($historico) >= 2; 
 
-include 'Cabecalho.php';
+include_once 'Cabecalho.php';
 ?>
 
 <head>

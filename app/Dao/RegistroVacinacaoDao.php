@@ -85,4 +85,15 @@ class RegistroVacinacaoDAO {
         }
         return null;
     }
+
+    public function contarVacinasPorUsuario($id_logado) {
+        $sql = "SELECT COUNT(v.id_vacinacao) as total FROM registrovacinacao v INNER JOIN animal a ON v.id_animal = a.id_animal WHERE a.id_usuario = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_logado);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        
+        return $row['total'] ?? 0;
+    }
 }

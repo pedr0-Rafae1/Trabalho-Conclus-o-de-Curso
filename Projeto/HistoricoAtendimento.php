@@ -7,7 +7,7 @@ $atendimentoDao = new AtendimentoDao();
 $animalDao = new AnimalDAO();
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario';
 
-include 'Cabecalho.php';
+include_once 'Cabecalho.php';
 ?>
 
 <head>
