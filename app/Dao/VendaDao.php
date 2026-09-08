@@ -67,6 +67,16 @@ class VendaDao {
         return $lista;
     }
 
+    public function BuscarPorAnimal($id_animal, $id_usuario) {
+        $sql = "SELECT v.* FROM venda v
+                INNER JOIN animal a ON a.id_animal = v.id_animal
+                WHERE v.id_animal = ? AND a.id_usuario = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $id_animal, $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
     public function ListarAnimaisDisponiveis($id_usuario) {
         $lista = [];
         $sql = "SELECT id_animal, brinco, raca FROM animal WHERE id_usuario = ? AND vendido = 0";

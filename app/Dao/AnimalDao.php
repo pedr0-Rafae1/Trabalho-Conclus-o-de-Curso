@@ -71,6 +71,18 @@ class AnimalDAO {
     return $resultado->fetch_assoc(); 
 }
 
+    // Uso exclusivo do veterinário: busca qualquer animal, sem exigir que seja do usuário logado
+    public function buscarPorIdQualquerDono($id_animal) {
+        $sql = "SELECT a.*, u.nome AS dono_nome
+                FROM animal a
+                INNER JOIN usuario u ON u.id_usuario = a.id_usuario
+                WHERE a.id_animal = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_animal);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
     public function ListarTodosComDono() {
         $lista = [];
         $sql = "SELECT a.*, u.nome AS dono_nome

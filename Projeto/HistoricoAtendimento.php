@@ -48,7 +48,7 @@ include_once 'Cabecalho.php';
                                     <tr>
                                         <td class="ps-4"><?= date('d/m/Y', strtotime($a->data_atendimento)) ?></td>
                                         <td><?= htmlspecialchars($a->dono_nome) ?></td>
-                                        <td>Brinco <?= htmlspecialchars($a->brinco) ?> (<?= htmlspecialchars($a->raca) ?>)</td>
+                                        <td>Brinco <?= htmlspecialchars($a->brinco) ?> (<?= htmlspecialchars($a->raca) ?>) — <a href="FichaAnimal.php?id=<?= $a->id_animal ?>">Ver Ficha</a></td>
                                         <td><?= htmlspecialchars($a->descricao) ?></td>
                                         <td><?= htmlspecialchars($a->diagnostico ?? '-') ?></td>
                                     </tr>

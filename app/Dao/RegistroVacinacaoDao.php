@@ -45,6 +45,29 @@ class RegistroVacinacaoDAO {
         return $lista;
    }
 
+    public function ListarPorAnimal($id_animal, $id_usuario) {
+
+        $lista = [];
+        $sql = "SELECT v.* FROM registrovacinacao v INNER JOIN animal a ON v.id_animal = a.id_animal WHERE v.id_animal = ? AND a.id_usuario = ? ORDER BY v.data_aplicacao ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $id_animal, $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $registrovacinacao = new RegistroVacinacao(
+                $row['id_animal'],
+                $row['nome_vacina'],
+                $row['data_aplicacao'],
+                $row['aplicador'],
+                $row['dose']
+            );
+            $registrovacinacao->id_vacinacao = $row['id_vacinacao'];
+            $lista[] = $registrovacinacao;
+        }
+        return $lista;
+    }
+
     public function Remover($id_vacinacao, $id_usuario) {
         $sql = "DELETE v FROM registrovacinacao v 
                 INNER JOIN animal a ON v.id_animal = a.id_animal 
