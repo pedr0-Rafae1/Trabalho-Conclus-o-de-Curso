@@ -31,7 +31,7 @@ if ($ehVeterinario) {
     <title>Página Principal - Pecuária em Rede</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/pecuaria.css?v=1.10">
+    <link rel="stylesheet" href="../CSS/pecuaria.css?v=2.0">
     <link rel="shortcut icon" href="../imagem/Logo.png" type="image/png">
     
     <style>
@@ -246,15 +246,7 @@ if ($ehVeterinario) {
     </div>
 </section>
 
-<footer class="footer bg-success text-white py-4 mt-5">
-    <div class="container text-center">
-        <nav class="mb-3">
-            <a href="home.php" class="text-white text-decoration-none mx-2">Início</a> |
-            <a href="SobreNos.php" class="text-white text-decoration-none mx-2">Sobre nós</a>
-        </nav>
-        <p class="mb-0">&copy; 2026 Pecuária em Rede. Todos os direitos reservados.</p>
-    </div>
-</footer>
+<?php include 'Rodape.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

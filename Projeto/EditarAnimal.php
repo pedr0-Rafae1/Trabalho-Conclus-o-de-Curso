@@ -68,5 +68,6 @@ $hoje = date('Y-m-d');
     </div>
 </main>
     
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

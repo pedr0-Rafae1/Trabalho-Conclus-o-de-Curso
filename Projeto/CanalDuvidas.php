@@ -11,16 +11,16 @@ include 'Cabecalho.php';
 
 <head>
     <title>Canal de Dúvidas - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Lista.css">
+    <link rel="stylesheet" href="../CSS/Lista.css?v=2.0">
 </head>
 
-<main class="container-fluid px-md-5 my-5">
+<main class="lista-conteudo">
 
-    <div class="card shadow-sm border-0 rounded-3 mb-4">
-        <div class="card-header bg-success text-white py-3">
+    <div class="card lista-painel mb-4">
+        <div class="card-header lista-painel-header">
             <h4 class="mb-0"><i class="fas fa-comment-medical me-2"></i> Canal de Dúvidas</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body lista-painel-body">
 
             <?php if (isset($_GET['sucesso'])): ?>
                 <div class="alert alert-success">Enviado com sucesso!</div>
@@ -51,16 +51,16 @@ include 'Cabecalho.php';
     </div>
 
     <?php if (!$ehVeterinario): ?>
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header bg-white py-3">
+        <div class="card lista-painel">
+            <div class="card-header lista-painel-header claro">
                 <h5 class="mb-0">Minhas Dúvidas</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body lista-painel-body">
                 <?php $minhasDuvidas = $duvidaDao->ListarPorUsuario($_SESSION['id_usuario']); ?>
                 <?php if (empty($minhasDuvidas)): ?>
                     <p class="text-muted mb-0">Você ainda não enviou nenhuma dúvida.</p>
                 <?php else: foreach ($minhasDuvidas as $d): ?>
-                    <div class="border rounded-3 p-3 mb-3">
+                    <div class="lista-registro">
                         <p class="mb-1"><strong>Pergunta</strong> (<?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>):</p>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
@@ -77,16 +77,16 @@ include 'Cabecalho.php';
         </div>
 
     <?php elseif ($ehHomologado): ?>
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header bg-white py-3">
+        <div class="card lista-painel">
+            <div class="card-header lista-painel-header claro">
                 <h5 class="mb-0">Dúvidas Pendentes</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body lista-painel-body">
                 <?php $pendentes = $duvidaDao->ListarPendentes(); ?>
                 <?php if (empty($pendentes)): ?>
                     <p class="text-muted mb-0">Não há dúvidas pendentes no momento.</p>
                 <?php else: foreach ($pendentes as $d): ?>
-                    <div class="border rounded-3 p-3 mb-3">
+                    <div class="lista-registro">
                         <p class="mb-1"><strong><?= htmlspecialchars($d->usuario_nome) ?></strong> perguntou em <?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>:</p>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
@@ -103,5 +103,6 @@ include 'Cabecalho.php';
 
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

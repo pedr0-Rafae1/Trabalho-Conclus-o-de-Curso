@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         echo "<script>
                 alert('Cadastro realizado com sucesso!');
-                window.location.href = 'home.php'; 
+                window.location.href = 'login.php?cadastro=sucesso'; 
               </script>";
     } else {
 

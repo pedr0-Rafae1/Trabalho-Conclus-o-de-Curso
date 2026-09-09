@@ -1,0 +1,68 @@
+body.perfil-pecuarista { padding-left: 272px; }
+body.perfil-veterinario { padding-left: 272px; }
+
+.sidebar-pecuarista {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1300;
+    width: 272px;
+    overflow-y: auto;
+    padding: 24px 14px;
+    color: #eaf5ed;
+    background: #123d2a;
+    box-shadow: 8px 0 24px rgba(18, 61, 42, .16);
+}
+
+.sidebar-veterinario {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1300;
+    width: 272px;
+    overflow-y: auto;
+    padding: 24px 14px;
+    color: #e6f4f0;
+    background: #102f29;
+    box-shadow: 8px 0 24px rgba(16, 65, 53, .18);
+}
+
+.sidebar-heading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px 12px 24px;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.sidebar-eyebrow { color: #a9d9b5; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.sidebar-heading strong { color: #fff; font-size: 1.25rem; }
+.sidebar-close { display: none; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; padding-top: 18px; }
+.sidebar-section { margin: 17px 12px 5px; color: #8fc7a0; font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.sidebar-link { display: flex; align-items: center; gap: 12px; min-height: 43px; padding: 0 12px; color: rgba(255,255,255,.78); border: 1px solid transparent; border-radius: 8px; font-size: .82rem; font-weight: 600; text-decoration: none; transition: background .2s ease, color .2s ease, transform .2s ease; }
+.sidebar-link i { width: 20px; color: #9ed5ac; text-align: center; }
+.sidebar-link:hover, .sidebar-link.ativo { color: #fff; background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.12); transform: translateX(2px); }
+.sidebar-link.ativo { box-shadow: inset 3px 0 #d8efb2; }
+.sidebar-overlay { display: none; }
+
+body.perfil-pecuarista .site-header { min-height: 78px; }
+body.perfil-pecuarista .menu-principal { display: none; }
+body.perfil-pecuarista .header-container { width: min(100% - 32px, 1240px); }
+body.perfil-pecuarista .menu-toggle { display: none; }
+body.perfil-veterinario .menu-principal { display: none; }
+body.perfil-veterinario .header-container { width: min(100% - 32px, 1240px); }
+body.perfil-veterinario .menu-toggle { display: none; }
+
+@media (max-width: 720px) {
+    body.perfil-pecuarista, body.perfil-veterinario { padding-left: 0; }
+    .sidebar-pecuarista, .sidebar-veterinario { width: min(86vw, 300px); transform: translateX(-105%); transition: transform .25s ease; }
+    body.sidebar-aberto .sidebar-pecuarista, body.sidebar-aberto .sidebar-veterinario { transform: translateX(0); }
+    .sidebar-close { position: absolute; top: 2px; right: 0; width: 34px; height: 34px; display: grid; place-items: center; color: #fff; background: transparent; border: 0; border-radius: 7px; cursor: pointer; }
+    .sidebar-close:hover { background: rgba(255,255,255,.12); }
+    .sidebar-overlay { position: fixed; inset: 0; z-index: 1250; background: rgba(4, 20, 12, .52); }
+    body.sidebar-aberto .sidebar-overlay { display: block; }
+    body.perfil-pecuarista .menu-toggle, body.perfil-veterinario .menu-toggle { display: inline-flex; }
+}
+
+html[data-theme="dark"] .sidebar-pecuarista { background: #0b2a1b; }
+html[data-theme="dark"] .sidebar-veterinario { background: #081e1a; }

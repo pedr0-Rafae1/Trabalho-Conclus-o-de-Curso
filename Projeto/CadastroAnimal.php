@@ -17,7 +17,7 @@ $hoje = date('Y-m-d');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Animal - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Formularios.css?v=1.5">
+    <link rel="stylesheet" href="../CSS/Formularios.css?v=2.0">
 </head>
 <body>
 
@@ -52,5 +52,6 @@ $hoje = date('Y-m-d');
     </div>
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

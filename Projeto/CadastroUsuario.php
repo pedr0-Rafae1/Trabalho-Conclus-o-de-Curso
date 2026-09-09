@@ -13,7 +13,8 @@ $hoje = date('Y-m-d');
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../CSS/Cadastro.css?v=2.3">
+  <link rel="stylesheet" href="../CSS/Variaveis.css?v=1.3">
+  <link rel="stylesheet" href="../CSS/Cadastro.css?v=2.0">
 </head>
 <body>
 
@@ -64,7 +65,7 @@ $hoje = date('Y-m-d');
               <span><i class="fas fa-stethoscope"></i> Veterinário</span>
             </label>
           </div>
-          <small class="aviso-homologacao">Cadastros de Veterinário passam por homologação antes de poder responder dúvidas.</small>
+          <small class="aviso-homologacao">Veterinários têm acesso imediato às ferramentas profissionais após o cadastro.</small>
 
           <button type="submit">Cadastrar</button>
 
@@ -87,6 +88,6 @@ $hoje = date('Y-m-d');
       toggleSenha.classList.toggle('fa-eye-slash');
     });
   </script>
-
+  
 </body>
 </html>

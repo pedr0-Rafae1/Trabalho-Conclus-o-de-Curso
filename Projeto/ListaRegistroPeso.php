@@ -1,5 +1,11 @@
 <?php
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 require_once  __DIR__ .  '/../app/Dao/RegistroPesoDao.php'; 
 require_once  __DIR__ .  '/../app/Model/RegistroPeso.php';
 require_once  __DIR__ .  '/../app/Conexao/ConexaoBD.php';
@@ -26,11 +32,11 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
     <title>RPP - Lista de Animais</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/Lista.css">
+    <link rel="stylesheet" href="../CSS/Lista.css?v=2.0">
 </head>
-<body class="bg-light">
+<body class="lista-pagina">
 
-<main class="container-fluid px-md-5 my-5">
+<main class="lista-conteudo">
     <?php if(isset($_GET['msg']) && $_GET['msg'] == 'excluido'): ?>
         <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
             <i class="fas fa-check-circle me-2"></i> Registro da pesagem removido com sucesso!
@@ -38,18 +44,18 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
         </div>
     <?php endif; ?>
 
-    <div class="card shadow-sm border-0 rounded-3">
-        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
+    <div class="card lista-card">
+        <div class="card-header lista-cabecalho">
             <h4 class="mb-0"><i class="fas fa-cow me-2"></i> Pesagem</h4>
             <a href="ControlePeso.php" class="btn btn-light btn-sm fw-bold">
                 <i class="fas fa-plus me-1"></i> Novo Registro de peso
             </a>
         </div>
         
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+        <div class="card-body lista-corpo">
+            <div class="table-responsive lista-tabela-wrap">
+                <table class="table table-hover align-middle lista-tabela">
+                    <thead>
                         <tr>
                             <th class="ps-4">Identificador do peso</th>
                             <th>O animal escolhido</th>
@@ -63,12 +69,12 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
                         <?php if(count($registropeso) > 0): ?>
                             <?php foreach($registropeso as $rp): ?>
                                 <tr>
-                                    <td >#<?= $rp->id_peso?></td>
+                                    <td>#<?= $rp->id_peso?></td>
                                     <td><span><?= $rp->id_animal?></span></td>
                                     <td><?= $rp->peso_anterior?> </td>
                                     <td><span><?= $rp->peso_atual ?></span></td>
                                     <td><span><?= $rp->data_pessagem ?></span></td>
-                                    <td class="text-center pe-4">
+                                    <td class="lista-acoes pe-4">
                                         <div class="btn-group shadow-sm">
                                             <a href="EditarRegistroPeso.php?id=<?= $rp->id_peso ?>" class="btn btn-outline-warning btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
@@ -85,7 +91,7 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" class="text-center py-5">
+                                <td colspan="6" class="lista-vazia text-center">
                                     <i class="fas fa-search text-muted fa-3x mb-3"></i>
                                     <p class="text-muted">Nenhum Registro de Peso encontrado no sistema</p>
                                 </td>
@@ -98,5 +104,6 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
     </div>
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

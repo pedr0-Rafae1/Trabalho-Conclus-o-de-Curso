@@ -59,5 +59,6 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="home.php" class="btn-home"><i class="fas fa-home me-2"></i> Voltar à Página Inicial</a>
     </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

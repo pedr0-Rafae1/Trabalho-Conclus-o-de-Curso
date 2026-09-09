@@ -53,7 +53,7 @@ if (!empty($animal['data_nascimento'])) {
 
 <head>
     <title>Ficha Individual - Brinco <?= htmlspecialchars($animal['brinco']) ?></title>
-    <link rel="stylesheet" href="../CSS/FichaAnimal.css">
+    <link rel="stylesheet" href="../CSS/FichaAnimal.css?v=2.0">
 </head>
 
 <main class="container-ficha">
@@ -196,5 +196,6 @@ if (!empty($animal['data_nascimento'])) {
     </div>
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

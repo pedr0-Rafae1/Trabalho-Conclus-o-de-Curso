@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Controle de Peso</title>
-  <link rel="stylesheet" href="../CSS/Formularios.css?v=1.4">
+  <link rel="stylesheet" href="../CSS/Formularios.css?v=2.0">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -89,5 +89,6 @@ document.getElementById('id_animal').addEventListener('change', function() {
 
 <script src="../Javascript/Offline.js"></script>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../CSS/Login.css?v = 1.2">
+  <link rel="stylesheet" href="../CSS/Variaveis.css?v=1.3">
+  <link rel="stylesheet" href="../CSS/Login.css?v=2.0">
 </head>
 <body>
 
@@ -25,7 +26,9 @@
         <h2>Bem-vindo de volta</h2>
         <p class="subtitulo">Entre com sua conta para continuar</p>
 
-        <?php if (isset($_GET['erro'])): ?>
+        <?php if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
+          <div class="auth-alert auth-alert-success">Cadastro realizado. Entre com seus dados para continuar.</div>
+        <?php elseif (isset($_GET['erro'])): ?>
           <div class="auth-alert">
             <?php
               $mensagens = [
@@ -70,6 +73,6 @@
       toggleSenha.classList.toggle('fa-eye-slash');
     });
   </script>
-
+  
 </body>
 </html>

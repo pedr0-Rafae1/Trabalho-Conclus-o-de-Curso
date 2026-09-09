@@ -1,5 +1,11 @@
 <?php
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 require_once __DIR__ . '/../app/Model/Animal.php';
@@ -33,16 +39,16 @@ include_once 'Cabecalho.php';
 
 <head>
     <title>Evolução de Peso - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Lista.css">
+    <link rel="stylesheet" href="../CSS/Lista.css?v=2.0">
 </head>
 
-<main class="container-fluid px-md-5 my-5">
+<main class="lista-conteudo">
 
-    <div class="card shadow-sm border-0 rounded-3 mb-4">
-        <div class="card-header bg-success text-white py-3">
+    <div class="card lista-painel mb-4">
+        <div class="card-header lista-painel-header">
             <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i> Evolução de Peso</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body lista-painel-body">
             <form method="GET" action="EvolucaoPeso.php" class="row g-2 align-items-end">
                 <div class="col-md-8">
                     <label for="id_animal" class="form-label fw-bold">Selecione o animal:</label>
@@ -80,23 +86,23 @@ include_once 'Cabecalho.php';
 
     <?php elseif ($id_animal_selecionado && $temDadosSuficientes): ?>
 
-        <div class="card shadow-sm border-0 rounded-3 mb-4">
-            <div class="card-header bg-white py-3">
+        <div class="card lista-painel mb-4">
+            <div class="card-header lista-painel-header claro">
                 <h5 class="mb-0">Curva de Ganho de Peso — Brinco <?= htmlspecialchars($animalSelecionado->brinco) ?></h5>
             </div>
-            <div class="card-body">
+            <div class="card-body lista-painel-body">
                 <canvas id="graficoPeso" height="90"></canvas>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header bg-white py-3">
+        <div class="card lista-painel">
+            <div class="card-header lista-painel-header claro">
                 <h5 class="mb-0">Histórico de Pesagens</h5>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <div class="card-body lista-painel-body sem-padding">
+                <div class="table-responsive lista-tabela-wrap">
+                    <table class="table table-hover align-middle lista-tabela">
+                        <thead>
                             <tr>
                                 <th class="ps-4">Data</th>
                                 <th>Peso Anterior (kg)</th>
@@ -154,5 +160,6 @@ include_once 'Cabecalho.php';
 
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

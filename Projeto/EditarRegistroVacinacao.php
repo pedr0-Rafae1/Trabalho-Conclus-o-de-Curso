@@ -1,13 +1,19 @@
 <?php
 
 include 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 require_once __DIR__ .  '/../app/Dao/RegistroVacinacaoDao.php';
 require_once __DIR__ .  '/../app/Model/RegistroVacinacao.php';
 require_once __DIR__ .  '/../app/Conexao/ConexaoBD.php';
 
 $id_vacinacao = $_GET['id']; 
 $dao = new RegistroVacinacaoDao();
-$registrovacinacao = $dao->BuscarPorId($id_vacinacao);
+$registrovacinacao = $dao->BuscarPorId($id_vacinacao, $_SESSION['id_usuario']);
 $hoje = date('Y-m-d');
 include 'Cabecalho.php';
 
@@ -30,7 +36,7 @@ if (!$registrovacinacao) {
     <div class="card card-formulario shadow-sm">
         <h2><i class="fas fa-plus-circle me-2"></i> Cadastro de Animal</h2>
         <form action="ProcessarAtualizarRegistroVacinacao.php" method="POST">
-            <input type="hidden" name="id_vacina" value="<?= $registrovacinacao->id_vacina ?>">
+            <input type="hidden" name="id_vacinacao" value="<?= $registrovacinacao->id_vacinacao ?>">
 
             <label >Id do animal:</label>
             <input type="text" name="id_animal" class="form-control" value="<?= $registrovacinacao->id_animal ?>" required>
@@ -53,6 +59,7 @@ if (!$registrovacinacao) {
     </div>
 </main>
     
+<?php include 'Rodape.php'; ?>
 </body>
 </html>
 

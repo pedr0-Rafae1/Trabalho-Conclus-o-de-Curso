@@ -1,62 +1,47 @@
+.pagina-lista { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-pagina) !important; }
+.pagina-lista .site-header { flex: 0 0 auto; }
+.pagina-lista .lista-conteudo { flex: 1 0 auto; }
+.pagina-lista .site-footer { width: 100%; flex: 0 0 auto; margin-top: auto; }
+.lista-conteudo { width: min(100% - 32px, 1320px); margin: 0 auto; padding: 34px 0 56px; }
+.lista-card { overflow: hidden; background: var(--bg-card) !important; border: 1px solid var(--borda) !important; border-radius: 14px !important; box-shadow: var(--sombra-suave) !important; }
+.lista-cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; color: #fff !important; background: linear-gradient(135deg, var(--verde-escuro), var(--verde-primario)) !important; }
+.lista-cabecalho h1, .lista-cabecalho h2, .lista-cabecalho h3, .lista-cabecalho h4 { margin: 0; color: #fff !important; font-size: 1.08rem; }
+.lista-cabecalho .btn-light { color: var(--verde-escuro) !important; background: #fff !important; border-color: #fff !important; }
+.lista-corpo { padding: 0 !important; background: var(--bg-card) !important; }
+.lista-tabela { width: 100%; margin: 0 !important; color: var(--texto-principal) !important; border-collapse: collapse; --bs-table-bg: transparent; --bs-table-color: var(--texto-principal); --bs-table-border-color: var(--borda); }
+.lista-tabela thead, .lista-tabela thead.table-light { color: var(--verde-escuro) !important; background: var(--bg-superficie) !important; }
+.lista-tabela th { padding: 14px 16px !important; color: var(--verde-escuro) !important; background: var(--bg-superficie) !important; border-bottom: 2px solid var(--verde-borda) !important; font-size: .73rem; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.lista-tabela td { padding: 15px 16px !important; color: var(--texto-principal) !important; background: transparent !important; border-bottom: 1px solid var(--borda) !important; vertical-align: middle; }
+.lista-tabela tbody tr { background: transparent !important; transition: background .2s ease; }
+.lista-tabela.table-hover > tbody > tr:hover > * { color: var(--texto-principal) !important; background: var(--verde-suave) !important; box-shadow: none; }
+.lista-tabela tbody tr:last-child td { border-bottom: 0 !important; }
+.lista-tabela a { font-weight: 600; }
+.lista-acoes { white-space: nowrap; text-align: center; }
+.lista-acoes .btn-group { box-shadow: none !important; }
+.lista-acoes .btn { min-width: 34px; border-radius: 7px !important; }
+.lista-vazia { padding: 54px 20px !important; color: var(--texto-secundario) !important; background: var(--bg-card) !important; }
+.lista-painel { overflow: hidden; background: var(--bg-card) !important; border: 1px solid var(--borda) !important; border-radius: 14px !important; box-shadow: var(--sombra-suave) !important; }
+.lista-painel-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 17px 20px; color: #fff !important; background: linear-gradient(135deg, var(--verde-escuro), var(--verde-primario)) !important; }
+.lista-painel-header h4, .lista-painel-header h5 { margin: 0; color: #fff !important; font-size: 1rem; }
+.lista-painel-header.claro { color: var(--texto-principal) !important; background: var(--bg-superficie) !important; border-bottom: 1px solid var(--borda); }
+.lista-painel-header.claro h5 { color: var(--verde-escuro) !important; }
+.lista-painel-body { padding: 20px; background: var(--bg-card) !important; }
+.lista-painel-body.sem-padding { padding: 0 !important; }
+.lista-registro { padding: 14px; margin-bottom: 12px; color: var(--texto-principal); background: var(--bg-superficie); border: 1px solid var(--borda); border-radius: 9px; }
+.lista-registro p { color: var(--texto-principal); }
+.lista-vazia i { color: var(--verde-primario) !important; opacity: .7; }
+.id-referencia { color: var(--texto-secundario); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 700; }
+.tabela-responsiva-custom, .lista-tabela-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-.container-listagem {
-    width: 95%;
-    max-width: 1300px; 
-    margin: 40px auto;
-}
+body[data-theme="dark"] .lista-tabela,
+body[data-theme="dark"] .lista-tabela > :not(caption) > * > * { color: var(--texto-principal) !important; background-color: transparent !important; border-color: var(--borda) !important; }
+body[data-theme="dark"] .lista-tabela thead,
+body[data-theme="dark"] .lista-tabela th { color: var(--texto-principal) !important; background: var(--bg-superficie) !important; }
+body[data-theme="dark"] .lista-tabela.table-hover > tbody > tr:hover > * { background: var(--verde-suave) !important; }
+body[data-theme="dark"] .lista-painel-header.claro { color: var(--texto-principal) !important; background: var(--bg-superficie) !important; }
 
-.card-listagem {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    border: none;
-    overflow: hidden; 
-}
-
-.listagem-header {
-    background-color: #2e7d32;
-    color: white;
-    padding: 20px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.table-pecuaria {
-    margin-bottom: 0;
-}
-
-.table-pecuaria thead {
-    background-color: #f8fdf9;
-}
-
-.table-pecuaria th {
-    color: #1b5e20;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-    padding: 15px;
-    border-bottom: 2px solid #e8f5e9;
-}
-
-.table-pecuaria td {
-    padding: 15px;
-    vertical-align: middle;
-    color: #444;
-}
-
-.table-pecuaria tbody tr:hover {
-    background-color: #f1f8f1;
-    transition: 0.2s;
-}
-
-.id-referencia {
-    font-family: monospace;
-    color: #666;
-    font-weight: bold;
-}
-
-.tabela-responsiva-custom {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+@media (max-width: 700px) {
+    .lista-conteudo { width: min(100% - 20px, 1320px); padding-top: 20px; }
+    .lista-cabecalho { align-items: flex-start; flex-direction: column; padding: 18px; }
+    .lista-tabela th, .lista-tabela td { padding: 12px 10px !important; font-size: .84rem; white-space: nowrap; }
 }

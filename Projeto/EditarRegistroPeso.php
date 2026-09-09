@@ -1,6 +1,12 @@
 <?php
 
 include 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
 include 'Cabecalho.php';
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 require_once __DIR__ . '/../app/Model/RegistroPeso.php';
@@ -8,7 +14,7 @@ require_once __DIR__ . '/../app/Conexao/ConexaoBD.php';
 
 $id_peso = $_GET['id']; 
 $dao = new RegistroPesoDao();
-$registropeso = $dao->BuscarPorId($id_peso);
+$registropeso = $dao->BuscarPorId($id_peso, $_SESSION['id_usuario']);
 $hoje = date('Y-m-d');
 
 if (!$registropeso) {
@@ -50,5 +56,6 @@ if (!$registropeso) {
     </div>
 </main>
     
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

@@ -1,10 +1,5 @@
 <?php
 include_once 'Sessao.php';
-
-if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
-    header("Location: home.php?erro=area_veterinario");
-    exit();
-}
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario';
@@ -19,7 +14,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Registrar Atendimento - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Formularios.css?v=1.4">
+    <link rel="stylesheet" href="../CSS/Formularios.css?v=2.0">
 </head>
 
 <main class="container mt-5">
@@ -69,5 +64,6 @@ include 'Cabecalho.php';
     </div>
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

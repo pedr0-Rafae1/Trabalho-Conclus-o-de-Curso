@@ -9,12 +9,20 @@ class UsuarioDao {
     }
 
     public function Cadastrar(Usuario $usuario) {
-        $sql = "INSERT INTO usuario (nome, idade, email, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario (nome, idade, email, senha, tipo_usuario, homologado) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         
         $senhaHash = password_hash($usuario->senha, PASSWORD_DEFAULT);
+        $homologado = $usuario->tipo_usuario === 'Veterinario' ? 1 : 0;
         
-        $stmt->bind_param("sisss", $usuario->nome, $usuario->idade, $usuario->email, $senhaHash, $usuario->tipo_usuario);
+        $stmt->bind_param("sisssi", $usuario->nome, $usuario->idade, $usuario->email, $senhaHash, $usuario->tipo_usuario, $homologado);
+        return $stmt->execute();
+    }
+
+    public function HomologarVeterinario($id_usuario) {
+        $sql = "UPDATE usuario SET homologado = 1 WHERE id_usuario = ? AND tipo_usuario = 'Veterinario'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
         return $stmt->execute();
     }
 
@@ -33,19 +41,50 @@ class UsuarioDao {
             }
         }
 
-        $this->db->query("DELETE FROM registro_peso WHERE id_animal IN (SELECT id_animal FROM animal WHERE id_usuario = $id_usuario)");
-        $this->db->query("DELETE FROM registro_vacinacao WHERE id_animal IN (SELECT id_animal FROM animal WHERE id_usuario = $id_usuario)");
-        $this->db->query("DELETE FROM historico_venda WHERE id_animal IN (SELECT id_animal FROM animal WHERE id_usuario = $id_usuario)");
-        $this->db->query("DELETE FROM animal WHERE id_usuario = $id_usuario");
-        $this->db->query("DELETE FROM atendimento WHERE id_veterinario = $id_usuario");
+        $this->db->begin_transaction();
+
+        $stmt = $this->db->prepare(
+            "DELETE FROM atendimento WHERE id_veterinario = ? OR id_animal IN
+             (SELECT id_animal FROM animal WHERE id_usuario = ?)"
+        );
+        $stmt->bind_param("ii", $id_usuario, $id_usuario);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $this->db->prepare(
+            "DELETE FROM duvida WHERE id_usuario = ? OR id_veterinario = ?"
+        );
+        $stmt->bind_param("ii", $id_usuario, $id_usuario);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $this->db->prepare("DELETE FROM notificacao WHERE id_usuario = ?");
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $this->db->prepare("DELETE FROM animal WHERE id_usuario = ?");
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $stmt->close();
 
         $sql = "DELETE FROM usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {
+            $this->db->rollback();
             return false;
         }
         $stmt->bind_param("i", $id_usuario); 
-        return $stmt->execute();
+        $ok = $stmt->execute();
+        $stmt->close();
+
+        if ($ok) {
+            $this->db->commit();
+            return true;
+        }
+
+        $this->db->rollback();
+        return false;
     }
 
     public function Atualizar(Usuario $usuario) {

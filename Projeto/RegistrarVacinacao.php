@@ -23,7 +23,7 @@ include 'Cabecalho.php';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Vacinação Pecuária em Rede</title>
-  <link rel="stylesheet" href="../CSS/Formularios.css?v = 1.3" />
+  <link rel="stylesheet" href="../CSS/Formularios.css?v=2.0" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -62,5 +62,6 @@ include 'Cabecalho.php';
 
 <script src="../Javascript/Offline.js"></script>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

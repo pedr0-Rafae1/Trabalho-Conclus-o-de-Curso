@@ -16,7 +16,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Registrar Venda - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Formularios.css?v=1.4">
+    <link rel="stylesheet" href="../CSS/Formularios.css?v=2.0">
 </head>
 
 <main class="container mt-5">
@@ -53,5 +53,6 @@ include 'Cabecalho.php';
     </div>
 </main>
 
+<?php include 'Rodape.php'; ?>
 </body>
 </html>

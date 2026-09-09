@@ -1,14 +1,15 @@
 <?php
 include_once 'Sessao.php';
-require_once __DIR__ . '/../app/Dao/AnimalDao.php';
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header("Location: home.php?erro=area_pecuarista");
+    exit();
+}
+
+ require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 require_once __DIR__ . '/../app/Model/Animal.php';
 
 $hoje = date('Y-m-d');
-
-if ($data_nascimento > $hoje) {
-    echo "Não pode cadastrar uma data futura";
-    exit();
-}
 
 $id      = $_POST['id_animal']; 
 $brinco  = $_POST['brinco'];
@@ -18,6 +19,11 @@ $raca    = $_POST['raca'];
 $data    = $_POST['data_nascimento'];
 $peso    = $_POST['peso'];
 $altura  = $_POST['altura'];
+
+if ($data > $hoje) {
+    echo "Não pode cadastrar uma data futura";
+    exit();
+}
 
 $animal = new Animal($brinco, $idade, $especie, $raca, $data, $peso, $altura);
 $animal->id_animal = $id; 

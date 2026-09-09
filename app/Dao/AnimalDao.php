@@ -32,17 +32,17 @@ class AnimalDAO {
         return $lista;
     }
 
-    public function Remover($id_animal) {
-        $sql = "DELETE FROM animal WHERE id_animal = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $id_animal); 
+    public function Remover($id_animal, $id_usuario) {
+        $sql = "DELETE FROM animal WHERE id_animal = ? AND id_usuario = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("ii", $id_animal, $id_usuario); 
         return $stmt->execute();
     }
 
-    public function Atualizar(Animal $animal) {
-        $sql = "UPDATE animal SET brinco=?, idade=?, especie=?, raca=?, data_nascimento=?, peso=?, altura=? WHERE id_animal=?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("sisssddi", $animal->brinco, $animal->idade, $animal->especie, $animal->raca, $animal->data_nascimento, $animal->peso, $animal->altura, $animal->id_animal);
+    public function Atualizar(Animal $animal, $id_usuario) {
+        $sql = "UPDATE animal SET brinco=?, idade=?, especie=?, raca=?, data_nascimento=?, peso=?, altura=? WHERE id_animal=? AND id_usuario=?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("sisssddii", $animal->brinco, $animal->idade, $animal->especie, $animal->raca, $animal->data_nascimento, $animal->peso, $animal->altura, $animal->id_animal, $id_usuario);
         return $stmt->execute();
     }
 
