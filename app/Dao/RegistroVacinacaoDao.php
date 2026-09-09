@@ -8,7 +8,7 @@ class RegistroVacinacaoDAO {
         $this->db = ConexaoBD::getConnection(); 
     }
 
-    public function Cadastrar( RegistroVacinacao $registrovacinacao) {
+    public function Cadastrar(RegistroVacinacao $registrovacinacao) {
 
         $sql = "INSERT INTO registrovacinacao (id_animal, nome_vacina, data_aplicacao, aplicador, dose) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
@@ -16,7 +16,11 @@ class RegistroVacinacaoDAO {
         $data = date('Y-m-d', strtotime($registrovacinacao->data_aplicacao));
 
         $stmt->bind_param("issss", $registrovacinacao->id_animal, $registrovacinacao->nome_vacina, $data, $registrovacinacao->aplicador, $registrovacinacao->dose);
-        return $stmt->execute();
+        if (!$stmt->execute()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function ListarPorUsuario($id_logado) {

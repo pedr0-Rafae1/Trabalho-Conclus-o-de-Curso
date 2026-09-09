@@ -2,7 +2,7 @@
 include_once 'Sessao.php';
 
 if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
-    header("Location: home.php?erro=area_pecuarista");
+    header("Location: Pecuarista.php?erro=area_pecuarista");
     exit();
 }
 
@@ -46,7 +46,8 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
 
     <div class="card lista-card">
         <div class="card-header lista-cabecalho">
-            <h4 class="mb-0"><i class="fas fa-cow me-2"></i> Vacinação</h4>
+            <h4><i class="fas fa-cow me-2"></i> Vacinação</h4>
+            <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaVacina" type="search" placeholder="Buscar por vacina ou animal" aria-label="Buscar vacinação"></div>
             <a href="RegistrarVacinacao.php" class="btn btn-light btn-sm fw-bold">
                 <i class="fas fa-plus me-1"></i> Novo Registro de Vacinacao
             </a>
@@ -94,8 +95,9 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
                         <?php else: ?>
                             <tr>
                                 <td colspan="7" class="lista-vazia text-center">
-                                    <i class="fas fa-search text-muted fa-3x mb-3"></i>
-                                    <p class="text-muted">Nenhum Registro de Vacinação encontrado no sistema</p>
+                                    <i class="fas fa-syringe fa-3x mb-3"></i>
+                                    <p>Nenhuma vacinação registrada ainda.</p>
+                                    <a href="RegistrarVacinacao.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Registrar primeira vacina</a>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -107,5 +109,11 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
 </main>
 
 <?php include 'Rodape.php'; ?>
+<script>
+    document.getElementById('buscaVacina')?.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim();
+        document.querySelectorAll('.lista-tabela tbody tr').forEach(linha => { linha.style.display = linha.textContent.toLowerCase().includes(termo) ? '' : 'none'; });
+    });
+</script>
 </body>
 </html>

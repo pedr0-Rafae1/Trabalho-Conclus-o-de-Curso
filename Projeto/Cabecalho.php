@@ -1,4 +1,12 @@
 <?php
+$notificacoes = [];
+$totalNotificacoes = 0;
+if (isset($_SESSION['id_usuario'])) {
+    require_once __DIR__ . '/../app/Dao/NotificacaoDao.php';
+    $notificacaoDao = new NotificacaoDao();
+    $notificacoes = $notificacaoDao->ListarRecentes($_SESSION['id_usuario']);
+    $totalNotificacoes = $notificacaoDao->ContarNaoLidas($_SESSION['id_usuario']);
+}
 $paginaAtual = basename($_SERVER['PHP_SELF']);
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario';
 $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $paginaAtual) === 1;
@@ -285,6 +293,23 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
                 <i class="fas fa-moon" aria-hidden="true"></i>
             </button>
             <?php if(isset($_SESSION['usuario_nome'])): ?>
+                <div class="notificacao-area">
+                    <button class="notificacao-botao" type="button" id="notificationButton" aria-label="Notificações" aria-expanded="false">
+                        <i class="fas fa-bell" aria-hidden="true"></i>
+                        <?php if ($totalNotificacoes > 0): ?><span class="notificacao-contador"><?= $totalNotificacoes > 9 ? '9+' : $totalNotificacoes ?></span><?php endif; ?>
+                    </button>
+                    <div class="notificacao-menu" id="notificationMenu">
+                        <div class="notificacao-cabecalho"><strong>Agenda de reforços</strong><button type="button" id="markNotificationsRead">Marcar lidas</button></div>
+                        <?php if (empty($notificacoes)): ?>
+                            <p class="notificacao-vazia">Nenhuma notificação por enquanto.</p>
+                        <?php else: foreach ($notificacoes as $notificacao): ?>
+                            <div class="notificacao-item <?= (int) $notificacao['lida'] === 0 ? 'nao-lida' : '' ?>">
+                                <i class="fas fa-syringe" aria-hidden="true"></i>
+                                <div><strong><?= htmlspecialchars($notificacao['titulo']) ?></strong><span><?= htmlspecialchars($notificacao['mensagem']) ?></span><small><?= date('d/m/Y H:i', strtotime($notificacao['criado_em'])) ?></small></div>
+                            </div>
+                        <?php endforeach; endif; ?>
+                    </div>
+                </div>
                 <div class="dropdown" style="position: relative;">
                     <button class="btn-usuario" type="button" id="userMenuBtn" aria-expanded="false">
                         
@@ -310,68 +335,16 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
         </div>
     </div>
 
-    <nav class="menu-principal" aria-label="Navegação principal">
-        <ul class="nav-links" id="navLinks">
-            <?php $painelUsuario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php'; ?>
-            <?php if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario'): ?>
-                <li><a href="CanalDuvidas.php" <?= $paginaAtual === 'CanalDuvidas.php' ? 'aria-current="page"' : '' ?>><i class="fas fa-comment-medical me-1"></i> Canal de dúvidas</a></li>
-            <?php else: ?>
-                <li><a href="Pecuarista.php" aria-current="page"><i class="fas fa-chart-pie me-1"></i> Meu painel</a></li>
-            <?php endif; ?>
-
-            <?php if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario'): ?>
-
-                <!-- ===== Menu exclusivo do Veterinário ===== -->
-                <li><a href="Veterinario.php" <?= $paginaAtual === 'Veterinario.php' ? 'aria-current="page"' : '' ?>><i class="fas fa-chart-line me-1"></i> Painel profissional</a></li>
-                <li><a href="RegistrarAtendimento.php"><i class="fas fa-stethoscope me-1"></i> Registrar Atendimento</a></li>
-                <li><a href="HistoricoAtendimento.php"><i class="fas fa-notes-medical me-1"></i> Meus Atendimentos</a></li>
-
-            <?php else: ?>
-
-                <!-- ===== Menu do Pecuarista ===== -->
-                <li><a href="Pecuarista.php" <?= $paginaAtual === 'Pecuarista.php' ? 'aria-current="page"' : '' ?>><i class="fas fa-chart-pie me-1"></i> Meu painel</a></li>
-                <li class="dropdown-servicos">
-                    <a href="#" class="toggle-submenu" aria-haspopup="true" aria-expanded="false">Manejo <i class="fas fa-chevron-down ms-1" aria-hidden="true"></i></a>
-                    <ul class="submenu-branco">
-                        <li><a href="CadastroAnimal.php"><i class="fas fa-plus me-2"></i> Cadastrar Animal</a></li>
-                        <li><a href="RegistrarVacinacao.php"><i class="fas fa-syringe me-2"></i> Registrar Vacina</a></li>
-                        <li><a href="ControlePeso.php"><i class="fas fa-weight me-2"></i> Controle de Peso</a></li>
-                        <li><a href="RegistrarVenda.php"><i class="fas fa-hand-holding-usd me-2"></i> Registrar Venda</a></li>
-                    </ul>
-                </li>
-
-                <li class="dropdown-servicos">
-                    <a href="#" class="toggle-submenu" aria-haspopup="true" aria-expanded="false">Histórico <i class="fas fa-chevron-down ms-1" aria-hidden="true"></i></a>
-                    <ul class="submenu-branco">
-                        <li><a href="ListaAnimal.php"><i class="fas fa-list me-2"></i> Lista de Animais</a></li>
-                        <li><a href="ListaRegistroPeso.php"><i class="fas fa-chart-line me-2"></i> Histórico de Pesos</a></li>
-                        <li><a href="EvolucaoPeso.php"><i class="fas fa-chart-line me-2"></i>Evolução do Peso</a></li>
-                        <li><a href="ListaRegistroVacinacao.php"><i class="fas fa-notes-medical me-2"></i> Histórico de Vacinas</a></li>
-                        <li><a href="HistoricoVenda.php"><i class="fas fa-hand-holding-usd me-2"></i> Histórico de Vendas</a></li>
-                        <li><a href="HistoricoAtendimento.php"><i class="fas fa-stethoscope me-2"></i> Atendimentos</a></li>
-                    </ul>
-                </li>
-
-            <?php endif; ?>
-        </ul>
-    </nav>
 </header>
 
 <script>
     (function () {
         const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
         const sidebarClose = document.getElementById('sidebarClose');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
 
         menuToggle.addEventListener('click', function () {
-            if (document.body.classList.contains('perfil-pecuarista') || document.body.classList.contains('perfil-veterinario')) {
-                const aberto = document.body.classList.toggle('sidebar-aberto');
-                menuToggle.setAttribute('aria-expanded', aberto);
-                return;
-            }
-
-            const aberto = navLinks.classList.toggle('mostrar');
+            const aberto = document.body.classList.toggle('sidebar-aberto');
             menuToggle.setAttribute('aria-expanded', aberto);
         });
 
@@ -384,15 +357,6 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             }
         });
 
-        document.querySelectorAll('.toggle-submenu').forEach(function (link) {
-            link.addEventListener('click', function (event) {
-                if (window.innerWidth <= 768) {
-                    event.preventDefault();
-                    const aberto = this.parentElement.classList.toggle('aberto');
-                    this.setAttribute('aria-expanded', aberto);
-                }
-            });
-        });
     })();
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -443,6 +407,25 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             document.addEventListener('click', function() {
                 userMenu.style.display = 'none';
                 userBtn.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        const notificationButton = document.getElementById('notificationButton');
+        const notificationMenu = document.getElementById('notificationMenu');
+        const markNotificationsRead = document.getElementById('markNotificationsRead');
+        if (notificationButton && notificationMenu) {
+            notificationButton.addEventListener('click', function (event) {
+                event.stopPropagation();
+                const aberto = notificationMenu.classList.toggle('aberto');
+                notificationButton.setAttribute('aria-expanded', aberto);
+            });
+            notificationMenu.addEventListener('click', event => event.stopPropagation());
+            markNotificationsRead?.addEventListener('click', function () {
+                window.location.href = 'MarcarNotificacoesLidas.php';
+            });
+            document.addEventListener('click', function () {
+                notificationMenu.classList.remove('aberto');
+                notificationButton.setAttribute('aria-expanded', 'false');
             });
         }
     });

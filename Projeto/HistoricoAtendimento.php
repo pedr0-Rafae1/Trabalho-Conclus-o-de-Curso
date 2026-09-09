@@ -21,6 +21,7 @@ include_once 'Cabecalho.php';
         <div class="card lista-painel mb-4">
             <div class="card-header lista-painel-header">
                 <h4 class="mb-0"><i class="fas fa-stethoscope me-2"></i> Meus Atendimentos</h4>
+                <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaAtendimento" type="search" placeholder="Buscar atendimento" aria-label="Buscar atendimento"></div>
                 <a href="RegistrarAtendimento.php" class="btn btn-light btn-sm"><i class="fas fa-plus me-1"></i> Registrar Atendimento</a>
             </div>
             <div class="card-body lista-painel-body sem-padding">
@@ -91,5 +92,11 @@ include_once 'Cabecalho.php';
 </main>
 
 <?php include 'Rodape.php'; ?>
+<script>
+    document.getElementById('buscaAtendimento')?.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim();
+        document.querySelectorAll('.lista-tabela tbody tr').forEach(linha => { linha.style.display = linha.textContent.toLowerCase().includes(termo) ? '' : 'none'; });
+    });
+</script>
 </body>
 </html>

@@ -13,7 +13,7 @@ class UsuarioDao {
         $stmt = $this->db->prepare($sql);
         
         $senhaHash = password_hash($usuario->senha, PASSWORD_DEFAULT);
-        $homologado = $usuario->tipo_usuario === 'Veterinario' ? 1 : 0;
+        $homologado = 0;
         
         $stmt->bind_param("sisssi", $usuario->nome, $usuario->idade, $usuario->email, $senhaHash, $usuario->tipo_usuario, $homologado);
         return $stmt->execute();

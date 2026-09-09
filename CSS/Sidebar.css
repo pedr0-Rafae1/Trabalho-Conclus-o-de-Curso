@@ -46,10 +46,8 @@ body.perfil-veterinario { padding-left: 272px; }
 .sidebar-overlay { display: none; }
 
 body.perfil-pecuarista .site-header { min-height: 78px; }
-body.perfil-pecuarista .menu-principal { display: none; }
 body.perfil-pecuarista .header-container { width: min(100% - 32px, 1240px); }
 body.perfil-pecuarista .menu-toggle { display: none; }
-body.perfil-veterinario .menu-principal { display: none; }
 body.perfil-veterinario .header-container { width: min(100% - 32px, 1240px); }
 body.perfil-veterinario .menu-toggle { display: none; }
 

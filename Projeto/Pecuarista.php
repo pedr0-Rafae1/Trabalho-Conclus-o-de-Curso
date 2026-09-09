@@ -18,6 +18,7 @@ $animais = $animalDao->ListarPorUsuario($idUsuario);
 $totalAnimais = count($animais);
 $totalPesagens = $pesoDao->contarPesagensPorUsuario($idUsuario);
 $totalVacinas = $vacinacaoDao->contarVacinasPorUsuario($idUsuario);
+$pesoMedioPorMes = $pesoDao->pesoMedioPorMes($idUsuario);
 
 include 'Cabecalho.php';
 ?>
@@ -25,6 +26,7 @@ include 'Cabecalho.php';
 <head>
     <title>Painel do Pecuarista - Pecuária em Rede</title>
     <link rel="stylesheet" href="../CSS/Pecuarista.css?v=2.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <main class="produtor-shell">
@@ -86,8 +88,33 @@ include 'Cabecalho.php';
             </div>
         </aside>
     </section>
+
+    <section class="produtor-panel produtor-grafico">
+        <header class="produtor-panel__header">
+            <h2><i class="fas fa-chart-line me-2"></i>Peso médio do rebanho</h2>
+            <span class="produtor-grafico-legenda">Últimos 12 meses</span>
+        </header>
+        <div class="produtor-panel__body">
+            <?php if (empty($pesoMedioPorMes)): ?>
+                <p class="produtor-empty">Registre pelo menos uma pesagem para visualizar a evolução média do rebanho.</p>
+            <?php else: ?>
+                <div class="produtor-grafico-area"><canvas id="pesoMedioRebanho"></canvas></div>
+            <?php endif; ?>
+        </div>
+    </section>
 </main>
 
 <?php include 'Rodape.php'; ?>
+<?php if (!empty($pesoMedioPorMes)): ?>
+<script>
+    const pesoMedioLabels = <?= json_encode(array_map(fn($item) => date('m/Y', strtotime($item['mes'] . '-01')), $pesoMedioPorMes)) ?>;
+    const pesoMedioDados = <?= json_encode(array_map(fn($item) => (float) $item['peso_medio'], $pesoMedioPorMes)) ?>;
+    new Chart(document.getElementById('pesoMedioRebanho'), {
+        type: 'line',
+        data: { labels: pesoMedioLabels, datasets: [{ label: 'Peso médio (kg)', data: pesoMedioDados, borderColor: '#247a48', backgroundColor: 'rgba(36,122,72,.14)', fill: true, tension: .3, pointRadius: 4 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
+    });
+</script>
+<?php endif; ?>
 </body>
 </html>

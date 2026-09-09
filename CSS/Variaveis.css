@@ -121,18 +121,6 @@ html[data-theme="dark"] body .auth-card {
     border-color: var(--borda) !important;
 }
 
-html[data-theme="dark"] body .table-pecuaria thead,
-html[data-theme="dark"] body .table-pecuaria tbody tr:hover {
-    color: var(--texto-principal);
-    background-color: var(--bg-superficie) !important;
-}
-
-html[data-theme="dark"] body .table-pecuaria td,
-html[data-theme="dark"] body .table-pecuaria th,
-html[data-theme="dark"] body .ficha-container p {
-    color: var(--texto-principal) !important;
-}
-
 html[data-theme="dark"] body .form-control,
 html[data-theme="dark"] body .form-select,
 html[data-theme="dark"] body input,
@@ -183,18 +171,10 @@ body[data-theme="dark"] .bg-white {
     background-color: var(--bg-superficie) !important;
 }
 
-body[data-theme="dark"] .submenu-branco,
-body[data-theme="dark"] #userDropdownMenu {
-    background-color: #243244 !important;
-    border-color: var(--borda);
-}
-
-body[data-theme="dark"] .submenu-branco li a,
 body[data-theme="dark"] #userDropdownMenu a {
     color: var(--texto-principal) !important;
 }
 
-body[data-theme="dark"] .submenu-branco li a:hover,
 body[data-theme="dark"] #userDropdownMenu a:hover {
     background-color: #315044 !important;
     color: #ffffff !important;

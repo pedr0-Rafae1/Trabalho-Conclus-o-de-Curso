@@ -2,7 +2,7 @@
 include_once 'Sessao.php';
 
 if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
-    header("Location: home.php?erro=area_pecuarista");
+    header("Location: Pecuarista.php?erro=area_pecuarista");
     exit();
 }
 
@@ -46,7 +46,8 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
 
     <div class="card lista-card">
         <div class="card-header lista-cabecalho">
-            <h4 class="mb-0"><i class="fas fa-cow me-2"></i> Pesagem</h4>
+            <h4><i class="fas fa-cow me-2"></i> Pesagem</h4>
+            <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaPeso" type="search" placeholder="Buscar por animal ou data" aria-label="Buscar pesagem"></div>
             <a href="ControlePeso.php" class="btn btn-light btn-sm fw-bold">
                 <i class="fas fa-plus me-1"></i> Novo Registro de peso
             </a>
@@ -92,8 +93,9 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
                         <?php else: ?>
                             <tr>
                                 <td colspan="6" class="lista-vazia text-center">
-                                    <i class="fas fa-search text-muted fa-3x mb-3"></i>
-                                    <p class="text-muted">Nenhum Registro de Peso encontrado no sistema</p>
+                                    <i class="fas fa-weight fa-3x mb-3"></i>
+                                    <p>Nenhuma pesagem registrada ainda.</p>
+                                    <a href="ControlePeso.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Registrar primeira pesagem</a>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -105,5 +107,11 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
 </main>
 
 <?php include 'Rodape.php'; ?>
+<script>
+    document.getElementById('buscaPeso')?.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim();
+        document.querySelectorAll('.lista-tabela tbody tr').forEach(linha => { linha.style.display = linha.textContent.toLowerCase().includes(termo) ? '' : 'none'; });
+    });
+</script>
 </body>
 </html>

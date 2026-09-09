@@ -48,6 +48,9 @@ body {
 .produtor-action { display: flex; align-items: center; gap: 12px; padding: 13px 14px; color: var(--texto-principal); background: var(--bg-superficie); border: 1px solid var(--borda); border-radius: 9px; font-weight: 700; text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
 .produtor-action i { width: 22px; color: var(--verde-primario); text-align: center; }
 .produtor-action:hover { color: var(--texto-principal); border-color: var(--verde-primario); transform: translateX(3px); }
+.produtor-grafico { margin-top: 20px; overflow: hidden; background: var(--bg-card); border: 1px solid var(--borda); border-radius: var(--raio); box-shadow: var(--sombra-suave); }
+.produtor-grafico-legenda { color: var(--texto-secundario); font-size: .75rem; }
+.produtor-grafico-area { height: 280px; }
 
 @media (max-width: 780px) { .produtor-hero { align-items: flex-start; flex-direction: column; } .produtor-hero__icon { display: none; } .produtor-metrics { grid-template-columns: 1fr; } .produtor-grid { grid-template-columns: 1fr; } .produtor-list { grid-template-columns: 1fr; } }
 html[data-theme="dark"] .produtor-hero { background: linear-gradient(135deg, #193522 0%, #174d31 100%); }

@@ -19,12 +19,8 @@ if ($usuario) {
         $_SESSION['id_usuario'] = $usuario['id_usuario'];
         $_SESSION['usuario_nome'] = $usuario['nome'];
         $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'] ?? 'Pecuarista';
-        $_SESSION['homologado'] = $_SESSION['tipo_usuario'] === 'Veterinario' ? 1 : 0;
+        $_SESSION['homologado'] = (int) ($usuario['homologado'] ?? 0);
         $_SESSION['foto_perfil'] = $usuario['foto_perfil'] ?? null;
-
-        if ($_SESSION['tipo_usuario'] === 'Veterinario' && (int) ($usuario['homologado'] ?? 0) !== 1) {
-            $usuarioDao->HomologarVeterinario($usuario['id_usuario']);
-        }
         
         $destino = $_SESSION['tipo_usuario'] === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php';
         header("Location: " . $destino);

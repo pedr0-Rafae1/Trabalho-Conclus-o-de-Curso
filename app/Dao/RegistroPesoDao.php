@@ -121,4 +121,21 @@ class RegistroPesoDao {
         
         return $row['total'] ?? 0;
     }
+
+    public function pesoMedioPorMes($id_usuario, $limite = 12) {
+        $limite = max(1, min(24, (int) $limite));
+        $sql = "SELECT DATE_FORMAT(p.data_pessagem, '%Y-%m') AS mes,
+                       ROUND(AVG(p.peso_atual), 2) AS peso_medio
+                FROM registropeso p
+                INNER JOIN animal a ON a.id_animal = p.id_animal
+                WHERE a.id_usuario = ?
+                GROUP BY DATE_FORMAT(p.data_pessagem, '%Y-%m')
+                ORDER BY mes DESC
+                LIMIT {$limite}";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $dados = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        return array_reverse($dados);
+    }
 }

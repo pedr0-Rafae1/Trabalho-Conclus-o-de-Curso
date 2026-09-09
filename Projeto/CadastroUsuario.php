@@ -65,7 +65,7 @@ $hoje = date('Y-m-d');
               <span><i class="fas fa-stethoscope"></i> Veterinário</span>
             </label>
           </div>
-          <small class="aviso-homologacao">Veterinários têm acesso imediato às ferramentas profissionais após o cadastro.</small>
+              <small class="aviso-homologacao">Veterinários aguardam homologação manual antes de acessar as ferramentas profissionais.</small>
 
           <button type="submit">Cadastrar</button>
 

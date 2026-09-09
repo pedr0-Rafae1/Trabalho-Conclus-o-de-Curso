@@ -2,7 +2,7 @@
 include_once 'Sessao.php';
 
 if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
-    header("Location: home.php?erro=area_pecuarista");
+    header("Location: Pecuarista.php?erro=area_pecuarista");
     exit();
 }
 

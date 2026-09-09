@@ -2,7 +2,7 @@
 include_once 'Sessao.php';
 
 if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
-    header("Location: home.php?erro=area_pecuarista");
+    header("Location: Pecuarista.php?erro=area_pecuarista");
     exit();
 }
 
@@ -46,10 +46,9 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
 
     <div class="card lista-card">
         <div class="card-header lista-cabecalho">
-            <h4 class="mb-0"><i class="fas fa-cow me-2"></i> Gestão de Rebanho</h4>
-            <a href="CadastroAnimal.php" class="btn btn-light btn-sm fw-bold">
-                <i class="fas fa-plus me-1"></i> Novo Animal
-            </a>
+            <h4><i class="fas fa-cow me-2"></i> Gestão de Rebanho</h4>
+            <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaAnimal" type="search" placeholder="Buscar por brinco ou raça" aria-label="Buscar animal"></div>
+            <a href="CadastroAnimal.php" class="btn btn-light btn-sm fw-bold"><i class="fas fa-plus me-1"></i> Novo Animal</a>
         </div>
         
         <div class="card-body lista-corpo">
@@ -99,6 +98,9 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
+                            <tr class="lista-sem-resultado">
+                                <td colspan="9" class="lista-vazia text-center">Nenhum animal corresponde à busca.</td>
+                            </tr>
                             <tr>
                                 <td colspan="9" class="lista-vazia text-center">
                                     <i class="fas fa-search text-muted fa-3x mb-3"></i>
@@ -115,5 +117,15 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <?php include 'Rodape.php'; ?>
+<script>
+    document.getElementById('buscaAnimal')?.addEventListener('input', function () {
+        const termo = this.value.toLowerCase().trim();
+        const linhas = [...document.querySelectorAll('.lista-tabela tbody tr:not(.lista-sem-resultado)')];
+        let visiveis = 0;
+        linhas.forEach(linha => { const mostrar = linha.textContent.toLowerCase().includes(termo); linha.style.display = mostrar ? '' : 'none'; if (mostrar) visiveis++; });
+        const vazio = document.querySelector('.lista-sem-resultado');
+        if (vazio) vazio.style.display = termo && visiveis === 0 ? 'table-row' : 'none';
+    });
+</script>
 </body>
 </html>

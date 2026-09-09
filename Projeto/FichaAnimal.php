@@ -71,6 +71,7 @@ if (!empty($animal['data_nascimento'])) {
         </div>
 
         <div class="ficha-acoes">
+            <a href="ExportarFichaAnimal.php?id=<?= $id_animal ?>" class="btn-acao btn-imprimir"><i class="fas fa-file-pdf me-1"></i> Exportar PDF</a>
             <?php if (!$ehVeterinario && (int) $animal['vendido'] === 0): ?>
                 <a href="ControlePeso.php" class="btn-acao">+ Novo Peso</a>
                 <a href="RegistrarVacinacao.php" class="btn-acao">+ Vacina</a>

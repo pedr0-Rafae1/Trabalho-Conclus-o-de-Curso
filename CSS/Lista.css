@@ -4,9 +4,13 @@
 .pagina-lista .site-footer { width: 100%; flex: 0 0 auto; margin-top: auto; }
 .lista-conteudo { width: min(100% - 32px, 1320px); margin: 0 auto; padding: 34px 0 56px; }
 .lista-card { overflow: hidden; background: var(--bg-card) !important; border: 1px solid var(--borda) !important; border-radius: 14px !important; box-shadow: var(--sombra-suave) !important; }
-.lista-cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; color: #fff !important; background: linear-gradient(135deg, var(--verde-escuro), var(--verde-primario)) !important; }
+.lista-cabecalho { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 16px; padding: 20px 24px; color: #fff !important; background: linear-gradient(135deg, var(--verde-escuro), var(--verde-primario)) !important; }
 .lista-cabecalho h1, .lista-cabecalho h2, .lista-cabecalho h3, .lista-cabecalho h4 { margin: 0; color: #fff !important; font-size: 1.08rem; }
 .lista-cabecalho .btn-light { color: var(--verde-escuro) !important; background: #fff !important; border-color: #fff !important; }
+.lista-busca { width: 100%; min-width: 0; padding: 9px 36px 9px 36px; color: var(--texto-principal); background: rgba(255,255,255,.95); border: 1px solid rgba(255,255,255,.5); border-radius: 8px; font-size: .8rem; }
+.lista-cabecalho-busca { position: relative; display: flex; flex: 1 1 240px; align-items: center; min-width: 220px; max-width: 360px; }
+.lista-cabecalho-busca > i { position: absolute; left: 12px; color: var(--verde-primario); }
+.lista-sem-resultado { display: none; }
 .lista-corpo { padding: 0 !important; background: var(--bg-card) !important; }
 .lista-tabela { width: 100%; margin: 0 !important; color: var(--texto-principal) !important; border-collapse: collapse; --bs-table-bg: transparent; --bs-table-color: var(--texto-principal); --bs-table-border-color: var(--borda); }
 .lista-tabela thead, .lista-tabela thead.table-light { color: var(--verde-escuro) !important; background: var(--bg-superficie) !important; }
@@ -43,5 +47,7 @@ body[data-theme="dark"] .lista-painel-header.claro { color: var(--texto-principa
 @media (max-width: 700px) {
     .lista-conteudo { width: min(100% - 20px, 1320px); padding-top: 20px; }
     .lista-cabecalho { align-items: flex-start; flex-direction: column; padding: 18px; }
+    .lista-cabecalho-busca { width: 100%; }
+    .lista-busca { width: 100%; }
     .lista-tabela th, .lista-tabela td { padding: 12px 10px !important; font-size: .84rem; white-space: nowrap; }
 }

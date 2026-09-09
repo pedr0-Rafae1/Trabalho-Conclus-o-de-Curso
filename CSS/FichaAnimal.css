@@ -8,6 +8,7 @@
 .btn-secundario { background: #3279a8; }
 .btn-voltar { background: #64736b; }
 .btn-acao:hover, .btn-voltar:hover { color: #fff; filter: brightness(.92); }
+.btn-imprimir { border: 0; cursor: pointer; font: inherit; }
 .badge-status { display: inline-block; padding: 5px 10px; color: #fff; border-radius: 999px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
 .status-ativo { background: #2d9b62; } .status-vendido { background: #c57a28; } .status-abatido { background: #c44747; }
 .grid-informacoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 22px; }
@@ -19,3 +20,11 @@
 .tabela-dados { width: 100%; border-collapse: collapse; } .tabela-dados th, .tabela-dados td { padding: 11px; border-bottom: 1px solid var(--borda); text-align: left; } .tabela-dados th { color: var(--verde-escuro); background: var(--bg-superficie); }
 .sem-registro { color: var(--texto-secundario); font-style: italic; } .destaque-venda { background: #fff8ed; border-left: 4px solid #c57a28; }
 @media (max-width: 760px) { .ficha-header { align-items: flex-start; flex-direction: column; } .grid-informacoes { grid-template-columns: 1fr; } }
+
+@media print {
+	body { background: #fff !important; }
+	.site-header, .site-footer, .ficha-acoes, .sidebar-pecuarista, .sidebar-veterinario { display: none !important; }
+	.container-ficha { width: 100%; max-width: none; margin: 0; padding: 0; }
+	.ficha-header, .card-info, .bloco-historico { box-shadow: none; break-inside: avoid; }
+	.ficha-header { border-color: #bbb; }
+}
