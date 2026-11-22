@@ -49,9 +49,15 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 18px;
-    color: inherit;
-    text-decoration: none;
     transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.branding-home:link,
+.branding-home:visited,
+.branding-home:hover,
+.branding-home:active {
+    color: #ffffff !important;
+    text-decoration: none !important;
 }
 
 .branding-home:hover {
@@ -63,9 +69,14 @@ body {
 
 .auth-branding h1 {
     margin: 0;
+    color: #ffffff;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     letter-spacing: -0.02em;
+}
+
+html[data-theme="dark"] .auth-branding h1 {
+    color: #ffffff !important;
 }
 
 .auth-branding .branding-frase {

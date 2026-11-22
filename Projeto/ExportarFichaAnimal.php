@@ -10,7 +10,7 @@ ob_start();
 
 include_once 'Sessao.php';
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/composer/autoload_files.php';
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 require_once __DIR__ . '/../app/Dao/RegistroVacinacaoDao.php';

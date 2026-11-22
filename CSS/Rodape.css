@@ -1,8 +1,22 @@
 .site-footer {
+    --footer-background: var(--verde-escuro, #164c34);
+    --footer-text: #cfe6d3;
+    --footer-muted: #c1dec7;
+    --footer-link: #e1f0e4;
+    --footer-accent: #a5d6a7;
     width: 100%;
+    flex: 0 0 auto;
     margin-top: auto;
-    color: #cfe6d3;
-    background: var(--verde-escuro, #164c34);
+    color: var(--footer-text);
+    background: var(--footer-background);
+}
+
+html[data-theme="dark"] .site-footer {
+    --footer-background: #0b2a1b;
+    --footer-text: #d3e6d8;
+    --footer-muted: #b7d0bd;
+    --footer-link: #e1f0e4;
+    --footer-accent: #a5d6a7;
 }
 
 .site-footer__grid {
@@ -31,11 +45,11 @@
     font-weight: 700;
 }
 
-.site-footer__logo i { color: #a5d6a7; }
+.site-footer__logo i { color: var(--footer-accent); }
 
 .site-footer__slogan {
     margin: 4px 0 0;
-    color: #c1dec7;
+    color: var(--footer-muted);
     font-size: .88rem;
     line-height: 1.6;
 }
@@ -50,7 +64,7 @@
 }
 
 .site-footer__col a {
-    color: #e1f0e4;
+    color: var(--footer-link);
     font-size: .88rem;
     text-decoration: none;
     transition: color .2s ease, padding-left .2s ease;
@@ -63,7 +77,7 @@
 
 .site-footer__col a:focus-visible,
 .site-footer__social a:focus-visible {
-    outline: 2px solid #a5d6a7;
+    outline: 2px solid var(--footer-accent);
     outline-offset: 3px;
 }
 
@@ -79,7 +93,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    color: #e1f0e4;
+    color: var(--footer-link);
     background: rgba(255, 255, 255, .1);
     border-radius: 50%;
     font-size: .95rem;
@@ -88,7 +102,7 @@
 
 .site-footer__social a:hover {
     color: var(--verde-escuro, #164c34);
-    background: #a5d6a7;
+    background: var(--footer-accent);
     transform: translateY(-2px);
     padding-left: 0;
 }
@@ -103,13 +117,17 @@
     margin: 0 auto;
     padding: 16px 24px;
     border-top: 1px solid rgba(255, 255, 255, .16);
-    color: #c1dec7;
+    color: var(--footer-muted);
     font-size: .8rem;
 }
 
 .site-footer__barra span:first-child {
     color: #fff;
     font-weight: 600;
+}
+
+.site-footer__barra .site-footer__social {
+    margin-top: 0;
 }
 
 @media (max-width: 760px) {

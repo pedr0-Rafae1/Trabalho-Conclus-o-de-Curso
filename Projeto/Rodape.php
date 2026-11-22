@@ -10,10 +10,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Prefixo de caminho: páginas dentro de /Projeto não precisam de prefixo;
-// a index.php (raiz) precisa de "Projeto/" para alcançar as páginas internas.
-$rodapeBase = (basename(dirname($_SERVER['SCRIPT_FILENAME'])) === 'Projeto') ? '' : 'Projeto/';
-$rodapeCss = ($rodapeBase === '') ? '../CSS/Rodape.css' : 'CSS/Rodape.css';
+// Links e folha de estilos partem de diretórios diferentes em cada página.
+$paginaNoProjeto = basename(dirname($_SERVER['SCRIPT_FILENAME'])) === 'Projeto';
+$rodapeBase = $paginaNoProjeto ? '' : 'Projeto/';
+$rodapeCss = $paginaNoProjeto ? '../CSS/Rodape.css?v=1.0' : 'CSS/Rodape.css?v=1.0';
 
 $rodapeLogado = isset($_SESSION['id_usuario']);
 $rodapeTipo   = $_SESSION['tipo_usuario'] ?? 'Pecuarista';
@@ -54,18 +54,17 @@ if ($rodapeLogado) {
         <nav class="site-footer__col" aria-label="Suporte">
             <h4 class="site-footer__titulo">Suporte</h4>
             <a href="<?= $rodapeBase ?>CanalDuvidas.php">Canal de Dúvidas</a>
-            <div class="site-footer__social">
-                <a href="mailto:contato@pecuariaemrede.com" title="E-mail" aria-label="E-mail"><i class="fas fa-envelope"></i></a>
-                <a href="#" title="GitHub do projeto" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </div>
         </nav>
 
     </div>
 
     <!-- ===== Barra inferior: copyright ===== -->
     <div class="site-footer__barra">
-        <span>&copy; <?= date('Y') ?> Pecuária em Rede</span>
-        <span>TCC - IFRN Campus Nova Cruz</span>
+        <span>&copy; 2026 Pecuária em Rede TCC - IFRN Campus Nova Cruz</span>
+        <div class="site-footer__social" aria-label="Redes e contato">
+            <a href="mailto:contato@pecuariaemrede.com" title="E-mail" aria-label="E-mail"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+            <a href="#" title="GitHub do projeto" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+        </div>
     </div>
 
 </footer>
