@@ -34,7 +34,27 @@ if (!$registropeso) {
 
   <main class="container mt-5">
     <div class="card card-formulario shadow-sm">
-        <h2><i class="fas fa-plus-circle me-2"></i>Registro Peso</h2>
+        <h2><i class="fas fa-edit me-2"></i> Editar Pesagem</h2>
+
+        <?php if (isset($_GET['erro'])): ?>
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>
+                    <?php
+                        $mensagens = [
+                            'data_futura' => 'Não é permitido cadastrar uma data futura.',
+                            'data_invalida' => 'A data da pesagem não pode ser anterior à data de nascimento do animal.',
+                            'animal_nao_encontrado' => 'Animal não encontrado.',
+                            'peso_invalido' => 'O peso deve ser um número maior que zero.',
+                            'banco' => 'Erro ao atualizar no banco de dados. Tente novamente.'
+                        ];
+                        echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Erro ao processar a edição.');
+                    ?>
+                </span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+        <?php endif; ?>
+
         <form action="ProcessarAtualizarRegistroPeso.php" method="POST">
             <input type="hidden" name="id_peso" value="<?= $registropeso->id_peso ?>">
 
@@ -45,13 +65,15 @@ if (!$registropeso) {
             <input type="text" name="peso_anterior" class="form-control" value="<?= $registropeso->peso_anterior ?>" required>
 
             <label >Peso Atual (Kg):</label>
-            <input type="text" name="peso_atual" class="form-control" value="<?= $registropeso->peso_atual ?>" required>
+            <input type="number" name="peso_atual" class="form-control" value="<?= $registropeso->peso_atual ?>" min="0.01" step="0.01" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
             <label >Data da Pesagem:</label>
             <input type="date" name="data_pessagem" class="form-control" value="<?= $registropeso->data_pessagem ?>" max="<?= $hoje ?>" required>
 
-            <button type="submit">Salvar Alterações</button>
-            <a href="ListaRegistroPeso.php" >Cancelar</a>
+            <div class="form-acoes">
+                <button type="submit">Salvar Alterações</button>
+                <a href="ListaRegistroPeso.php" class="btn-cancelar">Cancelar</a>
+            </div>
         </form>
     </div>
 </main>

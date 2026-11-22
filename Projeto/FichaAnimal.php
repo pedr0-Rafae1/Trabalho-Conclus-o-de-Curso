@@ -51,63 +51,68 @@ if (!empty($animal['data_nascimento'])) {
 }
 ?>
 
-<head>
+<?php include 'Cabecalho.php'; ?>
     <title>Ficha Individual - Brinco <?= htmlspecialchars($animal['brinco']) ?></title>
-    <link rel="stylesheet" href="../CSS/FichaAnimal.css?v=2.0">
+    <link rel="stylesheet" href="../CSS/FichaAnimal.css?v=2.1">
 </head>
+<body class="ficha-pagina">
 
 <main class="container-ficha">
 
     <div class="ficha-header">
         <div class="ficha-titulo">
             <h2>Ficha Individual do Animal</h2>
-            <h1>Brinco #<?= htmlspecialchars($animal['brinco']) ?> <small>(<?= htmlspecialchars($animal['raca']) ?>)</small></h1>
+            <h1>Brinco #<?= htmlspecialchars($animal['brinco']) ?> <small><?= htmlspecialchars($animal['raca']) ?></small></h1>
             <span class="badge-status <?= ((int) $animal['vendido'] === 1) ? 'status-vendido' : 'status-ativo' ?>">
+                <i class="fas <?= ((int) $animal['vendido'] === 1) ? 'fa-hand-holding-usd' : 'fa-check-circle' ?>"></i>
                 <?= ((int) $animal['vendido'] === 1) ? 'Vendido' : 'No Rebanho' ?>
             </span>
             <?php if ($ehVeterinario): ?>
-                <p class="text-muted mb-0"><i class="fas fa-user me-1"></i> Produtor: <?= htmlspecialchars($animal['dono_nome']) ?></p>
+                <p class="ficha-produtor"><i class="fas fa-user"></i> Produtor: <?= htmlspecialchars($animal['dono_nome']) ?></p>
             <?php endif; ?>
         </div>
 
         <div class="ficha-acoes">
-            <a href="ExportarFichaAnimal.php?id=<?= $id_animal ?>" class="btn-acao btn-imprimir"><i class="fas fa-file-pdf me-1"></i> Exportar PDF</a>
+            <a href="ExportarFichaAnimal.php?id=<?= $id_animal ?>" class="btn-acao btn-imprimir"><i class="fas fa-file-pdf"></i> Exportar PDF</a>
             <?php if (!$ehVeterinario && (int) $animal['vendido'] === 0): ?>
-                <a href="ControlePeso.php" class="btn-acao">+ Novo Peso</a>
-                <a href="RegistrarVacinacao.php" class="btn-acao">+ Vacina</a>
-                <a href="EditarAnimal.php?id=<?= $id_animal ?>" class="btn-acao btn-secundario">Editar Dados</a>
+                <a href="ControlePeso.php" class="btn-acao"><i class="fas fa-weight"></i> Novo Peso</a>
+                <a href="RegistrarVacinacao.php" class="btn-acao"><i class="fas fa-syringe"></i> Vacina</a>
+                <a href="EditarAnimal.php?id=<?= $id_animal ?>" class="btn-acao btn-secundario"><i class="fas fa-pen"></i> Editar Dados</a>
             <?php endif; ?>
-            <a href="<?= $ehVeterinario ? 'HistoricoAtendimento.php' : 'ListaAnimal.php' ?>" class="btn-voltar">← Voltar</a>
+            <a href="<?= $ehVeterinario ? 'HistoricoAtendimento.php' : 'ListaAnimal.php' ?>" class="btn-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
         </div>
     </div>
 
     <div class="grid-informacoes">
         <div class="card-info">
-            <h3>Dados de Identificação</h3>
+            <h3><i class="fas fa-id-card"></i> Dados de Identificação</h3>
             <ul>
-                <li><strong>Brinco:</strong> <?= htmlspecialchars($animal['brinco']) ?></li>
-                <li><strong>Espécie:</strong> <?= htmlspecialchars($animal['especie']) ?></li>
-                <li><strong>Raça:</strong> <?= htmlspecialchars($animal['raca']) ?></li>
-                <li><strong>Nascimento:</strong> <?= date('d/m/Y', strtotime($animal['data_nascimento'])) ?></li>
-                <li><strong>Idade Aproximada:</strong> <?= $idadeFormatada ?></li>
-                <li><strong>Altura (cadastro):</strong> <?= number_format($animal['altura'], 2, ',', '.') ?> m</li>
+                <li><i class="fas fa-tag"></i> <div><span class="rotulo">Brinco</span> <?= htmlspecialchars($animal['brinco']) ?></div></li>
+                <li><i class="fas fa-paw"></i> <div><span class="rotulo">Espécie</span> <?= htmlspecialchars($animal['especie']) ?></div></li>
+                <li><i class="fas fa-dna"></i> <div><span class="rotulo">Raça</span> <?= htmlspecialchars($animal['raca']) ?></div></li>
+                <li><i class="fas fa-calendar"></i> <div><span class="rotulo">Nascimento</span> <?= date('d/m/Y', strtotime($animal['data_nascimento'])) ?></div></li>
+                <li><i class="fas fa-hourglass-half"></i> <div><span class="rotulo">Idade Aproximada</span> <?= $idadeFormatada ?></div></li>
+                <li><i class="fas fa-ruler-vertical"></i> <div><span class="rotulo">Altura</span> <?= number_format($animal['altura'], 2, ',', '.') ?> m</div></li>
             </ul>
         </div>
 
         <div class="card-info">
-            <h3>Resumo Zootécnico</h3>
+            <h3><i class="fas fa-chart-line"></i> Resumo Zootécnico</h3>
             <div class="resumo-metricas">
                 <div class="metrica">
+                    <i class="fas fa-weight"></i>
                     <span class="label">Último Peso</span>
                     <span class="valor">
                         <?= $ultimoPeso ? number_format($ultimoPeso->peso_atual, 2, ',', '.') . ' kg' : 'Sem registro' ?>
                     </span>
                 </div>
                 <div class="metrica">
+                    <i class="fas fa-syringe"></i>
                     <span class="label">Total de Vacinas</span>
                     <span class="valor"><?= count($vacinas) ?></span>
                 </div>
                 <div class="metrica">
+                    <i class="fas fa-stethoscope"></i>
                     <span class="label">Atendimentos Vet.</span>
                     <span class="valor"><?= count($atendimentos) ?></span>
                 </div>
@@ -118,8 +123,9 @@ if (!empty($animal['data_nascimento'])) {
     <div class="secao-historicos">
 
         <div class="bloco-historico">
-            <h3>Histórico de Pesagens</h3>
+            <h3><i class="fas fa-weight"></i> Histórico de Pesagens</h3>
             <?php if (!empty($pesagens)): ?>
+                <div class="tabela-wrap">
                 <table class="tabela-dados">
                     <thead>
                         <tr><th>Data</th><th>Peso Anterior</th><th>Peso Atual</th></tr>
@@ -134,14 +140,16 @@ if (!empty($animal['data_nascimento'])) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                </div>
             <?php else: ?>
                 <p class="sem-registro">Nenhum registro de peso encontrado para este animal.</p>
             <?php endif; ?>
         </div>
 
         <div class="bloco-historico">
-            <h3>Histórico de Vacinações</h3>
+            <h3><i class="fas fa-syringe"></i> Histórico de Vacinações</h3>
             <?php if (!empty($vacinas)): ?>
+                <div class="tabela-wrap">
                 <table class="tabela-dados">
                     <thead>
                         <tr><th>Data</th><th>Vacina</th><th>Dose</th><th>Aplicador</th></tr>
@@ -157,14 +165,16 @@ if (!empty($animal['data_nascimento'])) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                </div>
             <?php else: ?>
                 <p class="sem-registro">Nenhuma vacina registrada para este animal.</p>
             <?php endif; ?>
         </div>
 
         <div class="bloco-historico">
-            <h3>Atendimentos Veterinários</h3>
+            <h3><i class="fas fa-stethoscope"></i> Atendimentos Veterinários</h3>
             <?php if (!empty($atendimentos)): ?>
+                <div class="tabela-wrap">
                 <table class="tabela-dados">
                     <thead>
                         <tr><th>Data</th><th>Veterinário</th><th>Descrição</th><th>Diagnóstico</th></tr>
@@ -180,6 +190,7 @@ if (!empty($animal['data_nascimento'])) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                </div>
             <?php else: ?>
                 <p class="sem-registro">Nenhum atendimento registrado.</p>
             <?php endif; ?>
@@ -187,7 +198,7 @@ if (!empty($animal['data_nascimento'])) {
 
         <?php if ($venda): ?>
             <div class="bloco-historico destaque-venda">
-                <h3>Dados de Comercialização / Venda</h3>
+                <h3><i class="fas fa-hand-holding-usd"></i> Dados de Comercialização / Venda</h3>
                 <p><strong>Data da Venda:</strong> <?= date('d/m/Y', strtotime($venda['data_venda'])) ?></p>
                 <p><strong>Comprador:</strong> <?= htmlspecialchars($venda['comprador']) ?></p>
                 <p><strong>Valor:</strong> R$ <?= number_format($venda['valor_venda'], 2, ',', '.') ?></p>
@@ -198,5 +209,6 @@ if (!empty($animal['data_nascimento'])) {
 </main>
 
 <?php include 'Rodape.php'; ?>
+
 </body>
 </html>

@@ -34,7 +34,27 @@ if (!$registrovacinacao) {
 
  <main class="container mt-5">
     <div class="card card-formulario shadow-sm">
-        <h2><i class="fas fa-plus-circle me-2"></i> Cadastro de Animal</h2>
+        <h2><i class="fas fa-edit me-2"></i> Editar Vacinação</h2>
+
+        <?php if (isset($_GET['erro'])): ?>
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>
+                    <?php
+                        $mensagens = [
+                            'data_futura' => 'Não é permitido cadastrar uma data futura.',
+                            'data_invalida' => 'A data de aplicação não pode ser anterior à data de nascimento do animal.',
+                            'animal_nao_encontrado' => 'Animal não encontrado.',
+                            'dose_invalida' => 'A dose deve ser um valor numérico maior que zero.',
+                            'banco' => 'Erro ao atualizar no banco de dados. Tente novamente.'
+                        ];
+                        echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Erro ao processar a edição.');
+                    ?>
+                </span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+        <?php endif; ?>
+
         <form action="ProcessarAtualizarRegistroVacinacao.php" method="POST">
             <input type="hidden" name="id_vacinacao" value="<?= $registrovacinacao->id_vacinacao ?>">
 
@@ -51,10 +71,12 @@ if (!$registrovacinacao) {
             <input type="text" name="aplicador" class="form-control" value="<?= $registrovacinacao->aplicador ?>" required>
 
             <label >Dose (ml/mg):</label>
-            <input type="text" name="dose" class="form-control" value="<?= $registrovacinacao->dose ?>" required>
+            <input type="number" name="dose" class="form-control" value="<?= $registrovacinacao->dose ?>" min="1" step="1" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
-            <button type="submit">Salvar Alterações</button>
-            <a href="ListaRegistroPeso.php" >Cancelar</a>
+            <div class="form-acoes">
+                <button type="submit">Salvar Alterações</button>
+                <a href="ListaRegistroVacinacao.php" class="btn-cancelar">Cancelar</a>
+            </div>
         </form>
     </div>
 </main>

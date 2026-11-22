@@ -13,7 +13,6 @@ $hoje = date('Y-m-d');
 
 $id      = $_POST['id_animal']; 
 $brinco  = $_POST['brinco'];
-$idade   = $_POST['idade'];
 $especie = $_POST['especie'];
 $raca    = $_POST['raca'];
 $data    = $_POST['data_nascimento'];
@@ -21,9 +20,15 @@ $peso    = $_POST['peso'];
 $altura  = $_POST['altura'];
 
 if ($data > $hoje) {
-    echo "Não pode cadastrar uma data futura";
+    header("Location: EditarAnimal.php?id={$id}&erro=data_futura");
     exit();
 }
+
+// Calcula a idade em meses automaticamente a partir da data de nascimento
+$nascimento = new DateTime($data);
+$hoje_obj = new DateTime();
+$diferenca = $nascimento->diff($hoje_obj);
+$idade = ($diferenca->y * 12) + $diferenca->m;
 
 $animal = new Animal($brinco, $idade, $especie, $raca, $data, $peso, $altura);
 $animal->id_animal = $id; 
@@ -32,9 +37,9 @@ $animal->id_animal = $id;
 $dao = new AnimalDAO();
 
 if ($dao->Atualizar($animal, $_SESSION['id_usuario'])) {
-    
-    header("Location: ListaAnimal.php?sucesso=1");
+    header("Location: ListaAnimal.php?sucesso=editado");
     exit();
 } else {
-    echo "Erro ao tentar atualizar os dados no banco.";
+    header("Location: EditarAnimal.php?id={$id}&erro=banco");
+    exit();
 }

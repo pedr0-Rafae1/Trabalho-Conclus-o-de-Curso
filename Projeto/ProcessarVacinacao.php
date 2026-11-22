@@ -9,12 +9,13 @@ if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
 require_once __DIR__ .  '/../app/Model/RegistroVacinacao.php'; 
 require_once __DIR__ .  '/../app/Dao/RegistroVacinacaoDao.php';
 require_once __DIR__ . '/../app/Dao/NotificacaoDao.php';
+require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
 $id_dono = $_SESSION['id_usuario'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $id_animal = $_POST['id_animal'];
+    $id_animal = (int) ($_POST['id_animal'] ?? 0);
     $nome_vacina = $_POST['nome_vacina'];
     $data = $_POST['data_aplicacao'];
     $aplicador = $_POST['aplicador'];
@@ -22,7 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $hoje = date('Y-m-d');
     if ($data > $hoje) {
-        echo "Não pode cadastrar uma data futura";
+        header("Location: RegistrarVacinacao.php?erro=data_futura");
+        exit();
+    }
+
+    if (!is_numeric($dose) || (float) $dose <= 0) {
+        header("Location: RegistrarVacinacao.php?erro=dose_invalida");
+        exit();
+    }
+
+    // Regra de negócio: a vacinação não pode ser anterior ao nascimento do animal
+    $animalDao = new AnimalDao();
+    $animal = $animalDao->buscarPorIdEUsuario($id_animal, $id_dono);
+
+    if (!$animal) {
+        header("Location: RegistrarVacinacao.php?erro=animal_nao_encontrado");
+        exit();
+    }
+
+    if (!empty($animal['data_nascimento']) && $data < $animal['data_nascimento']) {
+        header("Location: RegistrarVacinacao.php?erro=data_anterior_nascimento");
         exit();
     }
     
@@ -41,13 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "A vacina {$nome_vacina} do animal {$id_animal} deve ser revisada em " . date('d/m/Y', strtotime($dataReforco)) . '.'
         );
 
-        echo "<script>
-                alert('registro realizado com sucesso!');
-                window.location.href = 'ListaRegistroVacinacao.php';
-              </script>";
+        header("Location: ListaRegistroVacinacao.php?sucesso=cadastrado");
+        exit();
     } else {
-
-        echo "Erro ao salvar no banco de dados.";
+        header("Location: RegistrarVacinacao.php?erro=banco");
+        exit();
     }
 } else {
     

@@ -22,16 +22,37 @@ include 'Cabecalho.php';
         <h2><i class="fas fa-stethoscope me-2"></i> Registrar Atendimento</h2>
 
         <?php if (!$ehVeterinario): ?>
-            <div class="alert alert-danger">Essa área é exclusiva para veterinários.</div>
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Essa área é exclusiva para veterinários.</span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
 
         <?php elseif (!$ehHomologado): ?>
-            <div class="alert alert-warning">
-                Sua conta de veterinário ainda aguarda homologação. Assim que homologada, você poderá registrar atendimentos aqui.
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-hourglass-half"></i>
+                <span>Sua conta de veterinário ainda aguarda homologação. Assim que homologada, você poderá registrar atendimentos aqui.</span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
             </div>
 
         <?php else: ?>
             <?php if (isset($_GET['erro'])): ?>
-                <div class="alert alert-danger">Não foi possível registrar o atendimento. Verifique os dados.</div>
+                <div class="alerta-notificacao alerta-erro" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>
+                        <?php
+                            $mensagens = [
+                                'campos_invalidos' => 'Preencha todos os campos obrigatórios.',
+                                'data_futura' => 'Não é permitido registrar uma data futura.',
+                                'data_invalida' => 'A data do atendimento não pode ser anterior à data de nascimento do animal.',
+                                'animal_nao_encontrado' => 'Animal não encontrado.',
+                                'nao_autorizado' => 'Ação não autorizada.',
+                            ];
+                            echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Não foi possível registrar o atendimento. Verifique os dados.');
+                        ?>
+                    </span>
+                    <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+                </div>
             <?php endif; ?>
 
             <form action="ProcessarAtendimento.php" method="POST">

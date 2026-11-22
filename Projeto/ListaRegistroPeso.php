@@ -37,10 +37,18 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
 <body class="lista-pagina">
 
 <main class="lista-conteudo">
+    <?php if(isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span><?= $_GET['sucesso'] === 'editado' ? 'Pesagem atualizada com sucesso!' : 'Pesagem registrada com sucesso!' ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
     <?php if(isset($_GET['msg']) && $_GET['msg'] == 'excluido'): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="fas fa-check-circle me-2"></i> Registro da pesagem removido com sucesso!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Registro de pesagem removido com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php endif; ?>
 
@@ -74,7 +82,7 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
                                     <td><span><?= $rp->id_animal?></span></td>
                                     <td><?= $rp->peso_anterior?> </td>
                                     <td><span><?= $rp->peso_atual ?></span></td>
-                                    <td><span><?= $rp->data_pessagem ?></span></td>
+                                    <td><span><?= date('d/m/Y', strtotime($rp->data_pessagem)) ?></span></td>
                                     <td class="lista-acoes pe-4">
                                         <div class="btn-group shadow-sm">
                                             <a href="EditarRegistroPeso.php?id=<?= $rp->id_peso ?>" class="btn btn-outline-warning btn-sm" title="Editar">
@@ -95,7 +103,6 @@ $registropeso = $registropesoDao->ListarPorUsuario($_SESSION['id_usuario']);
                                 <td colspan="6" class="lista-vazia text-center">
                                     <i class="fas fa-weight fa-3x mb-3"></i>
                                     <p>Nenhuma pesagem registrada ainda.</p>
-                                    <a href="ControlePeso.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Registrar primeira pesagem</a>
                                 </td>
                             </tr>
                         <?php endif; ?>

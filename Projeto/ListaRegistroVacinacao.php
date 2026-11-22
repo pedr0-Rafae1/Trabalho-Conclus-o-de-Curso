@@ -37,10 +37,18 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
 <body class="lista-pagina">
 
 <main class="lista-conteudo">
+    <?php if(isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span><?= $_GET['sucesso'] === 'editado' ? 'Vacinação atualizada com sucesso!' : 'Vacinação registrada com sucesso!' ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
     <?php if(isset($_GET['msg']) && $_GET['msg'] == 'excluido'): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="fas fa-check-circle me-2"></i> Registro da vacinação removida com sucesso!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Registro de vacinação removido com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php endif; ?>
 
@@ -75,7 +83,7 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
                                     <td><span><?= $rv->id_animal?></span></td>
                                     <td><?= $rv->nome_vacina?> </td>
                                     <td><span><?= $rv->aplicador ?></span></td>
-                                    <td><span><?= $rv->data_aplicacao ?></span></td>
+                                    <td><span><?= date('d/m/Y', strtotime($rv->data_aplicacao)) ?></span></td>
                                     <td><?= $rv->dose?></td>
                                     <td class="lista-acoes pe-4">
                                         <div class="btn-group shadow-sm">
@@ -97,7 +105,6 @@ $registrovacinacao = $registrovacinacaoDao->ListarPorUsuario($_SESSION['id_usuar
                                 <td colspan="7" class="lista-vazia text-center">
                                     <i class="fas fa-syringe fa-3x mb-3"></i>
                                     <p>Nenhuma vacinação registrada ainda.</p>
-                                    <a href="RegistrarVacinacao.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Registrar primeira vacina</a>
                                 </td>
                             </tr>
                         <?php endif; ?>

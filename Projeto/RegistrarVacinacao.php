@@ -31,7 +31,24 @@ include 'Cabecalho.php';
   <main class="container mt-5">
     <div class="card card-formulario shadow-sm">
         <h2><i class="fas fa-syringe me-2"></i> Registro de Vacinação</h2>
-        <form action="ProcessarVacinacao.php" method="POST">
+        <?php if (isset($_GET['erro'])): ?>
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>
+                    <?php
+                        $mensagens = [
+                            'data_futura' => 'Não é permitido cadastrar uma data futura.',
+                            'dose_invalida' => 'A dose deve ser um valor numérico maior que zero.',
+                            'animal_nao_encontrado' => 'Animal não encontrado.',
+                            'data_anterior_nascimento' => 'A data de aplicação não pode ser anterior à data de nascimento do animal.',
+                            'banco' => 'Erro ao salvar no banco de dados. Tente novamente.'
+                        ];
+                        echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Erro ao processar o registro.');
+                    ?>
+                </span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+        <?php endif; ?>        <form action="ProcessarVacinacao.php" method="POST">
 
             <label for="id">ID do Animal:</label>
               <select name="id_animal" id="id_animal" class="form-control" required>
@@ -53,7 +70,7 @@ include 'Cabecalho.php';
             <input type="text" id="aplicacao" name="aplicador" class = "form-control" required>
 
             <label for="Dose">Dose (ml/mg):</label>
-            <input type="text" id="Dose" name="dose" class = "form-control" required>
+            <input type="number" id="Dose" name="dose" class="form-control" min="1" step="1" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
             <button type="submit">Registrar Vacina</button>
         </form>
@@ -63,5 +80,6 @@ include 'Cabecalho.php';
 <script src="../Javascript/Offline.js"></script>
 
 <?php include 'Rodape.php'; ?>
+
 </body>
 </html>

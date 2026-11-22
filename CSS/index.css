@@ -1,0 +1,286 @@
+/* ============================================================
+   index.css — Landing Page "Pecuária em Rede"
+   ============================================================ */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--fonte-principal);
+    background-color: var(--bg-pagina);
+    color: var(--texto-principal);
+}
+
+/* ---------- Navbar ---------- */
+.landing-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--verde-escuro);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.landing-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 24px;
+}
+
+.landing-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.landing-logo i { color: #a5d6a7; font-size: 1.4rem; }
+
+.landing-acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-entrar {
+    padding: 9px 18px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.btn-entrar:hover { background: rgba(255, 255, 255, 0.12); }
+
+.btn-cadastrar {
+    padding: 9px 18px;
+    color: var(--verde-escuro);
+    background: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-cadastrar:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); }
+
+/* Botão de tema dentro da navbar (sobrescreve o fixed do Login.css) */
+.landing-acoes .theme-toggle {
+    position: static;
+    width: 38px;
+    height: 38px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 78vh;
+    padding: 60px 24px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--verde-suave), var(--bg-pagina));
+}
+
+.hero-conteudo { max-width: 760px; }
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding: 8px 16px;
+    color: var(--verde-escuro);
+    background: var(--verde-destaque);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.hero h1 {
+    margin: 0 0 18px;
+    color: var(--texto-principal);
+    font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.hero p {
+    margin: 0 auto 32px;
+    max-width: 560px;
+    color: var(--texto-secundario);
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
+
+.btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 32px;
+    color: #ffffff;
+    background: var(--verde-primario);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 10px 24px rgba(36, 122, 72, 0.3);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-cta:hover { background: var(--verde-escuro); transform: translateY(-2px); }
+
+/* ---------- Seção de Recursos ---------- */
+.recursos { padding: 80px 24px; }
+
+.recursos-container { max-width: 1100px; margin: 0 auto; text-align: center; }
+
+.recursos h2 {
+    margin: 0 0 10px;
+    color: var(--texto-principal);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+}
+
+.recursos-sub { margin: 0 0 44px; color: var(--texto-secundario); }
+
+.recursos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.recurso-card {
+    padding: 34px 28px;
+    text-align: left;
+    background: var(--bg-card);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recurso-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(17, 55, 35, 0.14); }
+
+.recurso-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 18px;
+    color: var(--verde-primario);
+    background: var(--verde-suave);
+    border-radius: 12px;
+    font-size: 1.3rem;
+}
+
+.recurso-card h3 { margin: 0 0 10px; color: var(--texto-principal); font-size: 1.1rem; }
+.recurso-card p { margin: 0; color: var(--texto-secundario); font-size: 0.92rem; line-height: 1.65; }
+
+/* ---------- Seção de Contexto (TCC) ---------- */
+.contexto {
+    padding: 80px 24px;
+    text-align: center;
+    background: var(--bg-card);
+    border-top: 1px solid var(--borda);
+    border-bottom: 1px solid var(--borda);
+}
+
+.contexto-container { max-width: 720px; margin: 0 auto; }
+
+.contexto-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 7px 15px;
+    color: var(--verde-escuro);
+    background: var(--verde-destaque);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.contexto h2 {
+    margin: 0 0 16px;
+    color: var(--texto-principal);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+}
+
+.contexto p { margin: 0; color: var(--texto-secundario); font-size: 1rem; line-height: 1.8; }
+
+/* ---------- FAQ (accordion) ---------- */
+.faq { padding: 80px 24px; }
+
+.faq-container { max-width: 760px; margin: 0 auto; text-align: center; }
+
+.faq h2 { margin: 0 0 8px; color: var(--texto-principal); font-size: clamp(1.5rem, 3vw, 2rem); }
+.faq-sub { margin: 0 0 36px; color: var(--texto-secundario); }
+
+.faq-lista { text-align: left; }
+
+.faq-item {
+    margin-bottom: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.faq-pergunta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 20px;
+    color: var(--texto-principal);
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.faq-pergunta i { color: var(--verde-primario); transition: transform 0.25s ease; }
+.faq-item.aberto .faq-pergunta i { transform: rotate(180deg); }
+
+.faq-resposta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.faq-resposta p {
+    margin: 0;
+    padding: 0 20px 18px;
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.faq-item.aberto .faq-resposta { max-height: 220px; }
+
+/* ---------- Rodapé (Fat Footer — estilos completos em Variaveis.css) ---------- */
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 760px) {
+    .recursos-grid { grid-template-columns: 1fr; }
+}

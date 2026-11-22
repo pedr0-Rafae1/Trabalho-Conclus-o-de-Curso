@@ -37,10 +37,18 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
 <body class="lista-pagina">
 
 <main class="lista-conteudo">
+    <?php if(isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span><?= $_GET['sucesso'] === 'editado' ? 'Animal atualizado com sucesso!' : 'Animal cadastrado com sucesso!' ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
     <?php if(isset($_GET['msg']) && $_GET['msg'] == 'excluido'): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="fas fa-check-circle me-2"></i> Animal removido com sucesso!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Animal removido com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php endif; ?>
 
@@ -73,10 +81,10 @@ $animal = $animalDao->ListarPorUsuario($_SESSION['id_usuario']);
                                 <tr>
                                     <td>#<?= $a->id_animal ?></td>
                                     <td><span><?= $a->brinco ?></span></td>
-                                    <td><?= $a->idade ?> anos</td>
+                                    <td><?= $a->idade ?> meses</td>
                                     <td><span><?= $a->especie ?></span></td>
                                     <td><span><?= $a->raca ?></span></td>
-                                    <td><span><?= $a->data_nascimento ?></span></td>
+                                    <td><span><?= date('d/m/Y', strtotime($a->data_nascimento)) ?></span></td>
                                     <td><?= $a->peso ?></td>
                                     <td><?= $a->altura ?></td>
                                     <td class="lista-acoes pe-4">

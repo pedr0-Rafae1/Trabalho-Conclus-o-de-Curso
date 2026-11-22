@@ -1,8 +1,12 @@
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background: var(--bg-pagina);
 }
 
 .perfil-pagina {
+    flex: 1 0 auto;
     width: min(100% - 32px, 1040px);
     margin: 0 auto;
     padding: 38px 0 60px;
@@ -58,7 +62,20 @@ body {
 .perfil-theme-toggle:hover { background: rgba(0,0,0,.32); transform: translateY(-1px); }
 
 .perfil-corpo { position: relative; padding: 0 48px 44px; }
-.perfil-avatar-flutuante { position: absolute; top: -66px; left: 48px; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; object-fit: cover; color: var(--verde-primario); background: var(--bg-card); border: 6px solid var(--bg-card); border-radius: 50%; box-shadow: 0 10px 24px rgba(17,55,35,.2); font-size: 2.6rem; }
+.perfil-avatar-flutuante { position: absolute; top: -66px; left: 48px; width: 132px; height: 132px; display: flex; align-items: center; justify-content: center; overflow: hidden; color: var(--verde-primario); background: var(--bg-card); border: 6px solid var(--bg-card); border-radius: 50%; box-shadow: 0 10px 24px rgba(17,55,35,.2); font-size: 2.6rem; cursor: pointer; }
+.perfil-avatar-flutuante img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(0,0,0,.45); font-size: 1.6rem; opacity: 0; transition: opacity .2s ease; }
+.perfil-avatar-flutuante:hover .avatar-overlay, .perfil-avatar-flutuante:focus-visible .avatar-overlay { opacity: 1; }
+
+/* Força de senha + check de confirmação */
+.forca-senha { height: 5px; margin: 6px 0 4px; background: var(--borda); border-radius: 99px; overflow: hidden; }
+.forca-senha-barra { height: 100%; width: 0; border-radius: 99px; transition: width .3s ease, background .3s ease; }
+.forca-senha[data-nivel="fraca"] .forca-senha-barra { width: 33%; background: #d05b5b; }
+.forca-senha[data-nivel="media"] .forca-senha-barra { width: 66%; background: #e0a93e; }
+.forca-senha[data-nivel="forte"] .forca-senha-barra { width: 100%; background: var(--verde-primario); }
+.forca-senha-texto { display: block; margin-bottom: 10px; font-size: .72rem; color: var(--texto-secundario); }
+.campo-check-senha { position: absolute; top: 50%; right: 14px; color: var(--verde-primario); opacity: 0; transform: translateY(-50%); transition: opacity .2s ease; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .perfil-nome-area { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 124px; margin-left: 164px; padding-top: 22px; }
 .perfil-overline { display: block; margin-bottom: 3px; color: var(--texto-secundario); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .perfil-nome-area h1 { margin: 0; color: var(--verde-escuro); font-size: clamp(1.45rem, 4vw, 2rem); }
@@ -106,17 +123,29 @@ body {
 .btn-excluir { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; color: #fff; background: var(--perigo); border: 0; border-radius: 8px; font-size: .8rem; font-weight: 700; cursor: pointer; }
 .btn-excluir:hover { background: #a33636; }
 
-body[data-theme="dark"] .perfil-banner { background: linear-gradient(135deg, #0b2a1b, #174d31); }
-body[data-theme="dark"] .perfil-info-card,
-body[data-theme="dark"] .perfil-form,
-body[data-theme="dark"] .perfil-nota { background: var(--bg-superficie); border-color: var(--borda); }
-body[data-theme="dark"] .input-icone input { color: var(--texto-principal); background: var(--bg-card); border-color: var(--borda); }
-body[data-theme="dark"] .campo-bloqueado input { background: var(--bg-pagina); }
-body[data-theme="dark"] .perfil-alerta.sucesso { color: #b8ebc9; background: #193b29; border-color: #356447; }
-body[data-theme="dark"] .perfil-alerta.erro { color: #f5b4b4; background: #422323; border-color: #743838; }
-body[data-theme="dark"] .danger-zone { background: #321f20; border-color: #623638; }
-body[data-theme="dark"] .danger-zone h4 { color: #f0a6a6; }
-body[data-theme="dark"] .danger-zone p { color: #d8aaaa; }
+html[data-theme="dark"] .perfil-banner { background: linear-gradient(135deg, #0b2a1b, #174d31); }
+html[data-theme="dark"] .perfil-wrapper { background: var(--bg-card); border-color: var(--borda); }
+html[data-theme="dark"] .perfil-info-card,
+html[data-theme="dark"] .perfil-form { background: var(--bg-card); border-color: var(--borda); }
+html[data-theme="dark"] .perfil-nota { background: var(--bg-superficie); border-color: var(--borda); }
+html[data-theme="dark"] .perfil-nome-area h1,
+html[data-theme="dark"] .perfil-info-card h3,
+html[data-theme="dark"] .perfil-form h3 { color: var(--texto-principal); border-bottom-color: var(--borda); }
+html[data-theme="dark"] .perfil-info-card h3 i,
+html[data-theme="dark"] .perfil-form h3 i,
+html[data-theme="dark"] .perfil-info-item > i,
+html[data-theme="dark"] .perfil-nota i { color: #8fd6a8; }
+html[data-theme="dark"] .perfil-avatar-flutuante { color: #8fd6a8; background: var(--bg-superficie); border-color: var(--bg-card); box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+html[data-theme="dark"] .status-ok { color: #b8ebc9; background: #193b29; }
+html[data-theme="dark"] .status-pendente { color: #f5dda1; background: #44391c; }
+html[data-theme="dark"] .perfil-chip { color: #b8ebc9 !important; background: #193b29; }
+html[data-theme="dark"] .input-icone input { color: var(--texto-principal); background: var(--bg-superficie); border-color: var(--borda); }
+html[data-theme="dark"] .campo-bloqueado input { background: var(--bg-pagina); }
+html[data-theme="dark"] .perfil-alerta.sucesso { color: #b8ebc9; background: #193b29; border-color: #356447; }
+html[data-theme="dark"] .perfil-alerta.erro { color: #f5b4b4; background: #422323; border-color: #743838; }
+html[data-theme="dark"] .danger-zone { background: #321f20; border-color: #623638; }
+html[data-theme="dark"] .danger-zone h4 { color: #f0a6a6; }
+html[data-theme="dark"] .danger-zone p { color: #d8aaaa; }
 
 @media (max-width: 760px) {
     .perfil-pagina { width: min(100% - 20px, 1040px); padding-top: 20px; }

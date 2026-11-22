@@ -17,6 +17,14 @@ include_once 'Cabecalho.php';
 
 <main class="lista-conteudo">
 
+    <?php if (isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Atendimento registrado com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
+
     <?php if ($ehVeterinario): ?>
         <div class="card lista-painel mb-4">
             <div class="card-header lista-painel-header">
@@ -25,10 +33,7 @@ include_once 'Cabecalho.php';
                 <a href="RegistrarAtendimento.php" class="btn btn-light btn-sm"><i class="fas fa-plus me-1"></i> Registrar Atendimento</a>
             </div>
             <div class="card-body lista-painel-body sem-padding">
-                <?php $atendimentos = $atendimentoDao->ListarPorVeterinario($_SESSION['id_usuario']);
-                if (isset($_GET['sucesso'])): ?>
-                    <div class="alert alert-success m-3">Atendimento registrado com sucesso!</div>
-                <?php endif; ?>
+                <?php $atendimentos = $atendimentoDao->ListarPorVeterinario($_SESSION['id_usuario']); ?>
 
                 <?php if (empty($atendimentos)): ?>
                     <p class="text-muted p-3 mb-0">Nenhum atendimento registrado ainda.</p>

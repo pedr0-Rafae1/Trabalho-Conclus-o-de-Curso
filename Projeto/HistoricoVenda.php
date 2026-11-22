@@ -14,18 +14,24 @@ include_once 'Cabecalho.php';
 </head>
 
 <main class="lista-conteudo">
-    <div class="card lista-painel mb-4">
-        <div class="card-header lista-painel-header">
-            <h4 class="mb-0"><i class="fas fa-receipt me-2"></i> Histórico de Vendas</h4>
+    <?php if (isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Venda registrada com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
+
+    <div class="card lista-card mb-4">
+        <div class="card-header lista-cabecalho">
+            <h4><i class="fas fa-receipt me-2"></i> Histórico de Vendas</h4>
             <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaVenda" type="search" placeholder="Buscar venda" aria-label="Buscar venda"></div>
-            <a href="RegistrarVenda.php" class="btn btn-light btn-sm"><i class="fas fa-plus me-1"></i> Registrar Venda</a>
+            <a href="RegistrarVenda.php" class="btn btn-light btn-sm fw-bold">
+                <i class="fas fa-plus me-1"></i> Registrar Venda
+            </a>
         </div>
 
         <div class="card-body lista-painel-body sem-padding">
-            <?php if (isset($_GET['sucesso'])): ?>
-                <div class="alert alert-success m-3">Venda registrada com sucesso!</div>
-            <?php endif; ?>
-
             <?php if (empty($vendas)): ?>
                 <p class="text-muted p-3 mb-0">Nenhuma venda registrada ainda.</p>
             <?php else: ?>

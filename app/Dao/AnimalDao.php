@@ -17,7 +17,7 @@ class AnimalDAO {
 
     public function ListarPorUsuario($id_logado) {
         $lista = [];
-        $sql = "SELECT * FROM animal where id_usuario = ?";
+        $sql = "SELECT * FROM animal WHERE id_usuario = ? AND vendido = 0";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id_logado);
         $stmt->execute();

@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
 include_once 'Sessao.php';
 require_once __DIR__ . '/../app/Dao/DuvidaDao.php';
 
@@ -11,24 +12,30 @@ include 'Cabecalho.php';
 
 <head>
     <title>Canal de Dúvidas - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Lista.css?v=2.0">
+    <link rel="stylesheet" href="/CSS/Lista.css?v=2.0">
 </head>
 
 <main class="lista-conteudo">
+
+    <?php if (isset($_GET['sucesso'])): ?>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <span><?= $_GET['sucesso'] === 'respondido' ? 'Resposta enviada com sucesso!' : 'Dúvida enviada com sucesso!' ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php elseif (isset($_GET['erro'])): ?>
+        <div class="alerta-notificacao alerta-erro" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span><?= $_GET['erro'] === 'nao_autorizado' ? 'Somente um veterinário homologado pode responder dúvidas (RN04).' : 'Não foi possível concluir a ação. Verifique os campos.' ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php endif; ?>
 
     <div class="card lista-painel mb-4">
         <div class="card-header lista-painel-header">
             <h4 class="mb-0"><i class="fas fa-comment-medical me-2"></i> Canal de Dúvidas</h4>
         </div>
         <div class="card-body lista-painel-body">
-
-            <?php if (isset($_GET['sucesso'])): ?>
-                <div class="alert alert-success">Enviado com sucesso!</div>
-            <?php elseif (isset($_GET['erro']) && $_GET['erro'] === 'nao_autorizado'): ?>
-                <div class="alert alert-danger">Somente um veterinário homologado pode responder dúvidas (RN04).</div>
-            <?php elseif (isset($_GET['erro'])): ?>
-                <div class="alert alert-danger">Não foi possível concluir a ação. Verifique os campos.</div>
-            <?php endif; ?>
 
             <?php if (!$ehVeterinario): ?>
                

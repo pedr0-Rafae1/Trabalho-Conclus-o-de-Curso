@@ -2,6 +2,7 @@
 include_once 'Sessao.php';
 require_once __DIR__ . '/../app/Dao/AtendimentoDao.php';
 require_once __DIR__ . '/../app/Model/Atendimento.php';
+require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -24,6 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($data_atend > $hoje) {
         header("Location: RegistrarAtendimento.php?erro=data_futura");
+        exit();
+    }
+
+    // Regra de negócio: o atendimento não pode ser anterior ao nascimento do animal
+    $animalDao = new AnimalDao();
+    $animal = $animalDao->buscarPorIdQualquerDono($id_animal);
+
+    if (!$animal) {
+        header("Location: RegistrarAtendimento.php?erro=animal_nao_encontrado");
+        exit();
+    }
+
+    if (!empty($animal['data_nascimento']) && $data_atend < $animal['data_nascimento']) {
+        header("Location: RegistrarAtendimento.php?erro=data_invalida");
         exit();
     }
 

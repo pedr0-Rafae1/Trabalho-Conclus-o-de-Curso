@@ -25,7 +25,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Painel do Pecuarista - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Pecuarista.css?v=2.0">
+    <link rel="stylesheet" href="../CSS/Pecuarista.css?v=2.1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -41,7 +41,7 @@ include 'Cabecalho.php';
 
     <section class="produtor-metrics" aria-label="Resumo do rebanho">
         <article class="produtor-metric">
-            <div class="produtor-metric__icon"><i class="fas fa-cow"></i></div>
+            <div class="produtor-metric__icon"><i class="fas fa-plus-circle"></i></div>
             <div><strong><?= $totalAnimais ?></strong><span>Animais cadastrados</span></div>
         </article>
         <article class="produtor-metric">

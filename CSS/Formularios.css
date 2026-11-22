@@ -13,4 +13,19 @@ button[type="submit"] { width: 100%; margin-top: 18px; padding: 13px 18px; color
 button[type="submit"]:hover { background: var(--verde-escuro); transform: translateY(-1px); }
 .card-formulario a { display: inline-block; margin-top: 12px; color: var(--texto-secundario); font-weight: 600; text-align: center; }
 
+/* ===== Ações do formulário (Salvar + Cancelar) ===== */
+.form-acoes { display: flex; gap: 12px; margin-top: 18px; }
+.form-acoes button[type="submit"] { flex: 1; margin-top: 0; }
+.btn-cancelar { display: inline-flex; align-items: center; justify-content: center; padding: 13px 22px; color: var(--texto-secundario); background: transparent; border: 1px solid var(--borda); border-radius: 8px; font-weight: 700; text-decoration: none; transition: background .2s ease, color .2s ease; }
+.btn-cancelar:hover { color: var(--texto-principal); background: var(--bg-superficie); }
+
 @media (max-width: 600px) { .card-formulario { margin: 1rem; } }
+
+/* ===== Alertas padronizados ===== */
+.alerta-notificacao { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 14px 18px; border-radius: 10px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.alerta-sucesso { color: #e8f6ec; background: linear-gradient(135deg, #1b5e33, #2e7d46); border: 1px solid #3f9d5d; }
+.alerta-erro { color: #fdeaea; background: linear-gradient(135deg, #7a1f1f, #a83232); border: 1px solid #c05050; }
+.alerta-notificacao > i { font-size: 1.15rem; }
+.alerta-notificacao span { flex: 1; }
+.fechar-alerta { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: inherit; background: rgba(255,255,255,.15); border: 0; border-radius: 50%; cursor: pointer; transition: background .2s ease; }
+.fechar-alerta:hover { background: rgba(255,255,255,.32); }

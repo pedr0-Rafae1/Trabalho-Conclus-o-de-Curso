@@ -1,5 +1,8 @@
 @import url('Login.css');
 
+/* Transição suave de tema (reforço — Login.css já aplica via @import) */
+.auth-card, .auth-branding, .auth-form { transition: background-color 0.25s ease, color 0.25s ease; }
+
 .rotulo-tipo { display: block; margin: 16px 0 8px; color: var(--texto-principal); font-size: .86rem; font-weight: 700; }
 .opcoes-tipo { display: flex; gap: 10px; margin-bottom: 8px; }
 .opcao-tipo { flex: 1; }

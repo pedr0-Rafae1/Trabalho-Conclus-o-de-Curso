@@ -24,13 +24,30 @@ $hoje = date('Y-m-d');
 <main class="container mt-5">
     <div class="card card-formulario shadow-sm">
         <h2><i class="fas fa-plus-circle me-2"></i> Cadastro de Animal</h2>
+
+        <?php if (isset($_GET['erro'])): ?>
+            <div class="alerta-notificacao alerta-erro" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>
+                    <?php
+                        $mensagens = [
+                            'data_futura' => 'Não é permitido cadastrar uma data futura.',
+                            'brinco_invalido' => 'O brinco deve ser um número inteiro maior que zero.',
+                            'peso_invalido' => 'O peso deve ser um número maior que zero.',
+                            'altura_invalida' => 'A altura deve ser um número maior que zero.',
+                            'banco' => 'Erro ao salvar no banco de dados. Tente novamente.'
+                        ];
+                        echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Erro ao processar o cadastro.');
+                    ?>
+                </span>
+                <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+        <?php endif; ?>
+
         <form action="ProcessarAnimal.php" method="POST">
 
             <label for="brinco">Brinco (Identificação):</label>
-            <input type="text" id="brinco" name="brinco" class="form-control" placeholder="Ex: 1020" required>
-
-            <label for="idade">Idade (Meses):</label>
-            <input type="number" id="idade" name="idade" class="form-control" placeholder="Ex: 50" required>
+            <input type="number" id="brinco" name="brinco" class="form-control" placeholder="Ex: 1020" min="1" step="1" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
             <label for="especie">Espécie:</label>
             <input type="text" id="especie" name="especie" class="form-control" placeholder="Ex: Bovino" required>
@@ -42,10 +59,10 @@ $hoje = date('Y-m-d');
             <input type="date" id="data_nascimento" name="data_nascimento" class="form-control" max="<?= $hoje ?>" required>
 
             <label for="peso">Peso (kg):</label>
-            <input type="text" id="peso" name="peso" class="form-control" placeholder="Ex: 80.50" required>
+            <input type="number" id="peso" name="peso" class="form-control" placeholder="Ex: 80.50" min="0.01" step="0.01" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
             <label for="altura">Altura (m):</label>
-            <input type="text" id="altura" name="altura" class="form-control" placeholder="Ex: 2.00" required>
+            <input type="number" id="altura" name="altura" class="form-control" placeholder="Ex: 2.00" min="0.01" step="0.01" onkeydown="return ['e', 'E', '-', '+'].includes(event.key) ? false : true" required>
 
             <button type="submit">Cadastrar Animal</button>
         </form>

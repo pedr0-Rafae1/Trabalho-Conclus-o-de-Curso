@@ -1,30 +1,260 @@
-.container-ficha { width: min(100% - 32px, 1120px); margin: 2rem auto; }
-.ficha-header, .card-info, .bloco-historico { background: var(--bg-card); border: 1px solid var(--borda); border-radius: var(--raio); box-shadow: var(--sombra-suave); }
-.ficha-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px; margin-bottom: 22px; }
-.ficha-titulo h2 { margin: 0 0 4px; color: var(--texto-secundario); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
-.ficha-titulo h1 { margin: 0; color: var(--verde-escuro); font-size: clamp(1.35rem, 3vw, 2rem); }
-.ficha-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
-.btn-acao, .btn-voltar { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; color: #fff; background: var(--verde-primario); border-radius: 8px; font-size: .86rem; font-weight: 700; text-decoration: none; }
-.btn-secundario { background: #3279a8; }
-.btn-voltar { background: #64736b; }
-.btn-acao:hover, .btn-voltar:hover { color: #fff; filter: brightness(.92); }
-.btn-imprimir { border: 0; cursor: pointer; font: inherit; }
-.badge-status { display: inline-block; padding: 5px 10px; color: #fff; border-radius: 999px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
-.status-ativo { background: #2d9b62; } .status-vendido { background: #c57a28; } .status-abatido { background: #c44747; }
-.grid-informacoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 22px; }
-.card-info, .bloco-historico { padding: 22px; }
-.card-info h3, .bloco-historico h3 { margin: 0 0 14px; padding-bottom: 12px; color: var(--verde-escuro); border-bottom: 1px solid var(--borda); }
-.card-info ul { padding: 0; margin: 0; list-style: none; } .card-info li { padding: 10px 0; border-bottom: 1px solid var(--borda); }
-.resumo-metricas { display: flex; justify-content: space-around; gap: 16px; margin-top: 18px; }
-.metrica { text-align: center; } .metrica .label { display: block; color: var(--texto-secundario); font-size: .76rem; } .metrica .valor { color: var(--verde-escuro); font-size: 1.3rem; font-weight: 700; }
-.tabela-dados { width: 100%; border-collapse: collapse; } .tabela-dados th, .tabela-dados td { padding: 11px; border-bottom: 1px solid var(--borda); text-align: left; } .tabela-dados th { color: var(--verde-escuro); background: var(--bg-superficie); }
-.sem-registro { color: var(--texto-secundario); font-style: italic; } .destaque-venda { background: #fff8ed; border-left: 4px solid #c57a28; }
-@media (max-width: 760px) { .ficha-header { align-items: flex-start; flex-direction: column; } .grid-informacoes { grid-template-columns: 1fr; } }
+/* ============================================================
+   FichaAnimal.css — Ficha Individual do Animal (Dashboard Premium)
+   Compatível com dark mode via variáveis de Variaveis.css
+   ============================================================ */
 
+.container-ficha {
+    width: min(100% - 32px, 1120px);
+    margin: 2rem auto;
+}
+
+/* ---------- Header do animal ---------- */
+.ficha-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 22px;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    box-shadow: var(--sombra-suave);
+}
+
+.ficha-titulo h2 {
+    margin: 0 0 6px;
+    color: var(--texto-secundario);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.ficha-titulo h1 {
+    margin: 0 0 10px;
+    color: var(--texto-principal);
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.ficha-titulo h1 small {
+    color: var(--texto-secundario);
+    font-size: 0.6em;
+    font-weight: 500;
+}
+
+.ficha-produtor {
+    margin: 8px 0 0;
+    color: var(--texto-secundario);
+    font-size: 0.88rem;
+}
+
+/* Badge de status */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.status-ativo   { background: #2d9b62; box-shadow: 0 4px 12px rgba(45, 155, 98, 0.35); }
+.status-vendido { background: #c57a28; box-shadow: 0 4px 12px rgba(197, 122, 40, 0.35); }
+
+/* Ações */
+.ficha-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-acao, .btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 16px;
+    color: #fff;
+    background: var(--verde-primario);
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.btn-acao:hover {
+    background: var(--verde-escuro);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(36, 122, 72, 0.3);
+}
+
+.btn-secundario { background: transparent; color: var(--verde-primario); border: 1px solid var(--verde-primario); }
+.btn-secundario:hover { background: var(--verde-primario); color: #fff; }
+.btn-voltar { background: transparent; color: var(--texto-secundario); border: 1px solid var(--borda); }
+.btn-voltar:hover { background: var(--bg-superficie); color: var(--texto-principal); }
+
+/* ---------- Cards de informação ---------- */
+.grid-informacoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.card-info, .bloco-historico {
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-info:hover, .bloco-historico:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(17, 55, 35, 0.12);
+}
+
+.card-info h3, .bloco-historico h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    color: var(--texto-principal);
+    border-bottom: 1px solid var(--borda);
+    font-size: 1.02rem;
+}
+
+.card-info h3 i, .bloco-historico h3 i { color: var(--verde-primario); }
+
+/* Lista de identificação com ícones */
+.card-info ul { padding: 0; margin: 0; list-style: none; }
+
+.card-info li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+    color: var(--texto-principal);
+    font-size: 0.92rem;
+}
+
+.card-info li:last-child { border-bottom: 0; }
+
+.card-info li i {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--verde-primario);
+    background: var(--verde-suave);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.card-info li .rotulo { color: var(--texto-secundario); font-size: 0.78rem; display: block; }
+
+/* Métricas do resumo */
+.resumo-metricas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.metrica {
+    padding: 16px 10px;
+    text-align: center;
+    background: var(--bg-superficie);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+}
+
+.metrica i { color: var(--verde-primario); font-size: 1.2rem; margin-bottom: 8px; display: block; }
+.metrica .label { display: block; color: var(--texto-secundario); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.metrica .valor { color: var(--texto-principal); font-size: 1.25rem; font-weight: 700; }
+
+/* ---------- Históricos ---------- */
+.secao-historicos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tabela responsiva */
+.tabela-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tabela-dados {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabela-dados th {
+    padding: 11px 12px;
+    color: var(--verde-escuro);
+    background: var(--bg-superficie);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tabela-dados td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--borda);
+    color: var(--texto-principal);
+}
+
+/* Zebrado sutil + hover */
+.tabela-dados tbody tr:nth-child(even) { background: var(--bg-superficie); }
+.tabela-dados tbody tr { transition: background 0.2s ease; }
+.tabela-dados tbody tr:hover { background: var(--verde-suave); }
+
+.sem-registro { color: var(--texto-secundario); font-style: italic; }
+
+/* Bloco de venda */
+.destaque-venda {
+    border-left: 4px solid #c57a28;
+}
+
+.destaque-venda p { margin: 6px 0; color: var(--texto-principal); }
+
+/* ---------- Dark mode ---------- */
+html[data-theme="dark"] .tabela-dados th { color: #8fd6a8; }
+html[data-theme="dark"] .card-info li i { background: rgba(143, 214, 168, 0.12); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 760px) {
+    .ficha-header { flex-direction: column; align-items: flex-start; }
+    .ficha-acoes { justify-content: flex-start; }
+    .grid-informacoes { grid-template-columns: 1fr; }
+    .resumo-metricas { grid-template-columns: 1fr; }
+}
+
+/* ---------- Impressão ---------- */
 @media print {
-	body { background: #fff !important; }
-	.site-header, .site-footer, .ficha-acoes, .sidebar-pecuarista, .sidebar-veterinario { display: none !important; }
-	.container-ficha { width: 100%; max-width: none; margin: 0; padding: 0; }
-	.ficha-header, .card-info, .bloco-historico { box-shadow: none; break-inside: avoid; }
-	.ficha-header { border-color: #bbb; }
+    body { background: #fff !important; }
+    .site-header, .site-footer, .ficha-acoes, .sidebar-pecuarista, .sidebar-veterinario { display: none !important; }
+    .container-ficha { width: 100%; max-width: none; margin: 0; padding: 0; }
+    .ficha-header, .card-info, .bloco-historico { box-shadow: none; break-inside: avoid; }
 }

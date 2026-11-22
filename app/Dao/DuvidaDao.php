@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
 require_once __DIR__ . '/../Conexao/ConexaoBD.php';
 require_once __DIR__ . '/../Model/Duvida.php';
 
@@ -10,9 +11,10 @@ class DuvidaDao {
     }
 
     public function Cadastrar(Duvida $duvida) {
-        $sql = "INSERT INTO duvida (id_usuario, pergunta) VALUES (?, ?)";
+        $duvida->data_pergunta = date('Y-m-d H:i:s');
+        $sql = "INSERT INTO duvida (id_usuario, pergunta, data_pergunta) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("is", $duvida->id_usuario, $duvida->pergunta);
+        $stmt->bind_param("iss", $duvida->id_usuario, $duvida->pergunta, $duvida->data_pergunta);
         return $stmt->execute();
     }
 
@@ -44,8 +46,7 @@ class DuvidaDao {
         }
         return $lista;
     }
-
-    // Histórico de tudo que um veterinário já respondeu
+    
     public function ListarRespondidasPorVeterinario($id_veterinario) {
         $lista = [];
         $sql = "SELECT d.*, u.nome AS usuario_nome
@@ -76,11 +77,12 @@ class DuvidaDao {
             return false;
         }
 
+        $agora = date('Y-m-d H:i:s');
         $sql = "UPDATE duvida
-                SET resposta = ?, id_veterinario = ?, status = 'respondida', data_resposta = NOW()
+                SET resposta = ?, id_veterinario = ?, status = 'respondida', data_resposta = ?
                 WHERE id_duvida = ? AND status = 'pendente'";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("sii", $resposta, $id_veterinario, $id_duvida);
+        $stmt->bind_param("sisi", $resposta, $id_veterinario, $agora, $id_duvida);
         return $stmt->execute();
     }
 

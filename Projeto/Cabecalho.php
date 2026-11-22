@@ -16,20 +16,19 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function () {
+            const tema = localStorage.getItem('rpp-tema') === 'dark' ? 'dark' : 'light';
+            document.documentElement.dataset.theme = tema;
+            document.documentElement.style.backgroundColor = tema === 'dark' ? '#111b16' : '#f4f8f4';
+        })();
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/Variaveis.css?v=2.0">
-    <script>
-        (function () {
-            const temaSalvo = localStorage.getItem('rpp-tema');
-            const tema = temaSalvo === 'dark' ? 'dark' : 'light';
-            document.documentElement.dataset.theme = tema;
-        })();
-    </script>
     <style>
         header {
             background-color: #2e7d32; 
@@ -43,6 +42,12 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             align-items: center;
             padding: 10px 0;
             min-height: 72px;
+        }
+
+        .esquerda {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .logo-link {
@@ -236,19 +241,18 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
                 <i class="fas fa-chart-pie" aria-hidden="true"></i><span>Meu painel</span>
             </a>
             <span class="sidebar-section">Manejo</span>
-            <a href="CadastroAnimal.php" class="sidebar-link"><i class="fas fa-cow" aria-hidden="true"></i><span>Cadastrar animal</span></a>
-            <a href="ControlePeso.php" class="sidebar-link"><i class="fas fa-weight" aria-hidden="true"></i><span>Controle de peso</span></a>
-            <a href="RegistrarVacinacao.php" class="sidebar-link"><i class="fas fa-syringe" aria-hidden="true"></i><span>Registrar vacinação</span></a>
-            <a href="RegistrarVenda.php" class="sidebar-link"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i><span>Registrar venda</span></a>
+            <a href="CadastroAnimal.php" class="sidebar-link <?= $paginaAtual === 'CadastroAnimal.php' ? 'ativo' : '' ?>"><i class="fas fa-plus-circle" aria-hidden="true"></i><span>Cadastrar animal</span></a>
+            <a href="ControlePeso.php" class="sidebar-link <?= $paginaAtual === 'ControlePeso.php' ? 'ativo' : '' ?>"><i class="fas fa-weight" aria-hidden="true"></i><span>Controle de peso</span></a>
+            <a href="RegistrarVacinacao.php" class="sidebar-link <?= $paginaAtual === 'RegistrarVacinacao.php' ? 'ativo' : '' ?>"><i class="fas fa-syringe" aria-hidden="true"></i><span>Registrar vacinação</span></a>
+            <a href="RegistrarVenda.php" class="sidebar-link <?= $paginaAtual === 'RegistrarVenda.php' ? 'ativo' : '' ?>"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i><span>Registrar venda</span></a>
             <span class="sidebar-section">Acompanhamento</span>
-            <a href="ListaAnimal.php" class="sidebar-link"><i class="fas fa-list" aria-hidden="true"></i><span>Meu rebanho</span></a>
-            <a href="ListaRegistroPeso.php" class="sidebar-link"><i class="fas fa-chart-line" aria-hidden="true"></i><span>Histórico de pesos</span></a>
-            <a href="ListaRegistroVacinacao.php" class="sidebar-link"><i class="fas fa-notes-medical" aria-hidden="true"></i><span>Histórico de vacinas</span></a>
-            <a href="HistoricoVenda.php" class="sidebar-link"><i class="fas fa-receipt" aria-hidden="true"></i><span>Histórico de vendas</span></a>
-            <a href="HistoricoAtendimento.php" class="sidebar-link"><i class="fas fa-stethoscope" aria-hidden="true"></i><span>Atendimentos</span></a>
+            <a href="ListaAnimal.php" class="sidebar-link <?= $paginaAtual === 'ListaAnimal.php' ? 'ativo' : '' ?>"><i class="fas fa-list" aria-hidden="true"></i><span>Meu rebanho</span></a>
+            <a href="ListaRegistroPeso.php" class="sidebar-link <?= $paginaAtual === 'ListaRegistroPeso.php' ? 'ativo' : '' ?>"><i class="fas fa-chart-line" aria-hidden="true"></i><span>Histórico de pesos</span></a>
+            <a href="ListaRegistroVacinacao.php" class="sidebar-link <?= $paginaAtual === 'ListaRegistroVacinacao.php' ? 'ativo' : '' ?>"><i class="fas fa-notes-medical" aria-hidden="true"></i><span>Histórico de vacinas</span></a>
+            <a href="HistoricoVenda.php" class="sidebar-link <?= $paginaAtual === 'HistoricoVenda.php' ? 'ativo' : '' ?>"><i class="fas fa-receipt" aria-hidden="true"></i><span>Histórico de vendas</span></a>
             <span class="sidebar-section">Suporte</span>
-            <a href="CanalDuvidas.php" class="sidebar-link"><i class="fas fa-comment-medical" aria-hidden="true"></i><span>Falar com veterinário</span></a>
-            <a href="SobreNos.php" class="sidebar-link"><i class="fas fa-circle-info" aria-hidden="true"></i><span>Sobre o projeto</span></a>
+            <a href="CanalDuvidas.php" class="sidebar-link <?= $paginaAtual === 'CanalDuvidas.php' ? 'ativo' : '' ?>"><i class="fas fa-comment-medical" aria-hidden="true"></i><span>Falar com veterinário</span></a>
+            <a href="SobreNos.php" class="sidebar-link <?= $paginaAtual === 'SobreNos.php' ? 'ativo' : '' ?>"><i class="fas fa-circle-info" aria-hidden="true"></i><span>Sobre o projeto</span></a>
         </nav>
     </aside>
 <?php else: ?>
@@ -266,12 +270,11 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
                 <i class="fas fa-chart-line" aria-hidden="true"></i><span>Painel profissional</span>
             </a>
             <span class="sidebar-section">Atuação</span>
-            <a href="RegistrarAtendimento.php" class="sidebar-link"><i class="fas fa-stethoscope" aria-hidden="true"></i><span>Registrar atendimento</span></a>
-            <a href="HistoricoAtendimento.php" class="sidebar-link"><i class="fas fa-notes-medical" aria-hidden="true"></i><span>Meus atendimentos</span></a>
-            <a href="CanalDuvidas.php" class="sidebar-link"><i class="fas fa-comments" aria-hidden="true"></i><span>Canal de dúvidas</span></a>
+            <a href="RegistrarAtendimento.php" class="sidebar-link <?= $paginaAtual === 'RegistrarAtendimento.php' ? 'ativo' : '' ?>"><i class="fas fa-stethoscope" aria-hidden="true"></i><span>Registrar atendimento</span></a>
+            <a href="HistoricoAtendimento.php" class="sidebar-link <?= $paginaAtual === 'HistoricoAtendimento.php' ? 'ativo' : '' ?>"><i class="fas fa-notes-medical" aria-hidden="true"></i><span>Meus atendimentos</span></a>
+            <a href="CanalDuvidas.php" class="sidebar-link <?= $paginaAtual === 'CanalDuvidas.php' ? 'ativo' : '' ?>"><i class="fas fa-comments" aria-hidden="true"></i><span>Canal de dúvidas</span></a>
             <span class="sidebar-section">Conta</span>
-            <a href="MeuPerfil.php" class="sidebar-link"><i class="fas fa-user-circle" aria-hidden="true"></i><span>Meu perfil</span></a>
-            <a href="SobreNos.php" class="sidebar-link"><i class="fas fa-circle-info" aria-hidden="true"></i><span>Sobre o projeto</span></a>
+            <a href="SobreNos.php" class="sidebar-link <?= $paginaAtual === 'SobreNos.php' ? 'ativo' : '' ?>"><i class="fas fa-circle-info" aria-hidden="true"></i><span>Sobre o projeto</span></a>
         </nav>
     </aside>
 <?php endif; ?>
@@ -279,15 +282,14 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
 <header class="site-header">
     <div class="header-container container">
         <div class="esquerda">
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
             <a href="<?= ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php' ?>" class="logo-link d-flex align-items-center">
-                <i class="fas fa-leaf me-2"></i> <h1>Pecuária em Rede</h1>
+                <i class="fas fa-cow me-2"></i> <h1>Pecuária em Rede</h1>
             </a>
         </div>
 
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-        
         <div class="direita">
             <button class="theme-toggle" type="button" id="themeToggle" title="Alternar modo claro e escuro" aria-label="Alternar modo claro e escuro">
                 <i class="fas fa-moon" aria-hidden="true"></i>
@@ -344,8 +346,14 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
         const sidebarOverlay = document.getElementById('sidebarOverlay');
 
         menuToggle.addEventListener('click', function () {
-            const aberto = document.body.classList.toggle('sidebar-aberto');
-            menuToggle.setAttribute('aria-expanded', aberto);
+            const ehMobile = window.matchMedia('(max-width: 720px)').matches;
+            if (ehMobile) {
+                const aberto = document.body.classList.toggle('sidebar-aberto');
+                menuToggle.setAttribute('aria-expanded', aberto);
+            } else {
+                const fechada = document.body.classList.toggle('sidebar-fechada');
+                menuToggle.setAttribute('aria-expanded', !fechada);
+            }
         });
 
         [sidebarClose, sidebarOverlay].forEach(function (elemento) {
@@ -386,6 +394,22 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
         const temaAtual = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
         document.body.dataset.theme = temaAtual;
         atualizarBotaoTema(temaAtual);
+        document.body.classList.add('transicao-tema');
+
+        // Sistema de fechamento de alertas/notificações
+        document.querySelectorAll('.fechar-alerta').forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                const alerta = botao.closest('.alerta-notificacao, .alert');
+                if (alerta) {
+                    alerta.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    alerta.style.opacity = '0';
+                    alerta.style.transform = 'translateY(-10px)';
+                    setTimeout(function () {
+                        alerta.remove();
+                    }, 300);
+                }
+            });
+        });
 
         if (themeToggle) {
             themeToggle.addEventListener('click', function() {

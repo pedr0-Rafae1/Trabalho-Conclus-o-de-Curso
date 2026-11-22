@@ -1,0 +1,9 @@
+# Credenciais da API e Banco de Dados
+app/Config/brevo.php
+app/Conexao/ConexaoBD.php
+
+# Senhas de acesso FTP/SFTP da hospedagem
+.vscode/sftp.json
+
+# Dependências do Composer (podem ser baixadas via composer.json)
+vendor/

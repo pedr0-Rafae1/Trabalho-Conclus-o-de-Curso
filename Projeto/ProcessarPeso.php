@@ -8,22 +8,42 @@ if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
 
 require_once __DIR__ . '/../app/Model/RegistroPeso.php'; 
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
+require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
-$id_dono = $_SESSION['usuario_id']; 
-
-$hoje = date('Y-m-d');
-
-if ($data > $hoje) {
-    echo "Não pode cadastrar uma data futura";
-    exit();
-}
+$id_dono = $_SESSION['id_usuario']; 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $id_animal  = $_POST['id_animal'];
+    $id_animal  = (int) ($_POST['id_animal'] ?? 0);
     $peso_anterior  = $_POST['peso_anterior'];
-    $peso_atual = $_POST['peso_atual'];
+    $peso_atual = filter_input(INPUT_POST, 'peso_atual', FILTER_VALIDATE_FLOAT);
     $data = $_POST['data_pessagem'];
+
+    $hoje = date('Y-m-d');
+
+    if ($data > $hoje) {
+        header("Location: ControlePeso.php?erro=data_futura");
+        exit();
+    }
+
+    if ($peso_atual === false || $peso_atual === null || $peso_atual <= 0) {
+        header("Location: ControlePeso.php?erro=peso_invalido");
+        exit();
+    }
+
+    // Regra de negócio: a pesagem não pode ser anterior ao nascimento do animal
+    $animalDao = new AnimalDao();
+    $animal = $animalDao->buscarPorIdEUsuario($id_animal, $id_dono);
+
+    if (!$animal) {
+        header("Location: ControlePeso.php?erro=animal_nao_encontrado");
+        exit();
+    }
+
+    if (!empty($animal['data_nascimento']) && $data < $animal['data_nascimento']) {
+        header("Location: ControlePeso.php?erro=data_anterior_nascimento");
+        exit();
+    }
     
 
     $registrarpeso = new RegistroPeso($id_animal, $peso_anterior, $peso_atual, $data);
@@ -31,14 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dao = new RegistroPesoDAO();
     
     if ($dao->Cadastrar($registrarpeso)) {
-
-        echo "<script>
-                alert('registro realizado com sucesso!');
-                window.location.href = 'ListaRegistroPeso.php'; 
-              </script>";
+        header("Location: ListaRegistroPeso.php?sucesso=cadastrado");
+        exit();
     } else {
-
-        echo "Erro ao salvar no banco de dados.";
+        header("Location: ControlePeso.php?erro=banco");
+        exit();
     }
 } else {
     

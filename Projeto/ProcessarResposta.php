@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Sao_Paulo');
+
 include_once 'Sessao.php';
 require_once __DIR__ . '/../app/Dao/DuvidaDao.php';
 

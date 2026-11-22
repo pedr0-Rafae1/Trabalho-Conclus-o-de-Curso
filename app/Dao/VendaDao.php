@@ -36,7 +36,16 @@ class VendaDao {
         $stmtUpdate->bind_param("ii", $venda->id_animal, $id_usuario);
         $okUpdate = $stmtUpdate->execute();
 
-        if ($okVenda && $okUpdate) {
+        // Limpeza lógica: histórico de peso e vacinação do animal vendido
+        $stmtPeso = $this->db->prepare("DELETE FROM registropeso WHERE id_animal = ?");
+        $stmtPeso->bind_param("i", $venda->id_animal);
+        $okPeso = $stmtPeso->execute();
+
+        $stmtVacina = $this->db->prepare("DELETE FROM registrovacinacao WHERE id_animal = ?");
+        $stmtVacina->bind_param("i", $venda->id_animal);
+        $okVacina = $stmtVacina->execute();
+
+        if ($okVenda && $okUpdate && $okPeso && $okVacina) {
             $this->db->commit();
             return true;
         }

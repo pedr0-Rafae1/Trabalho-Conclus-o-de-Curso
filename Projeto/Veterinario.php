@@ -75,21 +75,6 @@ include 'Cabecalho.php';
                 <?php endif; ?>
             </div>
         </article>
-
-        <aside class="vet-panel">
-            <header class="vet-panel__header">
-                <h2><i class="fas fa-bolt me-2"></i>Ações rápidas</h2>
-            </header>
-            <div class="vet-panel__body vet-actions">
-                <?php if ($ehHomologado): ?>
-                    <a class="vet-action" href="RegistrarAtendimento.php"><i class="fas fa-plus-circle"></i>Registrar atendimento</a>
-                    <a class="vet-action" href="CanalDuvidas.php"><i class="fas fa-comments"></i>Responder dúvidas</a>
-                <?php else: ?>
-                    <p class="vet-empty">As ações profissionais serão liberadas após a homologação da sua conta.</p>
-                <?php endif; ?>
-                <a class="vet-action" href="MeuPerfil.php"><i class="fas fa-user-circle"></i>Meu perfil</a>
-            </div>
-        </aside>
     </section>
 
     <section class="vet-grid vet-grid-bottom">
@@ -113,16 +98,6 @@ include 'Cabecalho.php';
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
-            </div>
-        </article>
-
-        <article class="vet-panel vet-profile-card">
-            <header class="vet-panel__header">
-                <h2><i class="fas fa-id-badge me-2"></i>Perfil profissional</h2>
-            </header>
-            <div class="vet-panel__body">
-                <p>Revise seus dados, foto e informações de acesso para manter seu perfil atualizado.</p>
-                <a class="vet-action" href="MeuPerfil.php"><i class="fas fa-user-pen"></i>Editar meu perfil</a>
             </div>
         </article>
     </section>

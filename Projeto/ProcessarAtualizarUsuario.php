@@ -5,9 +5,22 @@ require_once __DIR__ . '/../app/Dao/UsuarioDao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_SESSION['id_usuario'];
-    $nome = $_POST['nome'] ?? '';
-    $idade = $_POST['idade'] ?? 0;
-    $novaSenha = $_POST['senha'] ?? null;
+    $nome = trim($_POST['nome'] ?? '');
+    $idade = filter_input(INPUT_POST, 'idade', FILTER_VALIDATE_INT);
+    $novaSenha = $_POST['senha'] ?? '';
+    $senhaConfirmacao = $_POST['senha_confirmacao'] ?? '';
+
+    // Idade deve estar entre 16 e 120 anos
+    if ($idade === false || $idade === null || $idade < 16 || $idade > 120) {
+        header("Location: MeuPerfil.php?erro=idade_invalida");
+        exit();
+    }
+
+    // Se informou nova senha, a confirmação precisa ser igual
+    if ($novaSenha !== '' && $novaSenha !== $senhaConfirmacao) {
+        header("Location: MeuPerfil.php?erro=senhas_diferentes");
+        exit();
+    }
 
     $usuarioDao = new UsuarioDao();
     $dadosAtuais = $usuarioDao->BuscarPorId($id_usuario);
