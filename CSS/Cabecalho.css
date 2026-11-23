@@ -32,6 +32,9 @@ header.site-header {
 .notificacao-cabecalho { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 14px; color: var(--texto-principal); background: var(--bg-superficie); border-bottom: 1px solid var(--borda); font-size: .8rem; }
 .notificacao-cabecalho button { padding: 0; color: var(--verde-primario); background: transparent; border: 0; font-size: .7rem; cursor: pointer; }
 .notificacao-item { display: flex; gap: 10px; padding: 13px 14px; color: var(--texto-principal); border-bottom: 1px solid var(--borda); font-size: .75rem; }
+.notificacao-item-link { text-decoration: none; transition: background-color .18s ease; }
+.notificacao-item-link:hover { color: var(--texto-principal); background: var(--bg-superficie); }
+.notificacao-item-link:focus-visible { outline: 2px solid var(--verde-primario); outline-offset: -2px; }
 .notificacao-item.nao-lida { background: var(--verde-suave); }
 .notificacao-item > i { margin-top: 3px; color: var(--verde-primario); }
 .notificacao-item > div { min-width: 0; flex: 1; }

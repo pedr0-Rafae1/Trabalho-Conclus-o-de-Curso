@@ -137,8 +137,21 @@ CREATE TABLE IF NOT EXISTS notificacao (
     tipo VARCHAR(50) NOT NULL,
     titulo VARCHAR(140) NOT NULL,
     mensagem VARCHAR(500) NOT NULL,
+    id_referencia INT UNSIGNED NULL,
     lida TINYINT(1) NOT NULL DEFAULT 0,
     criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_notificacao_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    INDEX idx_notificacao_usuario_lida (id_usuario, lida)
+    INDEX idx_notificacao_usuario_lida (id_usuario, lida),
+    INDEX idx_notificacao_referencia (id_referencia)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS duvida_mensagem (
+    id_mensagem INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_duvida INT UNSIGNED NOT NULL,
+    id_usuario INT UNSIGNED NOT NULL,
+    mensagem TEXT NOT NULL,
+    enviado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_duvida_mensagem_duvida FOREIGN KEY (id_duvida) REFERENCES duvida(id_duvida) ON DELETE CASCADE,
+    CONSTRAINT fk_duvida_mensagem_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    INDEX idx_duvida_mensagem_conversa (id_duvida, enviado_em)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

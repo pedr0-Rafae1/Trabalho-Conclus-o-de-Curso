@@ -13,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Links e folha de estilos partem de diretórios diferentes em cada página.
 $paginaNoProjeto = basename(dirname($_SERVER['SCRIPT_FILENAME'])) === 'Projeto';
 $rodapeBase = $paginaNoProjeto ? '' : 'Projeto/';
-$rodapeCss = $paginaNoProjeto ? '../CSS/Rodape.css?v=1.0' : 'CSS/Rodape.css?v=1.0';
+$rodapeCss = $paginaNoProjeto ? '../CSS/Rodape.css?v=1.1' : 'CSS/Rodape.css?v=1.1';
 
 $rodapeLogado = isset($_SESSION['id_usuario']);
 $rodapeTipo   = $_SESSION['tipo_usuario'] ?? 'Pecuarista';
@@ -21,12 +21,15 @@ $rodapeTipo   = $_SESSION['tipo_usuario'] ?? 'Pecuarista';
 if ($rodapeLogado) {
     // O painel varia conforme o tipo de conta; os documentos abrem em nova guia.
     $linkInicial    = $rodapeBase . ($rodapeTipo === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php');
-    $alvoTermos     = ' target="_blank" rel="noopener"';
+    $linkPainel     = $linkInicial;
+    $linkDuvidas    = $rodapeBase . 'CanalDuvidas.php';
 } else {
-    // Visitantes permanecem na mesma guia e voltam para a página inicial.
+    // Visitantes precisam autenticar-se para acessar áreas restritas.
     $linkInicial    = ($rodapeBase === '') ? '../index.php' : 'index.php';
-    $alvoTermos     = '';
+    $linkPainel     = $rodapeBase . 'login.php?motivo=acesso_restrito';
+    $linkDuvidas    = $linkPainel;
 }
+$alvoInformativo = ' target="_blank" rel="noopener noreferrer"';
 ?>
 <link rel="stylesheet" href="<?= htmlspecialchars($rodapeCss, ENT_QUOTES, 'UTF-8') ?>">
 <footer class="site-footer">
@@ -42,18 +45,19 @@ if ($rodapeLogado) {
         <nav class="site-footer__col" aria-label="Navegação">
             <h4 class="site-footer__titulo">Navegação</h4>
             <a href="<?= $linkInicial ?>">Início</a>
+            <a href="<?= htmlspecialchars($linkPainel, ENT_QUOTES, 'UTF-8') ?>">Acessar painel</a>
         </nav>
 
         <nav class="site-footer__col" aria-label="Institucional">
             <h4 class="site-footer__titulo">Institucional</h4>
-            <a href="<?= $rodapeBase ?>SobreNos.php">Sobre Nós</a>
-            <a href="<?= $rodapeBase ?>TermosDeUso.php"<?= $alvoTermos ?>>Termos de Uso</a>
-            <a href="<?= $rodapeBase ?>TermosDeUso.php#privacidade"<?= $alvoTermos ?>>Política de Privacidade</a>
+            <a href="<?= $rodapeBase ?>SobreNos.php"<?= $alvoInformativo ?>>Sobre Nós</a>
+            <a href="<?= $rodapeBase ?>TermosDeUso.php"<?= $alvoInformativo ?>>Termos de Uso</a>
+            <a href="<?= $rodapeBase ?>TermosDeUso.php#privacidade"<?= $alvoInformativo ?>>Política de Privacidade</a>
         </nav>
 
         <nav class="site-footer__col" aria-label="Suporte">
             <h4 class="site-footer__titulo">Suporte</h4>
-            <a href="<?= $rodapeBase ?>CanalDuvidas.php">Canal de Dúvidas</a>
+            <a href="<?= htmlspecialchars($linkDuvidas, ENT_QUOTES, 'UTF-8') ?>">Canal de Dúvidas</a>
         </nav>
 
     </div>
@@ -63,7 +67,7 @@ if ($rodapeLogado) {
         <span>&copy; 2026 Pecuária em Rede TCC - IFRN Campus Nova Cruz</span>
         <div class="site-footer__social" aria-label="Redes e contato">
             <a href="mailto:contato@pecuariaemrede.com" title="E-mail" aria-label="E-mail"><i class="fas fa-envelope" aria-hidden="true"></i></a>
-            <a href="#" title="GitHub do projeto" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+            <a href="https://github.com/pedr0-Rafae1/Trabalho-Conclus-o-de-Curso" target="_blank" rel="noopener noreferrer" title="GitHub do projeto" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
         </div>
     </div>
 

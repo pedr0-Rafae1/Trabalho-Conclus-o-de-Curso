@@ -4,11 +4,17 @@ date_default_timezone_set('America/Sao_Paulo');
 
 include_once 'Sessao.php';
 require_once __DIR__ . '/../app/Dao/DuvidaDao.php';
+require_once __DIR__ . '/../app/Dao/NotificacaoDao.php';
 require_once __DIR__ . '/../app/Model/Duvida.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $pergunta = trim($_POST['pergunta'] ?? '');
+    $perguntaRecebida = $_POST['pergunta'] ?? '';
+    if (!is_string($perguntaRecebida)) {
+        header("Location: CanalDuvidas.php?erro=vazio");
+        exit();
+    }
+    $pergunta = trim($perguntaRecebida);
 
     if ($pergunta === '') {
         header("Location: CanalDuvidas.php?erro=vazio");
@@ -18,7 +24,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $duvida = new Duvida($_SESSION['id_usuario'], $pergunta);
 
     $dao = new DuvidaDao();
-    if ($dao->Cadastrar($duvida)) {
+    $idDuvida = $dao->Cadastrar($duvida);
+    if ($idDuvida) {
+        $notificacaoDao = new NotificacaoDao();
+        foreach ($dao->ListarIdsVeterinariosHomologados() as $idVeterinario) {
+            if (!$notificacaoDao->Criar(
+                $idVeterinario,
+                'duvida_nova',
+                'Nova dúvida no Canal de Dúvidas',
+                ($_SESSION['usuario_nome'] ?? 'Um pecuarista') . ' enviou uma nova dúvida.',
+                $idDuvida
+            )) {
+                error_log('Falha ao criar notificação de nova dúvida para o veterinário ' . $idVeterinario . '.');
+            }
+        }
         header("Location: CanalDuvidas.php?sucesso=1");
         exit();
     } else {

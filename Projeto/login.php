@@ -55,6 +55,11 @@
             <span>Senha redefinida com sucesso! Faça login com a nova senha.</span>
             <button type="button" class="auth-alert-fechar" aria-label="Fechar"><i class="fas fa-times"></i></button>
           </div>
+        <?php elseif (isset($_GET['motivo']) && $_GET['motivo'] === 'acesso_restrito'): ?>
+          <div class="auth-alert" role="alert">
+            <span>Entre na sua conta ou cadastre-se para acessar esse recurso.</span>
+            <button type="button" class="auth-alert-fechar" aria-label="Fechar"><i class="fas fa-times"></i></button>
+          </div>
         <?php elseif (isset($_GET['erro'])): ?>
           <div class="auth-alert" role="alert">
             <span>

@@ -38,6 +38,9 @@
 .lista-painel-body.sem-padding { padding: 0 !important; }
 .lista-registro { padding: 14px; margin-bottom: 12px; color: var(--texto-principal); background: var(--bg-superficie); border: 1px solid var(--borda); border-radius: 9px; }
 .lista-registro p { color: var(--texto-principal); }
+.duvida-mensagem { margin-top: 12px; padding: 11px 13px; background: var(--bg-card); border: 1px solid var(--borda); border-left: 3px solid var(--verde-primario); border-radius: 8px; }
+.duvida-mensagem p:first-child { color: var(--texto-secundario); font-size: .75rem; }
+.duvida-mensagem-produtor { border-left-color: #488ac7; }
 .lista-vazia i { color: var(--verde-primario) !important; opacity: .7; }
 .id-referencia { color: var(--texto-secundario); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 700; }
 .tabela-responsiva-custom, .lista-tabela-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }

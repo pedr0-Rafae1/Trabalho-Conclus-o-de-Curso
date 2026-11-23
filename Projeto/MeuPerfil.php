@@ -15,7 +15,7 @@ $temFoto = !empty($usuario['foto_perfil']) && file_exists(__DIR__ . '/../imagem/
     <title>Meu Perfil - Pecuária em Rede</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/Variaveis.css?v=1.5">
-    <link rel="stylesheet" href="../CSS/MeuPerfil.css?v=2.0">
+    <link rel="stylesheet" href="../CSS/MeuPerfil.css?v=2.1">
     <script>
         (function () {
             const tema = localStorage.getItem('rpp-tema') === 'dark' ? 'dark' : 'light';
@@ -81,6 +81,10 @@ $temFoto = !empty($usuario['foto_perfil']) && file_exists(__DIR__ . '/../imagem/
                         $mensagens = [
                             'idade_invalida' => 'A idade deve estar entre 16 e 120 anos.',
                             'senhas_diferentes' => 'As senhas não conferem. Nada foi alterado.',
+                            'exclusao_senha' => 'Informe sua senha atual e a confirmação para excluir a conta.',
+                            'exclusao_senhas_diferentes' => 'As senhas informadas não coincidem. A conta não foi excluída.',
+                            'exclusao_senha_incorreta' => 'A senha atual está incorreta. A conta não foi excluída.',
+                            'exclusao' => 'Não foi possível excluir a conta. Tente novamente.',
                         ];
                         echo htmlspecialchars($mensagens[$_GET['erro']] ?? 'Não foi possível atualizar. Verifique os campos.');
                     ?>
@@ -188,18 +192,28 @@ $temFoto = !empty($usuario['foto_perfil']) && file_exists(__DIR__ . '/../imagem/
                     <h4><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> Zona de perigo</h4>
                     <p>A exclusão é permanente e remove os dados da sua conta.</p>
                 </div>
-                <form action="ExcluirConta.php" method="POST" id="formExcluirConta">
-                    <button type="submit" class="btn-excluir">
-                        <i class="fas fa-trash-alt"></i> Excluir Conta
-                    </button>
-                </form>
-                <script>
-                    document.getElementById('formExcluirConta').addEventListener('submit', function (event) {
-                        if (!confirm('Tem certeza absoluta que deseja excluir sua conta permanentemente? Esta ação não pode ser desfeita.')) {
-                            event.preventDefault();
-                        }
-                    });
-                </script>
+                <button type="button" class="btn-excluir" id="abrirModalExclusao">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i> Excluir Conta
+                </button>
+            </div>
+
+            <div class="confirmacao-modal" id="modalExclusaoConta" role="dialog" aria-modal="true" aria-labelledby="tituloModalExclusao" <?= in_array($_GET['erro'] ?? '', ['exclusao_senha', 'exclusao_senhas_diferentes', 'exclusao_senha_incorreta'], true) ? '' : 'hidden' ?>>
+                <div class="confirmacao-modal__painel">
+                    <button type="button" class="confirmacao-modal__fechar" id="fecharModalExclusao" aria-label="Fechar confirmação">&times;</button>
+                    <h2 id="tituloModalExclusao"><i class="fas fa-shield-halved" aria-hidden="true"></i> Confirmar exclusão</h2>
+                    <p>Para excluir permanentemente sua conta, informe sua senha atual duas vezes.</p>
+                    <form action="ExcluirConta.php" method="POST" id="formExcluirConta">
+                        <label for="senhaExclusao">Digite sua senha atual</label>
+                        <input type="password" id="senhaExclusao" name="senha" autocomplete="current-password" required>
+                        <label for="confirmarSenhaExclusao">Confirme sua senha</label>
+                        <input type="password" id="confirmarSenhaExclusao" name="confirmar_senha" autocomplete="current-password" required>
+                        <small class="confirmacao-modal__mensagem" id="mensagemSenhaExclusao" aria-live="polite"></small>
+                        <div class="confirmacao-modal__acoes">
+                            <button type="button" class="confirmacao-modal__cancelar" id="cancelarModalExclusao">Cancelar</button>
+                            <button type="submit" class="btn-excluir" id="confirmarExclusao" disabled>Excluir permanentemente</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
         </div>
@@ -210,6 +224,42 @@ $temFoto = !empty($usuario['foto_perfil']) && file_exists(__DIR__ . '/../imagem/
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         inicializarThemeToggle('perfilThemeToggle');
+    });
+
+    const modalExclusao = document.getElementById('modalExclusaoConta');
+    const abrirModalExclusao = document.getElementById('abrirModalExclusao');
+    const fecharModalExclusao = document.getElementById('fecharModalExclusao');
+    const cancelarModalExclusao = document.getElementById('cancelarModalExclusao');
+    const senhaExclusao = document.getElementById('senhaExclusao');
+    const confirmarSenhaExclusao = document.getElementById('confirmarSenhaExclusao');
+    const botaoConfirmarExclusao = document.getElementById('confirmarExclusao');
+    const mensagemSenhaExclusao = document.getElementById('mensagemSenhaExclusao');
+
+    function atualizarConfirmacaoExclusao() {
+        const preenchidas = senhaExclusao.value.length > 0 && confirmarSenhaExclusao.value.length > 0;
+        const iguais = senhaExclusao.value === confirmarSenhaExclusao.value;
+        botaoConfirmarExclusao.disabled = !preenchidas || !iguais;
+        mensagemSenhaExclusao.textContent = preenchidas && !iguais ? 'As senhas precisam ser iguais.' : '';
+    }
+
+    function fecharConfirmacaoExclusao() {
+        modalExclusao.hidden = true;
+        abrirModalExclusao.focus();
+    }
+
+    abrirModalExclusao.addEventListener('click', function () {
+        modalExclusao.hidden = false;
+        senhaExclusao.focus();
+    });
+    fecharModalExclusao.addEventListener('click', fecharConfirmacaoExclusao);
+    cancelarModalExclusao.addEventListener('click', fecharConfirmacaoExclusao);
+    senhaExclusao.addEventListener('input', atualizarConfirmacaoExclusao);
+    confirmarSenhaExclusao.addEventListener('input', atualizarConfirmacaoExclusao);
+    modalExclusao.addEventListener('click', function (event) {
+        if (event.target === modalExclusao) fecharConfirmacaoExclusao();
+    });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !modalExclusao.hidden) fecharConfirmacaoExclusao();
     });
 
     const toggleSenha = document.getElementById('toggleSenha');

@@ -12,7 +12,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Canal de Dúvidas - Pecuária em Rede</title>
-    <link rel="stylesheet" href="/CSS/Lista.css?v=2.0">
+    <link rel="stylesheet" href="/CSS/Lista.css?v=2.1">
 </head>
 
 <main class="lista-conteudo">
@@ -20,13 +20,25 @@ include 'Cabecalho.php';
     <?php if (isset($_GET['sucesso'])): ?>
         <div class="alerta-notificacao alerta-sucesso" role="alert">
             <i class="fas fa-check-circle"></i>
-            <span><?= $_GET['sucesso'] === 'respondido' ? 'Resposta enviada com sucesso!' : 'Dúvida enviada com sucesso!' ?></span>
+            <span><?php
+                $mensagensSucesso = [
+                    'respondido' => 'Resposta enviada com sucesso!',
+                    'mensagem' => 'Mensagem enviada com sucesso!',
+                ];
+                echo htmlspecialchars($mensagensSucesso[$_GET['sucesso']] ?? 'Dúvida enviada com sucesso!');
+            ?></span>
             <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php elseif (isset($_GET['erro'])): ?>
         <div class="alerta-notificacao alerta-erro" role="alert">
             <i class="fas fa-exclamation-circle"></i>
-            <span><?= $_GET['erro'] === 'nao_autorizado' ? 'Somente um veterinário homologado pode responder dúvidas (RN04).' : 'Não foi possível concluir a ação. Verifique os campos.' ?></span>
+            <span><?php
+                $mensagensErro = [
+                    'nao_autorizado' => 'Você não tem permissão para responder a esta conversa.',
+                    'mensagem_invalida' => 'Escreva uma mensagem antes de enviar.',
+                ];
+                echo htmlspecialchars($mensagensErro[$_GET['erro']] ?? 'Não foi possível concluir a ação. Verifique os campos.');
+            ?></span>
             <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php endif; ?>
@@ -67,14 +79,26 @@ include 'Cabecalho.php';
                 <?php if (empty($minhasDuvidas)): ?>
                     <p class="text-muted mb-0">Você ainda não enviou nenhuma dúvida.</p>
                 <?php else: foreach ($minhasDuvidas as $d): ?>
-                    <div class="lista-registro">
+                    <div class="lista-registro" id="duvida-<?= (int) $d->id_duvida ?>">
                         <p class="mb-1"><strong>Pergunta</strong> (<?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>):</p>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
                         <?php if ($d->status === 'respondida'): ?>
                             <hr>
-                            <p class="mb-1 text-success"><strong><i class="fas fa-user-md me-1"></i> Resposta do Veterinário</strong> (<?= date('d/m/Y H:i', strtotime($d->data_resposta)) ?>):</p>
+                            <p class="mb-1 text-success"><strong><i class="fas fa-user-md me-1"></i> Resposta de <?= htmlspecialchars($d->veterinario_nome ?? 'Veterinário') ?></strong> (<?= date('d/m/Y H:i', strtotime($d->data_resposta)) ?>):</p>
                             <p class="mb-0"><?= nl2br(htmlspecialchars($d->resposta)) ?></p>
+                            <?php foreach ($duvidaDao->ListarMensagens($d->id_duvida) as $mensagem): ?>
+                                <div class="duvida-mensagem <?= $mensagem['tipo_usuario'] === 'Veterinario' ? 'duvida-mensagem-vet' : 'duvida-mensagem-produtor' ?>">
+                                    <p class="mb-1"><strong><?= htmlspecialchars($mensagem['autor_nome']) ?></strong> · <?= date('d/m/Y H:i', strtotime($mensagem['enviado_em'])) ?></p>
+                                    <p class="mb-0"><?= nl2br(htmlspecialchars($mensagem['mensagem'])) ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                            <form method="POST" action="ProcessarMensagemDuvida.php" class="mt-3">
+                                <input type="hidden" name="id_duvida" value="<?= (int) $d->id_duvida ?>">
+                                <label for="mensagem-<?= (int) $d->id_duvida ?>" class="form-label fw-bold">Responder nesta conversa</label>
+                                <textarea name="mensagem" id="mensagem-<?= (int) $d->id_duvida ?>" class="form-control mb-2" rows="2" required></textarea>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Enviar mensagem</button>
+                            </form>
                         <?php else: ?>
                             <span class="badge bg-warning text-dark">Aguardando resposta</span>
                         <?php endif; ?>
@@ -86,22 +110,41 @@ include 'Cabecalho.php';
     <?php elseif ($ehHomologado): ?>
         <div class="card lista-painel">
             <div class="card-header lista-painel-header claro">
-                <h5 class="mb-0">Dúvidas Pendentes</h5>
+                <h5 class="mb-0">Dúvidas e conversas</h5>
             </div>
             <div class="card-body lista-painel-body">
-                <?php $pendentes = $duvidaDao->ListarPendentes(); ?>
-                <?php if (empty($pendentes)): ?>
-                    <p class="text-muted mb-0">Não há dúvidas pendentes no momento.</p>
-                <?php else: foreach ($pendentes as $d): ?>
-                    <div class="lista-registro">
+                <?php $duvidasVeterinario = $duvidaDao->ListarParaVeterinario($_SESSION['id_usuario']); ?>
+                <?php if (empty($duvidasVeterinario)): ?>
+                    <p class="text-muted mb-0">Não há dúvidas ou conversas aguardando sua atenção.</p>
+                <?php else: foreach ($duvidasVeterinario as $d): ?>
+                    <div class="lista-registro" id="duvida-<?= (int) $d->id_duvida ?>">
                         <p class="mb-1"><strong><?= htmlspecialchars($d->usuario_nome) ?></strong> perguntou em <?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>:</p>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
-                        <form method="POST" action="ProcessarResposta.php">
-                            <input type="hidden" name="id_duvida" value="<?= $d->id_duvida ?>">
-                            <textarea name="resposta" class="form-control mb-2" rows="2" placeholder="Escreva sua resposta..." required></textarea>
-                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Responder</button>
-                        </form>
+                        <?php if ($d->status === 'respondida'): ?>
+                            <hr>
+                            <p class="mb-1 text-success"><strong><i class="fas fa-user-md me-1"></i> <?= (int) $d->id_veterinario === (int) $_SESSION['id_usuario'] ? 'Sua resposta' : 'Resposta de ' . htmlspecialchars($d->veterinario_nome ?? 'Veterinário') ?></strong> (<?= date('d/m/Y H:i', strtotime($d->data_resposta)) ?>):</p>
+                            <p><?= nl2br(htmlspecialchars($d->resposta)) ?></p>
+                            <?php foreach ($duvidaDao->ListarMensagens($d->id_duvida) as $mensagem): ?>
+                                <div class="duvida-mensagem <?= $mensagem['tipo_usuario'] === 'Veterinario' ? 'duvida-mensagem-vet' : 'duvida-mensagem-produtor' ?>">
+                                    <p class="mb-1"><strong><?= htmlspecialchars($mensagem['autor_nome']) ?></strong> · <?= date('d/m/Y H:i', strtotime($mensagem['enviado_em'])) ?></p>
+                                    <p class="mb-0"><?= nl2br(htmlspecialchars($mensagem['mensagem'])) ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php if ((int) $d->id_veterinario === (int) $_SESSION['id_usuario']): ?>
+                                <form method="POST" action="ProcessarMensagemDuvida.php" class="mt-3">
+                                    <input type="hidden" name="id_duvida" value="<?= (int) $d->id_duvida ?>">
+                                    <textarea name="mensagem" class="form-control mb-2" rows="2" placeholder="Escreva uma mensagem para o produtor..." required></textarea>
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Enviar mensagem</button>
+                                </form>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <form method="POST" action="ProcessarResposta.php">
+                                <input type="hidden" name="id_duvida" value="<?= (int) $d->id_duvida ?>">
+                                <textarea name="resposta" class="form-control mb-2" rows="2" placeholder="Escreva sua resposta..." required></textarea>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Responder</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; endif; ?>
             </div>

@@ -221,7 +221,7 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             }
         }
     </style>
-    <link rel="stylesheet" href="../CSS/Cabecalho.css?v=1.0">
+    <link rel="stylesheet" href="../CSS/Cabecalho.css?v=1.1">
     <link rel="stylesheet" href="../CSS/Sidebar.css?v=1.0">
 </head>
 <body class="<?= $ehVeterinario ? 'perfil-veterinario' : 'perfil-pecuarista' ?><?= $ehPaginaLista ? ' pagina-lista' : '' ?>">
@@ -301,14 +301,26 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
                         <?php if ($totalNotificacoes > 0): ?><span class="notificacao-contador"><?= $totalNotificacoes > 9 ? '9+' : $totalNotificacoes ?></span><?php endif; ?>
                     </button>
                     <div class="notificacao-menu" id="notificationMenu">
-                        <div class="notificacao-cabecalho"><strong>Agenda de reforços</strong><button type="button" id="markNotificationsRead">Marcar lidas</button></div>
+                        <div class="notificacao-cabecalho"><strong>Notificações</strong><button type="button" id="markNotificationsRead">Marcar lidas</button></div>
                         <?php if (empty($notificacoes)): ?>
                             <p class="notificacao-vazia">Nenhuma notificação por enquanto.</p>
                         <?php else: foreach ($notificacoes as $notificacao): ?>
-                            <div class="notificacao-item <?= (int) $notificacao['lida'] === 0 ? 'nao-lida' : '' ?>">
-                                <i class="fas fa-syringe" aria-hidden="true"></i>
+                            <?php
+                                $ehNotificacaoDuvida = strpos($notificacao['tipo'], 'duvida_') === 0
+                                    && !empty($notificacao['id_referencia']);
+                                $iconeNotificacao = strpos($notificacao['tipo'], 'duvida_nova') === 0
+                                    ? 'fa-comment-medical'
+                                    : (strpos($notificacao['tipo'], 'duvida_') === 0 ? 'fa-reply' : 'fa-syringe');
+                            ?>
+                            <?php if ($ehNotificacaoDuvida): ?>
+                                <a class="notificacao-item notificacao-item-link <?= (int) $notificacao['lida'] === 0 ? 'nao-lida' : '' ?>"
+                                   href="MarcarNotificacoesLidas.php?id_notificacao=<?= (int) $notificacao['id_notificacao'] ?>">
+                            <?php else: ?>
+                                <div class="notificacao-item <?= (int) $notificacao['lida'] === 0 ? 'nao-lida' : '' ?>">
+                            <?php endif; ?>
+                                <i class="fas <?= $iconeNotificacao ?>" aria-hidden="true"></i>
                                 <div><strong><?= htmlspecialchars($notificacao['titulo']) ?></strong><span><?= htmlspecialchars($notificacao['mensagem']) ?></span><small><?= date('d/m/Y H:i', strtotime($notificacao['criado_em'])) ?></small></div>
-                            </div>
+                            <?php if ($ehNotificacaoDuvida): ?></a><?php else: ?></div><?php endif; ?>
                         <?php endforeach; endif; ?>
                     </div>
                 </div>

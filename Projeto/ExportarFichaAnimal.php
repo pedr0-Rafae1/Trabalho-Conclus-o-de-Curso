@@ -10,7 +10,7 @@ ob_start();
 
 include_once 'Sessao.php';
 
-require_once __DIR__ . '/../vendor/composer/autoload_files.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 require_once __DIR__ . '/../app/Dao/RegistroPesoDao.php';
 require_once __DIR__ . '/../app/Dao/RegistroVacinacaoDao.php';
@@ -195,8 +195,6 @@ $dompdf->loadHtml($html, 'UTF-8');
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
-// Limpa TODO o buffer de saída acumulado (espaços, BOM, warnings dos includes)
-// para que o PDF não chegue corrompido ao navegador
 if (ob_get_length()) {
     ob_clean();
 }

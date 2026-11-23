@@ -122,6 +122,22 @@ body {
 .danger-zone p { margin: 0; color: #8a6060; font-size: .78rem; }
 .btn-excluir { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; color: #fff; background: var(--perigo); border: 0; border-radius: 8px; font-size: .8rem; font-weight: 700; cursor: pointer; }
 .btn-excluir:hover { background: #a33636; }
+.btn-excluir:disabled { opacity: .55; cursor: not-allowed; }
+
+.confirmacao-modal { position: fixed; inset: 0; z-index: 1500; display: grid; place-items: center; padding: 20px; background: rgba(8, 24, 15, .66); }
+.confirmacao-modal[hidden] { display: none; }
+.confirmacao-modal__painel { position: relative; width: min(100%, 460px); padding: 28px; color: var(--texto-principal); background: var(--bg-card); border: 1px solid var(--borda); border-radius: 14px; box-shadow: var(--sombra-suave); }
+.confirmacao-modal__painel h2 { margin: 0 34px 8px 0; color: var(--perigo); font-size: 1.2rem; }
+.confirmacao-modal__painel h2 i { margin-right: 6px; }
+.confirmacao-modal__painel p { margin: 0 0 20px; color: var(--texto-secundario); font-size: .86rem; }
+.confirmacao-modal__painel label { display: block; margin: 0 0 6px; color: var(--texto-principal); font-size: .8rem; font-weight: 700; }
+.confirmacao-modal__painel input { width: 100%; min-height: 44px; margin-bottom: 14px; padding: 10px 12px; color: var(--texto-principal); background: var(--bg-superficie); border: 1px solid var(--borda); border-radius: 8px; }
+.confirmacao-modal__painel input:focus { outline: none; border-color: var(--verde-primario); box-shadow: var(--sombra-foco); }
+.confirmacao-modal__mensagem { display: block; min-height: 1.2em; margin: -5px 0 12px; color: var(--perigo); font-size: .76rem; }
+.confirmacao-modal__fechar { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; color: var(--texto-secundario); background: transparent; border: 0; border-radius: 7px; font-size: 1.5rem; cursor: pointer; }
+.confirmacao-modal__fechar:hover { background: var(--bg-superficie); }
+.confirmacao-modal__acoes { display: flex; justify-content: flex-end; gap: 10px; }
+.confirmacao-modal__cancelar { padding: 10px 14px; color: var(--texto-principal); background: var(--bg-superficie); border: 1px solid var(--borda); border-radius: 8px; font-size: .8rem; font-weight: 700; cursor: pointer; }
 
 html[data-theme="dark"] .perfil-banner { background: linear-gradient(135deg, #0b2a1b, #174d31); }
 html[data-theme="dark"] .perfil-wrapper { background: var(--bg-card); border-color: var(--borda); }
@@ -159,4 +175,7 @@ html[data-theme="dark"] .danger-zone p { color: #d8aaaa; }
     .perfil-grid { grid-template-columns: 1fr; }
     .danger-zone { align-items: stretch; flex-direction: column; }
     .btn-excluir { justify-content: center; }
+    .confirmacao-modal__painel { padding: 24px 20px; }
+    .confirmacao-modal__acoes { flex-direction: column-reverse; }
+    .confirmacao-modal__acoes button { justify-content: center; }
 }
