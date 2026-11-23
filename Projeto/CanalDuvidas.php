@@ -1,11 +1,42 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 include_once 'Sessao.php';
-require_once __DIR__ . '/../app/Dao/DuvidaDao.php';
-
-$duvidaDao = new DuvidaDao();
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario';
 $ehHomologado  = $ehVeterinario && (int) ($_SESSION['homologado'] ?? 0) === 1;
+$minhasDuvidas = [];
+$duvidasVeterinario = [];
+$mensagensPorDuvida = [];
+$animaisUsuario = [];
+$erroCarregamentoDuvidas = false;
+
+try {
+    require_once __DIR__ . '/../app/Dao/DuvidaDao.php';
+    $duvidaDao = new DuvidaDao();
+
+    if (!$ehVeterinario) {
+        require_once __DIR__ . '/../app/Dao/AnimalDao.php';
+        $animalDao = new AnimalDao();
+        $animaisUsuario = $animalDao->ListarPorUsuario((int) $_SESSION['id_usuario']);
+        $minhasDuvidas = $duvidaDao->ListarPorUsuario((int) $_SESSION['id_usuario']);
+        $duvidasComMensagens = $minhasDuvidas;
+    } elseif ($ehHomologado) {
+        $duvidasVeterinario = $duvidaDao->ListarParaVeterinario((int) $_SESSION['id_usuario']);
+        $duvidasComMensagens = $duvidasVeterinario;
+    } else {
+        $duvidasComMensagens = [];
+    }
+
+    foreach ($duvidasComMensagens as $duvida) {
+        $mensagensPorDuvida[(int) $duvida->id_duvida] = $duvidaDao->ListarMensagens((int) $duvida->id_duvida);
+    }
+} catch (Throwable $erro) {
+    error_log('CanalDuvidas: falha ao carregar dúvidas/conversas: ' . $erro->getMessage());
+    $erroCarregamentoDuvidas = true;
+    $minhasDuvidas = [];
+    $duvidasVeterinario = [];
+    $mensagensPorDuvida = [];
+    $animaisUsuario = [];
+}
 
 include 'Cabecalho.php';
 ?>
@@ -17,6 +48,13 @@ include 'Cabecalho.php';
 
 <main class="lista-conteudo">
 
+    <?php if ($erroCarregamentoDuvidas): ?>
+        <div class="alerta-notificacao alerta-erro" role="alert">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            <span>Não foi possível carregar as dúvidas agora. A falha foi registrada para verificação.</span>
+        </div>
+    <?php endif; ?>
+
     <?php if (isset($_GET['sucesso'])): ?>
         <div class="alerta-notificacao alerta-sucesso" role="alert">
             <i class="fas fa-check-circle"></i>
@@ -25,7 +63,10 @@ include 'Cabecalho.php';
                     'respondido' => 'Resposta enviada com sucesso!',
                     'mensagem' => 'Mensagem enviada com sucesso!',
                 ];
-                echo htmlspecialchars($mensagensSucesso[$_GET['sucesso']] ?? 'Dúvida enviada com sucesso!');
+                $mensagemSucesso = ($_GET['sucesso'] === '1' && ($_GET['acao'] ?? '') === 'duvida')
+                    ? 'Dúvida enviada com sucesso!'
+                    : ($mensagensSucesso[$_GET['sucesso']] ?? 'Resposta enviada com sucesso!');
+                echo htmlspecialchars($mensagemSucesso);
             ?></span>
             <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
@@ -35,6 +76,13 @@ include 'Cabecalho.php';
             <span><?php
                 $mensagensErro = [
                     'nao_autorizado' => 'Você não tem permissão para responder a esta conversa.',
+                    'perfil_invalido' => 'Esta ação não está disponível para o seu perfil.',
+                    'vazio' => 'Escreva sua dúvida antes de enviar.',
+                    'assunto_invalido' => 'Informe um assunto com até 150 caracteres.',
+                    'animal_invalido' => 'O animal selecionado não pertence à sua conta.',
+                    'envio_falhou' => 'Não foi possível registrar sua dúvida. Tente novamente mais tarde.',
+                    'resposta_invalida' => 'Escreva uma resposta antes de enviar.',
+                    'resposta_falhou' => 'Não foi possível registrar a resposta. Tente novamente.',
                     'mensagem_invalida' => 'Escreva uma mensagem antes de enviar.',
                 ];
                 echo htmlspecialchars($mensagensErro[$_GET['erro']] ?? 'Não foi possível concluir a ação. Verifique os campos.');
@@ -53,7 +101,16 @@ include 'Cabecalho.php';
                
                 <p class="text-muted">Envie sua dúvida sobre manejo, saúde ou nutrição do rebanho. Um veterinário homologado irá responder.</p>
                 <form method="POST" action="ProcessarDuvida.php" class="mb-4">
-                    <label for="pergunta" class="form-label fw-bold">Sua dúvida:</label>
+                    <label for="assunto" class="form-label fw-bold">Assunto:</label>
+                    <input type="text" name="assunto" id="assunto" class="form-control mb-2" maxlength="150" required>
+                    <label for="id_animal" class="form-label fw-bold">Animal (opcional):</label>
+                    <select name="id_animal" id="id_animal" class="form-select mb-2">
+                        <option value="">Não vincular a um animal</option>
+                        <?php foreach ($animaisUsuario as $animal): ?>
+                            <option value="<?= (int) $animal->id_animal ?>">Brinco <?= htmlspecialchars($animal->brinco) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label for="pergunta" class="form-label fw-bold">Descrição da dúvida:</label>
                     <textarea name="pergunta" id="pergunta" class="form-control mb-2" rows="3" required></textarea>
                     <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-1"></i> Enviar Dúvida</button>
                 </form>
@@ -64,6 +121,8 @@ include 'Cabecalho.php';
                     Sua conta está cadastrada como veterinário, mas ainda aguarda homologação pela equipe do sistema.
                     Assim que homologada, você poderá responder às dúvidas dos produtores aqui.
                 </div>
+            <?php else: ?>
+                <p class="mb-0">As dúvidas abertas e conversas disponíveis para resposta estão listadas abaixo.</p>
             <?php endif; ?>
 
         </div>
@@ -75,19 +134,21 @@ include 'Cabecalho.php';
                 <h5 class="mb-0">Minhas Dúvidas</h5>
             </div>
             <div class="card-body lista-painel-body">
-                <?php $minhasDuvidas = $duvidaDao->ListarPorUsuario($_SESSION['id_usuario']); ?>
-                <?php if (empty($minhasDuvidas)): ?>
+                <?php if ($erroCarregamentoDuvidas): ?>
+                    <p class="text-muted mb-0">Consulte o aviso acima para mais informações.</p>
+                <?php elseif (empty($minhasDuvidas)): ?>
                     <p class="text-muted mb-0">Você ainda não enviou nenhuma dúvida.</p>
                 <?php else: foreach ($minhasDuvidas as $d): ?>
                     <div class="lista-registro" id="duvida-<?= (int) $d->id_duvida ?>">
-                        <p class="mb-1"><strong>Pergunta</strong> (<?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>):</p>
+                        <p class="mb-1"><strong><?= htmlspecialchars($d->assunto) ?></strong> · <?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>:</p>
+                        <?php if (!empty($d->animal_brinco)): ?><p class="mb-1">Animal: Brinco <?= htmlspecialchars($d->animal_brinco) ?></p><?php endif; ?>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
                         <?php if ($d->status === 'respondida'): ?>
                             <hr>
                             <p class="mb-1 text-success"><strong><i class="fas fa-user-md me-1"></i> Resposta de <?= htmlspecialchars($d->veterinario_nome ?? 'Veterinário') ?></strong> (<?= date('d/m/Y H:i', strtotime($d->data_resposta)) ?>):</p>
                             <p class="mb-0"><?= nl2br(htmlspecialchars($d->resposta)) ?></p>
-                            <?php foreach ($duvidaDao->ListarMensagens($d->id_duvida) as $mensagem): ?>
+                            <?php foreach ($mensagensPorDuvida[(int) $d->id_duvida] ?? [] as $mensagem): ?>
                                 <div class="duvida-mensagem <?= $mensagem['tipo_usuario'] === 'Veterinario' ? 'duvida-mensagem-vet' : 'duvida-mensagem-produtor' ?>">
                                     <p class="mb-1"><strong><?= htmlspecialchars($mensagem['autor_nome']) ?></strong> · <?= date('d/m/Y H:i', strtotime($mensagem['enviado_em'])) ?></p>
                                     <p class="mb-0"><?= nl2br(htmlspecialchars($mensagem['mensagem'])) ?></p>
@@ -109,23 +170,25 @@ include 'Cabecalho.php';
 
     <?php elseif ($ehHomologado): ?>
         <div class="card lista-painel">
-            <div class="card-header lista-painel-header claro">
+            <div class="card-header lista-painel-header">
                 <h5 class="mb-0">Dúvidas e conversas</h5>
             </div>
             <div class="card-body lista-painel-body">
-                <?php $duvidasVeterinario = $duvidaDao->ListarParaVeterinario($_SESSION['id_usuario']); ?>
-                <?php if (empty($duvidasVeterinario)): ?>
+                <?php if ($erroCarregamentoDuvidas): ?>
+                    <p class="text-muted mb-0">Consulte o aviso acima para mais informações.</p>
+                <?php elseif (empty($duvidasVeterinario)): ?>
                     <p class="text-muted mb-0">Não há dúvidas ou conversas aguardando sua atenção.</p>
                 <?php else: foreach ($duvidasVeterinario as $d): ?>
                     <div class="lista-registro" id="duvida-<?= (int) $d->id_duvida ?>">
-                        <p class="mb-1"><strong><?= htmlspecialchars($d->usuario_nome) ?></strong> perguntou em <?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>:</p>
+                        <p class="mb-1"><strong><?= htmlspecialchars($d->usuario_nome) ?></strong> · <?= htmlspecialchars($d->assunto) ?> · <?= date('d/m/Y H:i', strtotime($d->data_pergunta)) ?>:</p>
+                        <?php if (!empty($d->animal_brinco)): ?><p class="mb-1">Animal: Brinco <?= htmlspecialchars($d->animal_brinco) ?></p><?php endif; ?>
                         <p><?= nl2br(htmlspecialchars($d->pergunta)) ?></p>
 
                         <?php if ($d->status === 'respondida'): ?>
                             <hr>
                             <p class="mb-1 text-success"><strong><i class="fas fa-user-md me-1"></i> <?= (int) $d->id_veterinario === (int) $_SESSION['id_usuario'] ? 'Sua resposta' : 'Resposta de ' . htmlspecialchars($d->veterinario_nome ?? 'Veterinário') ?></strong> (<?= date('d/m/Y H:i', strtotime($d->data_resposta)) ?>):</p>
                             <p><?= nl2br(htmlspecialchars($d->resposta)) ?></p>
-                            <?php foreach ($duvidaDao->ListarMensagens($d->id_duvida) as $mensagem): ?>
+                            <?php foreach ($mensagensPorDuvida[(int) $d->id_duvida] ?? [] as $mensagem): ?>
                                 <div class="duvida-mensagem <?= $mensagem['tipo_usuario'] === 'Veterinario' ? 'duvida-mensagem-vet' : 'duvida-mensagem-produtor' ?>">
                                     <p class="mb-1"><strong><?= htmlspecialchars($mensagem['autor_nome']) ?></strong> · <?= date('d/m/Y H:i', strtotime($mensagem['enviado_em'])) ?></p>
                                     <p class="mb-0"><?= nl2br(htmlspecialchars($mensagem['mensagem'])) ?></p>
@@ -142,7 +205,7 @@ include 'Cabecalho.php';
                             <form method="POST" action="ProcessarResposta.php">
                                 <input type="hidden" name="id_duvida" value="<?= (int) $d->id_duvida ?>">
                                 <textarea name="resposta" class="form-control mb-2" rows="2" placeholder="Escreva sua resposta..." required></textarea>
-                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Responder</button>
+                                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-reply me-1"></i> Enviar Resposta</button>
                             </form>
                         <?php endif; ?>
                     </div>

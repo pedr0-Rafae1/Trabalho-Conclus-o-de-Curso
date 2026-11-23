@@ -1,5 +1,16 @@
 <?php
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? '') !== 'Veterinario') {
+    header('Location: Pecuarista.php?erro=area_veterinario');
+    exit();
+}
+
+if ((int) ($_SESSION['homologado'] ?? 0) !== 1) {
+    header('Location: Veterinario.php?erro=nao_homologado');
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario';
@@ -79,7 +90,7 @@ include 'Cabecalho.php';
                 <label for="recomendacao">Recomendação ao Produtor (opcional):</label>
                 <textarea id="recomendacao" name="recomendacao" class="form-control" rows="2"></textarea>
 
-                <button type="submit">Registrar Atendimento</button>
+                <button type="submit" class="btn btn-success">Registrar Atendimento</button>
             </form>
         <?php endif; ?>
     </div>

@@ -56,7 +56,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <i class="fas fa-exclamation-triangle"></i>
         <h1>Página não encontrada (404)</h1>
         <p>A página que você está tentando acessar não existe ou foi removida.</p>
-        <a href="<?= ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php' ?>" class="btn-home"><i class="fas fa-home me-2"></i> Voltar ao painel</a>
+        <?php $linkPainelErro = (int) ($_SESSION['admin'] ?? 0) === 1 ? 'PainelAdmin.php' : (($_SESSION['tipo_usuario'] ?? '') === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php'); ?>
+        <a href="<?= htmlspecialchars($linkPainelErro, ENT_QUOTES, 'UTF-8') ?>" class="btn-home"><i class="fas fa-home me-2"></i> Voltar ao painel</a>
     </main>
 
 <?php include 'Rodape.php'; ?>

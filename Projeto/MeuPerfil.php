@@ -32,7 +32,7 @@ $temFoto = !empty($usuario['foto_perfil']) && file_exists(__DIR__ . '/../imagem/
     <div class="perfil-wrapper">
 
         <div class="perfil-banner">
-            <a href="<?= $usuario['tipo_usuario'] === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php' ?>" class="perfil-voltar">
+            <a href="<?= (int) ($_SESSION['admin'] ?? 0) === 1 ? 'PainelAdmin.php' : ($usuario['tipo_usuario'] === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php') ?>" class="perfil-voltar">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao painel
             </a>
             <span class="badge-tipo">

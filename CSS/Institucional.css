@@ -1,0 +1,70 @@
+body.pagina-institucional {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--bg-pagina);
+}
+
+.pagina-institucional > main {
+    flex: 1 0 auto;
+}
+
+.pagina-institucional .site-footer {
+    flex: 0 0 auto;
+}
+
+.termos-container {
+    width: min(100% - 32px, 800px);
+    margin: 40px auto 60px;
+    padding: 48px 44px;
+    color: var(--texto-principal);
+    background: var(--bg-card);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    box-shadow: var(--sombra-suave);
+}
+
+.termos-container h1 {
+    margin: 0 0 6px;
+    color: var(--texto-principal);
+    font-size: 1.8rem;
+}
+
+.termos-atualizado {
+    margin: 0 0 30px;
+    color: var(--texto-secundario);
+    font-size: .82rem;
+}
+
+.termos-container h2 {
+    margin: 30px 0 10px;
+    color: var(--verde-escuro);
+    font-size: 1.15rem;
+}
+
+.termos-container p,
+.termos-container li {
+    color: var(--texto-secundario);
+    font-size: .95rem;
+    line-height: 1.8;
+}
+
+.termos-container ul {
+    padding-left: 22px;
+}
+
+html[data-theme="dark"] .termos-container h2 {
+    color: #8fd6a8 !important;
+}
+
+html[data-theme="dark"] .sobre-card h2 {
+    color: #8fd6a8 !important;
+}
+
+@media (max-width: 640px) {
+    .termos-container {
+        width: min(100% - 28px, 800px);
+        margin: 20px auto 40px;
+        padding: 30px 22px;
+    }
+}

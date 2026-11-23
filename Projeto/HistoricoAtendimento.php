@@ -1,5 +1,16 @@
 <?php
 include_once 'Sessao.php';
+
+if (($_SESSION['tipo_usuario'] ?? '') !== 'Veterinario') {
+    header('Location: Pecuarista.php?erro=area_veterinario');
+    exit();
+}
+
+if ((int) ($_SESSION['homologado'] ?? 0) !== 1) {
+    header('Location: Veterinario.php?erro=nao_homologado');
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/AtendimentoDao.php';
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
 
@@ -30,7 +41,7 @@ include_once 'Cabecalho.php';
             <div class="card-header lista-painel-header">
                 <h4 class="mb-0"><i class="fas fa-stethoscope me-2"></i> Meus Atendimentos</h4>
                 <div class="lista-cabecalho-busca"><i class="fas fa-search"></i><input class="lista-busca" id="buscaAtendimento" type="search" placeholder="Buscar atendimento" aria-label="Buscar atendimento"></div>
-                <a href="RegistrarAtendimento.php" class="btn btn-light btn-sm"><i class="fas fa-plus me-1"></i> Registrar Atendimento</a>
+                <a href="RegistrarAtendimento.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i> Registrar Atendimento</a>
             </div>
             <div class="card-body lista-painel-body sem-padding">
                 <?php $atendimentos = $atendimentoDao->ListarPorVeterinario($_SESSION['id_usuario']); ?>

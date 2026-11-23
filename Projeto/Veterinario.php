@@ -1,6 +1,11 @@
 <?php
 include_once 'Sessao.php';
 
+if ((int) ($_SESSION['admin'] ?? 0) === 1) {
+    header('Location: PainelAdmin.php');
+    exit();
+}
+
 if (($_SESSION['tipo_usuario'] ?? '') !== 'Veterinario') {
     header('Location: Pecuarista.php?erro=area_veterinario');
     exit();
@@ -21,7 +26,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Área do Veterinário - Pecuária em Rede</title>
-    <link rel="stylesheet" href="../CSS/Veterinario.css?v=3.0">
+    <link rel="stylesheet" href="../CSS/Veterinario.css?v=3.1">
 </head>
 
 <main class="vet-shell">

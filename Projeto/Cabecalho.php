@@ -9,6 +9,8 @@ if (isset($_SESSION['id_usuario'])) {
 }
 $paginaAtual = basename($_SERVER['PHP_SELF']);
 $ehVeterinario = ($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario';
+$ehAdmin = (int) ($_SESSION['admin'] ?? 0) === 1;
+$linkPainelCabecalho = $ehAdmin ? 'PainelAdmin.php' : ($ehVeterinario ? 'Veterinario.php' : 'Pecuarista.php');
 $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $paginaAtual) === 1;
 ?>
 <!DOCTYPE html>
@@ -222,7 +224,8 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
         }
     </style>
     <link rel="stylesheet" href="../CSS/Cabecalho.css?v=1.1">
-    <link rel="stylesheet" href="../CSS/Sidebar.css?v=1.0">
+    <link rel="stylesheet" href="../CSS/Sidebar.css?v=1.1">
+    <?php if (!empty($cabecalhoHeadExtras)) echo $cabecalhoHeadExtras; ?>
 </head>
 <body class="<?= $ehVeterinario ? 'perfil-veterinario' : 'perfil-pecuarista' ?><?= $ehPaginaLista ? ' pagina-lista' : '' ?>">
 
@@ -237,8 +240,8 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             </button>
         </div>
         <nav class="sidebar-nav">
-            <a href="Pecuarista.php" class="sidebar-link <?= $paginaAtual === 'Pecuarista.php' ? 'ativo' : '' ?>">
-                <i class="fas fa-chart-pie" aria-hidden="true"></i><span>Meu painel</span>
+            <a href="<?= htmlspecialchars($linkPainelCabecalho, ENT_QUOTES, 'UTF-8') ?>" class="sidebar-link <?= $paginaAtual === $linkPainelCabecalho ? 'ativo' : '' ?>">
+                <i class="fas fa-chart-pie" aria-hidden="true"></i><span><?= $ehAdmin ? 'Painel administrativo' : 'Meu painel' ?></span>
             </a>
             <span class="sidebar-section">Manejo</span>
             <a href="CadastroAnimal.php" class="sidebar-link <?= $paginaAtual === 'CadastroAnimal.php' ? 'ativo' : '' ?>"><i class="fas fa-plus-circle" aria-hidden="true"></i><span>Cadastrar animal</span></a>
@@ -285,7 +288,7 @@ $ehPaginaLista = preg_match('/^(Lista|Historico|CanalDuvidas|EvolucaoPeso)/', $p
             <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
-            <a href="<?= ($_SESSION['tipo_usuario'] ?? '') === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php' ?>" class="logo-link d-flex align-items-center">
+            <a href="<?= htmlspecialchars($linkPainelCabecalho, ENT_QUOTES, 'UTF-8') ?>" class="logo-link d-flex align-items-center">
                 <i class="fas fa-cow me-2"></i> <h1>Pecuária em Rede</h1>
             </a>
         </div>

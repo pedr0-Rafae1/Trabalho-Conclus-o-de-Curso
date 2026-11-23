@@ -1,15 +1,24 @@
 <?php
 include_once 'Sessao.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: HistoricoAtendimento.php');
+    exit();
+}
+
+if (($_SESSION['tipo_usuario'] ?? '') !== 'Veterinario') {
+    header('Location: Pecuarista.php?erro=area_veterinario');
+    exit();
+}
+
+if ((int) ($_SESSION['homologado'] ?? 0) !== 1) {
+    header('Location: Veterinario.php?erro=nao_homologado');
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/AtendimentoDao.php';
 require_once __DIR__ . '/../app/Model/Atendimento.php';
 require_once __DIR__ . '/../app/Dao/AnimalDao.php';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    if (($_SESSION['tipo_usuario'] ?? '') !== 'Veterinario' || (int) ($_SESSION['homologado'] ?? 0) !== 1) {
-        header("Location: RegistrarAtendimento.php?erro=nao_autorizado");
-        exit();
-    }
 
     $id_animal    = (int) ($_POST['id_animal'] ?? 0);
     $data_atend   = $_POST['data_atendimento'] ?? '';
@@ -50,12 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($resultado === true) {
         header("Location: HistoricoAtendimento.php?sucesso=1");
         exit();
-    } else {
-        header("Location: RegistrarAtendimento.php?erro=1");
-        exit();
     }
-} else {
-    header("Location: RegistrarAtendimento.php");
+
+    header("Location: RegistrarAtendimento.php?erro=1");
     exit();
-}
 ?>

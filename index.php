@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$rodapeCssVersao = filemtime(__DIR__ . '/CSS/Rodape.css');
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,24 +25,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="CSS/Variaveis.css?v=2.2">
     <link rel="stylesheet" href="CSS/index.css?v=3.0">
+    <link rel="stylesheet" href="CSS/Rodape.css?v=<?= $rodapeCssVersao ?>">
 </head>
-<body>
+<body id="topo">
 
-    <header class="landing-header">
-        <div class="landing-nav">
-            <a href="index.php" class="landing-logo">
-                <i class="fas fa-cow" aria-hidden="true"></i>
-                <span>Pecuária em Rede</span>
-            </a>
-            <div class="landing-acoes">
-                <button class="theme-toggle" type="button" id="themeToggle" title="Alternar modo claro e escuro" aria-label="Alternar modo claro e escuro">
-                    <i class="fas fa-moon" aria-hidden="true"></i>
-                </button>
-                <a href="Projeto/login.php" class="btn-entrar">Entrar</a>
-                <a href="Projeto/CadastroUsuario.php" class="btn-cadastrar">Cadastrar</a>
-            </div>
-        </div>
-    </header>
+    <?php include __DIR__ . '/Projeto/CabecalhoPublico.php'; ?>
 
     <main>
         <section class="hero">
@@ -127,9 +120,12 @@
         </section>
     </main>
 
-    <?php include __DIR__ . '/Projeto/Rodape.php'; ?>
+    <?php $rodapeCssCarregado = true; $rodapeInicioHref = '#topo'; include __DIR__ . '/Projeto/Rodape.php'; ?>
 
     <script src="Javascript/ThemeToggle.js" defer></script>
+    <script>
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             inicializarThemeToggle('themeToggle');

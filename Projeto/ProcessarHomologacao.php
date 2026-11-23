@@ -3,7 +3,10 @@ include_once 'Sessao.php';
 
 // Proteção: apenas administradores
 if ((int) ($_SESSION['admin'] ?? 0) !== 1) {
-    header("Location: Pecuarista.php?erro=acesso_negado");
+    $painelUsuario = ($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario'
+        ? 'Veterinario.php'
+        : 'Pecuarista.php';
+    header('Location: ' . $painelUsuario . '?erro=acesso_negado');
     exit();
 }
 

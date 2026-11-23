@@ -40,9 +40,13 @@ $nomeAutor = $_SESSION['usuario_nome'] ?? ($ehVeterinario ? 'O veterinário' : '
 $texto = $ehVeterinario
     ? $nomeAutor . ' respondeu à conversa da sua dúvida.'
     : $nomeAutor . ' respondeu à conversa no Canal de Dúvidas.';
-$notificacaoDao = new NotificacaoDao();
-if (!$notificacaoDao->Criar($destinatario, $tipoNotificacao, $titulo, $texto, $idDuvida)) {
-    error_log('Falha ao criar notificação da mensagem da dúvida ' . $idDuvida . '.');
+try {
+    $notificacaoDao = new NotificacaoDao();
+    if (!$notificacaoDao->Criar($destinatario, $tipoNotificacao, $titulo, $texto, $idDuvida)) {
+        error_log('Falha ao criar notificação da mensagem da dúvida ' . $idDuvida . '.');
+    }
+} catch (Throwable $erro) {
+    error_log('ProcessarMensagemDuvida: falha ao notificar sobre a dúvida ' . $idDuvida . ': ' . $erro->getMessage());
 }
 
 header('Location: CanalDuvidas.php?sucesso=mensagem#duvida-' . $idDuvida);

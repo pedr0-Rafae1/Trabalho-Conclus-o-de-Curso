@@ -20,18 +20,22 @@ $rodapeTipo   = $_SESSION['tipo_usuario'] ?? 'Pecuarista';
 
 if ($rodapeLogado) {
     // O painel varia conforme o tipo de conta; os documentos abrem em nova guia.
-    $linkInicial    = $rodapeBase . ($rodapeTipo === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php');
-    $linkPainel     = $linkInicial;
+    $linkPainel     = $rodapeBase . ((int) ($_SESSION['admin'] ?? 0) === 1
+        ? 'PainelAdmin.php'
+        : ($rodapeTipo === 'Veterinario' ? 'Veterinario.php' : 'Pecuarista.php'));
+    $linkInicial    = $rodapeInicioHref ?? $linkPainel;
     $linkDuvidas    = $rodapeBase . 'CanalDuvidas.php';
 } else {
     // Visitantes precisam autenticar-se para acessar áreas restritas.
-    $linkInicial    = ($rodapeBase === '') ? '../index.php' : 'index.php';
+    $linkInicial    = $rodapeInicioHref ?? (($rodapeBase === '') ? '../index.php' : 'index.php');
     $linkPainel     = $rodapeBase . 'login.php?motivo=acesso_restrito';
     $linkDuvidas    = $linkPainel;
 }
 $alvoInformativo = ' target="_blank" rel="noopener noreferrer"';
 ?>
+<?php if (empty($rodapeCssCarregado)): ?>
 <link rel="stylesheet" href="<?= htmlspecialchars($rodapeCss, ENT_QUOTES, 'UTF-8') ?>">
+<?php endif; ?>
 <footer class="site-footer">
 
     <!-- ===== Área superior: grid de 4 colunas ===== -->
@@ -52,7 +56,7 @@ $alvoInformativo = ' target="_blank" rel="noopener noreferrer"';
             <h4 class="site-footer__titulo">Institucional</h4>
             <a href="<?= $rodapeBase ?>SobreNos.php"<?= $alvoInformativo ?>>Sobre Nós</a>
             <a href="<?= $rodapeBase ?>TermosDeUso.php"<?= $alvoInformativo ?>>Termos de Uso</a>
-            <a href="<?= $rodapeBase ?>TermosDeUso.php#privacidade"<?= $alvoInformativo ?>>Política de Privacidade</a>
+            <a href="<?= $rodapeBase ?>PoliticaPrivacidade.php"<?= $alvoInformativo ?>>Política de Privacidade</a>
         </nav>
 
         <nav class="site-footer__col" aria-label="Suporte">

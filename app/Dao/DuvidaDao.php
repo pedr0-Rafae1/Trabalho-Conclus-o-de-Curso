@@ -8,7 +8,36 @@ class DuvidaDao {
     
     public function __construct() {
         $this->db = ConexaoBD::getConnection();
+        $this->garantirColunasCanal();
         $this->garantirTabelaMensagens();
+    }
+
+    private function garantirColunasCanal() {
+        $resultado = $this->db->query("SHOW COLUMNS FROM duvida LIKE 'assunto'");
+        if (!$resultado) {
+            throw new RuntimeException('Não foi possível verificar a estrutura das dúvidas.');
+        }
+
+        if ($resultado->num_rows === 0
+            && !$this->db->query("ALTER TABLE duvida ADD COLUMN assunto VARCHAR(150) NOT NULL DEFAULT 'Dúvida' AFTER id_veterinario")) {
+            throw new RuntimeException('Não foi possível atualizar a estrutura das dúvidas.');
+        }
+
+        $colunaAnimal = $this->db->query("SHOW COLUMNS FROM duvida LIKE 'id_animal'");
+        if (!$colunaAnimal) {
+            throw new RuntimeException('Não foi possível verificar o vínculo das dúvidas com animais.');
+        }
+
+        if ($colunaAnimal->num_rows === 0
+            && !$this->db->query(
+                'ALTER TABLE duvida
+                 ADD COLUMN id_animal INT UNSIGNED NULL AFTER id_usuario,
+                 ADD INDEX idx_duvida_animal (id_animal),
+                 ADD CONSTRAINT fk_duvida_animal FOREIGN KEY (id_animal)
+                    REFERENCES animal(id_animal) ON DELETE SET NULL'
+            )) {
+            throw new RuntimeException('Não foi possível preparar o vínculo das dúvidas com animais.');
+        }
     }
 
     private function garantirTabelaMensagens() {
@@ -29,17 +58,18 @@ class DuvidaDao {
 
     public function Cadastrar(Duvida $duvida) {
         $duvida->data_pergunta = date('Y-m-d H:i:s');
-        $sql = "INSERT INTO duvida (id_usuario, pergunta, data_pergunta) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO duvida (id_usuario, id_animal, assunto, pergunta, data_pergunta) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("iss", $duvida->id_usuario, $duvida->pergunta, $duvida->data_pergunta);
+        $stmt->bind_param("iisss", $duvida->id_usuario, $duvida->id_animal, $duvida->assunto, $duvida->pergunta, $duvida->data_pergunta);
         return $stmt->execute() ? (int) $this->db->insert_id : false;
     }
 
     public function ListarPorUsuario($id_usuario) {
         $lista = [];
-        $sql = "SELECT d.*, v.nome AS veterinario_nome
+        $sql = "SELECT d.*, v.nome AS veterinario_nome, a.brinco AS animal_brinco
                 FROM duvida d
                 LEFT JOIN usuario v ON v.id_usuario = d.id_veterinario
+                LEFT JOIN animal a ON a.id_animal = d.id_animal
                 WHERE d.id_usuario = ?
                 ORDER BY d.data_pergunta DESC";
         $stmt = $this->db->prepare($sql);
@@ -57,7 +87,7 @@ class DuvidaDao {
         $sql = "SELECT d.*, u.nome AS usuario_nome
                 FROM duvida d
                 INNER JOIN usuario u ON u.id_usuario = d.id_usuario
-                WHERE d.status = 'pendente'
+                WHERE d.status IN ('pendente', 'em_analise')
                 ORDER BY d.data_pergunta ASC";
         $result = $this->db->query($sql);
         while ($row = $result->fetch_assoc()) {
@@ -70,11 +100,12 @@ class DuvidaDao {
 
     public function ListarParaVeterinario($id_veterinario) {
         $lista = [];
-        $sql = "SELECT d.*, u.nome AS usuario_nome, v.nome AS veterinario_nome
+        $sql = "SELECT d.*, u.nome AS usuario_nome, v.nome AS veterinario_nome, a.brinco AS animal_brinco
                 FROM duvida d
                 INNER JOIN usuario u ON u.id_usuario = d.id_usuario
                 LEFT JOIN usuario v ON v.id_usuario = d.id_veterinario
-                WHERE d.status = 'pendente'
+                LEFT JOIN animal a ON a.id_animal = d.id_animal
+                WHERE d.status IN ('pendente', 'em_analise')
                    OR (d.status = 'respondida' AND (
                         d.id_veterinario = ?
                         OR EXISTS (
@@ -84,7 +115,7 @@ class DuvidaDao {
                               AND n.tipo = 'duvida_nova'
                         )
                    ))
-                ORDER BY d.data_pergunta DESC";
+                ORDER BY COALESCE(d.data_resposta, d.data_pergunta) DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("ii", $id_veterinario, $id_veterinario);
         $stmt->execute();
@@ -170,7 +201,7 @@ class DuvidaDao {
         $agora = date('Y-m-d H:i:s');
         $sql = "UPDATE duvida
                 SET resposta = ?, id_veterinario = ?, status = 'respondida', data_resposta = ?
-                WHERE id_duvida = ? AND status = 'pendente'";
+                WHERE id_duvida = ? AND status IN ('pendente', 'em_analise')";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("sisi", $resposta, $id_veterinario, $agora, $id_duvida);
         return $stmt->execute() && $stmt->affected_rows === 1;
@@ -208,8 +239,14 @@ class DuvidaDao {
     }
 
     private function montarDuvida($row) {
-        $duvida = new Duvida($row['id_usuario'], $row['pergunta']);
+        $duvida = new Duvida(
+            $row['id_usuario'],
+            $row['pergunta'],
+            $row['assunto'] ?? 'Dúvida',
+            $row['id_animal'] ?? null
+        );
         $duvida->id_duvida = $row['id_duvida'];
+        $duvida->animal_brinco = $row['animal_brinco'] ?? null;
         $duvida->id_veterinario = $row['id_veterinario'];
         $duvida->resposta = $row['resposta'];
         $duvida->data_pergunta = $row['data_pergunta'];

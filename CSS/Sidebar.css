@@ -7,7 +7,8 @@ body.sidebar-fechada.perfil-veterinario { padding-left: 0; }
 body.sidebar-fechada .sidebar-pecuarista,
 body.sidebar-fechada .sidebar-veterinario { transform: translateX(-105%); }
 
-.sidebar-pecuarista {
+.sidebar-pecuarista,
+.sidebar-veterinario {
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 1300;
@@ -17,19 +18,6 @@ body.sidebar-fechada .sidebar-veterinario { transform: translateX(-105%); }
     color: #eaf5ed;
     background: #123d2a;
     box-shadow: 8px 0 24px rgba(18, 61, 42, .16);
-    transition: transform .25s ease;
-}
-
-.sidebar-veterinario {
-    position: fixed;
-    inset: 0 auto 0 0;
-    z-index: 1300;
-    width: 272px;
-    overflow-y: auto;
-    padding: 24px 14px;
-    color: #e6f4f0;
-    background: #102f29;
-    box-shadow: 8px 0 24px rgba(16, 65, 53, .18);
     transition: transform .25s ease;
 }
 
@@ -70,5 +58,5 @@ body.perfil-veterinario .menu-toggle { display: inline-flex; }
     body.perfil-pecuarista .menu-toggle, body.perfil-veterinario .menu-toggle { display: inline-flex; }
 }
 
-html[data-theme="dark"] .sidebar-pecuarista { background: #0b2a1b; }
-html[data-theme="dark"] .sidebar-veterinario { background: #081e1a; }
+html[data-theme="dark"] .sidebar-pecuarista,
+html[data-theme="dark"] .sidebar-veterinario { background: #0b2a1b; }

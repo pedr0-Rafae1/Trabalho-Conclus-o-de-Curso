@@ -116,7 +116,9 @@ CREATE TABLE IF NOT EXISTS atendimento (
 CREATE TABLE IF NOT EXISTS duvida (
     id_duvida INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT UNSIGNED NOT NULL,
+    id_animal INT UNSIGNED NULL,
     id_veterinario INT UNSIGNED NULL,
+    assunto VARCHAR(150) NOT NULL DEFAULT 'Dúvida',
     categoria ENUM('Manejo', 'Saude', 'Nutricao', 'Reproducao', 'Outro') NOT NULL DEFAULT 'Outro',
     prioridade ENUM('Normal', 'Alta', 'Urgente') NOT NULL DEFAULT 'Normal',
     pergunta TEXT NOT NULL,
@@ -126,8 +128,10 @@ CREATE TABLE IF NOT EXISTS duvida (
     data_resposta DATETIME NULL,
     atualizado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_duvida_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    CONSTRAINT fk_duvida_animal FOREIGN KEY (id_animal) REFERENCES animal(id_animal) ON DELETE SET NULL,
     CONSTRAINT fk_duvida_veterinario FOREIGN KEY (id_veterinario) REFERENCES usuario(id_usuario) ON DELETE SET NULL,
     INDEX idx_duvida_status_prioridade (status, prioridade),
+    INDEX idx_duvida_animal (id_animal),
     INDEX idx_duvida_veterinario (id_veterinario)
 ) ENGINE=InnoDB;
 

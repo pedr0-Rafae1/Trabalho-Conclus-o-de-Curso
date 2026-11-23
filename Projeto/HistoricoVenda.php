@@ -1,5 +1,16 @@
 <?php
 include_once 'Sessao.php';
+
+if ((int) ($_SESSION['admin'] ?? 0) === 1) {
+    header('Location: PainelAdmin.php');
+    exit();
+}
+
+if (($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario') {
+    header('Location: Veterinario.php?erro=area_pecuarista');
+    exit();
+}
+
 require_once __DIR__ . '/../app/Dao/VendaDao.php';
 
 $vendaDao = new VendaDao();

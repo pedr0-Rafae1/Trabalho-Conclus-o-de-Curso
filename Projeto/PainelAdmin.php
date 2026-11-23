@@ -2,7 +2,10 @@
 include_once 'Sessao.php';
 
 if ((int) ($_SESSION['admin'] ?? 0) !== 1) {
-    header("Location: Pecuarista.php?erro=acesso_negado");
+    $painelUsuario = ($_SESSION['tipo_usuario'] ?? 'Pecuarista') === 'Veterinario'
+        ? 'Veterinario.php'
+        : 'Pecuarista.php';
+    header('Location: ' . $painelUsuario . '?erro=acesso_negado');
     exit();
 }
 
@@ -21,9 +24,22 @@ include 'Cabecalho.php';
 
 <main class="lista-conteudo">
     <?php if (isset($_GET['sucesso'])): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="fas fa-check-circle me-2"></i> Veterinário homologado com sucesso!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alerta-notificacao alerta-sucesso" role="alert">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>Veterinário homologado com sucesso!</span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
+        </div>
+    <?php elseif (isset($_GET['erro'])): ?>
+        <div class="alerta-notificacao alerta-erro" role="alert">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            <span><?php
+                $mensagensErro = [
+                    'id_invalido' => 'Não foi possível identificar o veterinário selecionado.',
+                    'banco' => 'Não foi possível homologar o veterinário. Tente novamente.',
+                ];
+                echo htmlspecialchars($mensagensErro[$_GET['erro']] ?? 'Não foi possível concluir a homologação.');
+            ?></span>
+            <button type="button" class="fechar-alerta" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
     <?php endif; ?>
 
