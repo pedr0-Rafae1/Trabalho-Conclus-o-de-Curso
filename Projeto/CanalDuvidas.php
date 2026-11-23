@@ -43,7 +43,7 @@ include 'Cabecalho.php';
 
 <head>
     <title>Canal de Dúvidas - Pecuária em Rede</title>
-    <link rel="stylesheet" href="/CSS/Lista.css?v=2.1">
+    <link rel="stylesheet" href="../CSS/Lista.css?v=2.1">
 </head>
 
 <main class="lista-conteudo">

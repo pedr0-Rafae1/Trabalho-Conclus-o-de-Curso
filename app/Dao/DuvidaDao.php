@@ -8,52 +8,6 @@ class DuvidaDao {
     
     public function __construct() {
         $this->db = ConexaoBD::getConnection();
-        $this->garantirColunasCanal();
-        $this->garantirTabelaMensagens();
-    }
-
-    private function garantirColunasCanal() {
-        $resultado = $this->db->query("SHOW COLUMNS FROM duvida LIKE 'assunto'");
-        if (!$resultado) {
-            throw new RuntimeException('Não foi possível verificar a estrutura das dúvidas.');
-        }
-
-        if ($resultado->num_rows === 0
-            && !$this->db->query("ALTER TABLE duvida ADD COLUMN assunto VARCHAR(150) NOT NULL DEFAULT 'Dúvida' AFTER id_veterinario")) {
-            throw new RuntimeException('Não foi possível atualizar a estrutura das dúvidas.');
-        }
-
-        $colunaAnimal = $this->db->query("SHOW COLUMNS FROM duvida LIKE 'id_animal'");
-        if (!$colunaAnimal) {
-            throw new RuntimeException('Não foi possível verificar o vínculo das dúvidas com animais.');
-        }
-
-        if ($colunaAnimal->num_rows === 0
-            && !$this->db->query(
-                'ALTER TABLE duvida
-                 ADD COLUMN id_animal INT UNSIGNED NULL AFTER id_usuario,
-                 ADD INDEX idx_duvida_animal (id_animal),
-                 ADD CONSTRAINT fk_duvida_animal FOREIGN KEY (id_animal)
-                    REFERENCES animal(id_animal) ON DELETE SET NULL'
-            )) {
-            throw new RuntimeException('Não foi possível preparar o vínculo das dúvidas com animais.');
-        }
-    }
-
-    private function garantirTabelaMensagens() {
-        $sql = "CREATE TABLE IF NOT EXISTS duvida_mensagem (
-            id_mensagem INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            id_duvida INT UNSIGNED NOT NULL,
-            id_usuario INT UNSIGNED NOT NULL,
-            mensagem TEXT NOT NULL,
-            enviado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            CONSTRAINT fk_duvida_mensagem_duvida FOREIGN KEY (id_duvida) REFERENCES duvida(id_duvida) ON DELETE CASCADE,
-            CONSTRAINT fk_duvida_mensagem_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-            INDEX idx_duvida_mensagem_conversa (id_duvida, enviado_em)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        if (!$this->db->query($sql)) {
-            throw new RuntimeException('Não foi possível preparar as mensagens do canal de dúvidas.');
-        }
     }
 
     public function Cadastrar(Duvida $duvida) {

@@ -1,20 +1,21 @@
 <?php
 
 class Duvida {
-    public $id_duvida;
-    public $id_usuario;
-    public $id_veterinario;
-    public $id_animal;
-    public $animal_brinco;
-    public $assunto;
-    public $pergunta;
-    public $resposta;
-    public $data_pergunta;
-    public $data_resposta;
-    public $status;
-    public $usuario_nome;
+    public ?int $id_duvida = null;
+    public int $id_usuario;
+    public ?int $id_veterinario = null;
+    public ?int $id_animal = null;
+    public ?string $animal_brinco = null;
+    public string $assunto;
+    public string $pergunta;
+    public ?string $resposta = null;
+    public ?string $data_pergunta = null;
+    public ?string $data_resposta = null;
+    public ?string $status = null;
+    public ?string $usuario_nome = null;
+    public ?string $veterinario_nome = null;
  
-    public function __construct($id_usuario, $pergunta, $assunto = 'Dúvida', $id_animal = null) {
+    public function __construct(int $id_usuario, string $pergunta, string $assunto = 'Dúvida', ?int $id_animal = null) {
         $this->id_usuario = $id_usuario;
         $this->pergunta = $pergunta;
         $this->assunto = $assunto;
